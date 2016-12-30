@@ -1,0 +1,74 @@
+﻿@using System.Reflection
+@using AutoMapper.Internal
+@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@using Subdivisionary.Models.Applications
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.ViewModels.EditApplicationViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = Model.Application.DisplayName;
+}
+
+@{
+    var application = Model.Application;
+    var forms = application.Forms;
+    IForm activeForm = null;
+}
+<div class="row">
+    <div class="sidebar col-xs-0 col-md-3">
+        <h2>Directory</h2>
+        <ul class="nav nav-pills nav-stacked" style="margin-bottom: 20px;">
+            @for (int i = 0; i < @forms.Length; i++)
+            {
+                var form = forms[i];
+                string liClass = null;
+                if (i == Model.EditId)
+                {
+                    liClass = "active";
+                    activeForm = form;
+                }
+                var icon = form.IsAssigned ? "fa fa-check" : "fa fa-times";
+                <li role="presentation" class="@liClass">
+                    <a href="@Url.Action( "Details", "Applications", new {id = application.Id.ToString(), editId = i}, null)" class="list-group-item">
+                        @form.DisplayName
+                        <div class="badge">
+                            <i class="@icon" aria-hidden="true"></i>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="partialbar col-xs-12 col-md-9">
+        <h2>@forms[Model.EditId].DisplayName</h2>
+        @{
+            var formEditor = new EditFormViewModel()
+            {
+                Form = activeForm,
+                ApplicationId = Model.Application.Id
+            };
+        }
+        @Html.Partial("_FormEditor", formEditor)
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @*<script type="text/javascript">
+        $(document)
+            .on('ready',
+                function() {
+                    $("input[type=file]").each(function () {
+                        $(this).fileinput({
+                            maxFileCount: 10,
+                            allowedFileExtensions: ["jpg", "gif", "png", "txt"]
+                        });
+                    });
+                });
+    </script>*@
+
+}

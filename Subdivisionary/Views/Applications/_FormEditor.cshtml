@@ -1,0 +1,10 @@
+﻿@using Subdivisionary.Helpers
+@model Subdivisionary.ViewModels.EditFormViewModel
+
+@using (Html.BeginForm("Edit", "Applications",
+    new {formType = Model.Form.GetType().FullName, applicationId = Model.ApplicationId},
+    FormMethod.Post, new { method = "post", runat = "server", enctype = "multipart/form-data" }))
+{
+    @Html.PartialFor(m => m.Form, "_" + Model.Form.PropertyName+"Editor")
+    <button class="btn btn-info" type="submit" style="width: 100%;">Save</button>
+}

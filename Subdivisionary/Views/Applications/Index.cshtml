@@ -1,0 +1,78 @@
+﻿@using System.Text
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Applicant
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Applications Page</h2>
+@if (!Model.Applications.Any())
+{
+    <p>  No Applications yet...</p>
+}
+else
+{
+    <ul>
+        @foreach (var app in Model.Applications)
+        {
+            var projInfo = app.ProjectInfo;
+            string info = string.Format("{0} - {1}/{2}", projInfo.GetType().Name, projInfo.Block, projInfo.Lot);
+            <li>
+                @Html.ActionLink(info, "Details", "Applications", new { id = projInfo.Id.ToString() }, null)
+            </li>
+        }
+    </ul>
+}
+<a class="btn btn-default js-create" role="button">Create New</a>
+
+@{
+    var rawInputOptions = new StringBuilder();
+    var inputSelects = EnumHelper.GetSelectList(typeof(ApplicationTypeViewModel));
+    for(int i=0;i<inputSelects.Count;i++)
+    {
+        var appType = inputSelects[i];
+        rawInputOptions.Append("{");
+        rawInputOptions.Append(string.Format("text:\"{0}\",value:\"{1}\"", appType.Text.ToString(), appType.Value.ToString()));
+        rawInputOptions.Append("}");
+        if (i != inputSelects.Count - 1)
+        {
+            rawInputOptions.Append(",");
+        }
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+        $(document)
+            .ready(function() {
+                $('.js-create')
+                    .on("click",
+                        function() {
+                            bootbox.prompt({
+                                title: "New Application",
+                                size: "small",
+                                inputType: 'select',
+                                inputOptions: [
+                                    @Html.Raw(@rawInputOptions)
+                                ],
+                                buttons: {
+                                    cancel: {
+                                        label: '<i class="fa fa-times"></i> Cancel'
+                                    },
+                                    confirm: {
+                                        label: '<i class="fa fa-check"></i> Confirm'
+                                    }
+                                },
+                                callback: function(result) {
+                                    if (result) {
+                                        console.log(result);
+                                        var url = '@Url.Action("New", "Applications", new { id = "__id__" })';
+                                        window.location.href = url.replace('__id__', result);
+                                    }
+                                }
+                            });
+                        });
+            });
+    </script>
+}

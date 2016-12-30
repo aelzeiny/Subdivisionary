@@ -1,0 +1,39 @@
+﻿@model NewApplicationViewModel
+@using Subdivisionary.Helpers
+@using Subdivisionary.Models.ProjectInfos
+@using Subdivisionary.ViewModels
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Create a New Application";
+}
+<script type="text/javascript">
+    function itemSelected(value) {
+        if (!value)
+            return;
+        var url = '@Url.Action("New", "Applications", new { id = "__id__" })';
+        window.location = url.replace('__id__', value);
+    }
+</script>
+
+@using (Html.BeginForm("Create", "Applications", new { projectInfoType = Model.ProjectInfo.GetType().FullName}))
+{
+    // Render Project Info
+    <div class="sidebar col-xs-0 col-md-3">
+        @Html.Partial("_BsmSidebar")
+    </div>
+    <div class="partialbar col-xs-12 col-md-9">
+        <div class="form-group row">
+            <h3>Application Type</h3>
+            @Html.DropDownList("ApplicationType", EnumHelper.GetSelectList(typeof(ApplicationTypeViewModel)), "Select Application Type", new { @class = "form-control", AutoPostBack = true, onchange = "itemSelected(this.value);" })
+        </div>
+        @{
+            var projInfoType = Model.ProjectInfo.GetType();
+        }
+        @*
+            So Asp.net is an object-oriented framework that does not support object-oriented model-binding views.
+            So we have to make due with a custom model binder in the controller to diffrentiate type*@
+        @Html.PartialFor(m => m.ProjectInfo, "_ProjectInfoEditor");
+        <button class="btn btn-primary" type="submit" style="width: 100%;">Create!</button>
+    </div>
+}

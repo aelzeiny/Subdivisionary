@@ -1,0 +1,28 @@
+﻿<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container" style="width: 
+    ;">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @*Html.ActionLink("Subdivisionary", "Index", "Home", new { area = "" })
+            <img src="http://sfpublicworks.org/sites/default/files/pwlogo_0.png" style="background-color: white" class="navbar-brand"/>
+        *@
+
+            <a class="navbar-brand" href=@Url.Action("Index", "Home") style="min-height: 70px; max-width: 70px;">
+                <img src="/Content/pwLogo.png" alt="DPW-BSM" style="width: 100%; height: 100%; background-color: white">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <li>@Html.ActionLink("Applications", "Index", "Applications")</li>
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+</div>

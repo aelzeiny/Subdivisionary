@@ -1,0 +1,127 @@
+﻿
+
+/* I like this warmer color of blue better than the gradient. Flat colors are more
+    modern.
+    Color Pallet: https://coolors.co/456caa-3097d1-a0ddff-c1cefe-7189ff
+*/
+.navbar-default {
+    background-color: #456CAA;
+    /*background-color: #3097d1;*/
+    border-color: #1c73a5;
+    background-image: none;
+}
+
+
+.navbar-default .navbar-nav > li > a{
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255,255,255,0);
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: rgb(255, 255, 255);
+    background-color: rgba(255,255,255,0);
+}
+
+/*Center Form Labels*/
+.col-form-label {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 0;
+}
+
+/*Keep forms close together & indent new rows*/
+.form-group.row {
+    margin-left: 5px;
+    /*margin-bottom: 0px;*/
+}
+/* NavBar Center*/
+.navbar-nav li a {
+    line-height: 40px;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+
+.partialbar {
+    border-left-style: double;
+    border-color: aliceblue;
+}
+
+.banner {
+    color: white;
+    background-color: #3097D1;
+    width: 100%;
+    padding: 20px 20px;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 40px;
+    font-variant: normal;
+    line-height: 98%;
+    text-align: center
+}
+
+h2 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+h6 {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+strong, h1, h2, h3, h4, h5, h6 {
+    font-family: "Open Sans";
+    font-style: normal !important;
+    color: rgb(69, 108, 170);
+}
+
+p {
+    font-family: "Open Sans";
+    line-height: 25px;
+    margin: 0 0 20px;
+}
+
+.bsm-form-control {
+    border: 0px;
+    border-bottom: 3px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #a0ddff;
+    height: 30px;
+    padding-left: 4px;
+    border-radius: 0px;
+    border-style: solid;
+    padding-bottom: 0px;
+
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

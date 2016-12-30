@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Subdivisionary.Models.ProjectInfos.ExtendedProjectInfo">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\ExtendedProjectInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.BasicProjectInfo" Collapsed="true">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGEAIAABAAAAAAAQAAAAAAAAgAAAACAAAAAABAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\BasicProjectInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.BypassInfo" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\BypassInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.DeveloperExtendedProjectInfo" Collapsed="true">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\DeveloperExtendedProjectInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.EcpInfo" Collapsed="true">
+    <Position X="6.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\EcpInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
