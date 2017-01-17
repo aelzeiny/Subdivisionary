@@ -17,6 +17,7 @@ namespace Subdivisionary.Models
 
         [Required]
         [StringLength(255)]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [StringLength(255)]

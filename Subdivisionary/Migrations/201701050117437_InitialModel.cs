@@ -19,19 +19,13 @@ namespace Subdivisionary.Migrations
                 .Index(t => t.User_Id);
             
             CreateTable(
-                "dbo.AApplication",
+                "dbo.Application",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         ProjectInfoId = c.Int(nullable: false),
-                        AdditionalDocumentsForm_AdditionalDocsList_Data = c.String(),
                         ApplicantId = c.Int(nullable: false),
                         IsSubmitted = c.Boolean(nullable: false),
-                        ApplicationCheckForm_Checks_Data = c.String(),
-                        TitleReportForm_ScanPath = c.String(),
-                        GrantDeedForm_List_Data = c.String(),
-                        ClosureCalcsForm_ScanPath = c.String(),
-                        PhotographForm_ScanPath = c.String(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
@@ -39,11 +33,33 @@ namespace Subdivisionary.Migrations
                 .Index(t => t.ApplicantId);
             
             CreateTable(
+                "dbo.Form",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        ApplicationId = c.Int(nullable: false),
+                        IsAssigned = c.Boolean(nullable: false),
+                        AdditionalDocsList_Data = c.String(),
+                        Checks_Data = c.String(),
+                        ScanPath = c.String(),
+                        List_Data = c.String(),
+                        GrantAdjoinerFiles_Data = c.String(),
+                        ScanPath1 = c.String(),
+                        Company = c.Int(),
+                        ScanPath2 = c.String(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Application", t => t.ApplicationId, cascadeDelete: true)
+                .Index(t => t.ApplicationId);
+            
+            CreateTable(
                 "dbo.BasicProjectInfo",
                 c => new
                     {
                         Id = c.Int(nullable: false),
                         ApplicationId = c.Int(nullable: false),
+                        IsAssigned = c.Boolean(nullable: false),
                         Block = c.String(nullable: false),
                         Lot = c.String(nullable: false),
                         Address_AddressLine1 = c.String(nullable: false, maxLength: 255),
@@ -82,7 +98,7 @@ namespace Subdivisionary.Migrations
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AApplication", t => t.Id, cascadeDelete: true)
+                .ForeignKey("dbo.Application", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -163,8 +179,9 @@ namespace Subdivisionary.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Applicant", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AApplication", "ApplicantId", "dbo.Applicant");
-            DropForeignKey("dbo.BasicProjectInfo", "Id", "dbo.AApplication");
+            DropForeignKey("dbo.Application", "ApplicantId", "dbo.Applicant");
+            DropForeignKey("dbo.BasicProjectInfo", "Id", "dbo.Application");
+            DropForeignKey("dbo.Form", "ApplicationId", "dbo.Application");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
@@ -172,7 +189,8 @@ namespace Subdivisionary.Migrations
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.BasicProjectInfo", new[] { "Id" });
-            DropIndex("dbo.AApplication", new[] { "ApplicantId" });
+            DropIndex("dbo.Form", new[] { "ApplicationId" });
+            DropIndex("dbo.Application", new[] { "ApplicantId" });
             DropIndex("dbo.Applicant", new[] { "User_Id" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
@@ -180,7 +198,8 @@ namespace Subdivisionary.Migrations
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.BasicProjectInfo");
-            DropTable("dbo.AApplication");
+            DropTable("dbo.Form");
+            DropTable("dbo.Application");
             DropTable("dbo.Applicant");
         }
     }

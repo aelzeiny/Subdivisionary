@@ -1,4 +1,4 @@
-﻿@model NewApplicationViewModel
+﻿@model NewApplicationViewModel<BasicProjectInfo>
 @using Subdivisionary.Helpers
 @using Subdivisionary.Models.ProjectInfos
 @using Subdivisionary.ViewModels
@@ -16,7 +16,8 @@
     }
 </script>
 
-@using (Html.BeginForm("Create", "Applications", new { projectInfoType = Model.ProjectInfo.GetType().FullName}))
+@Html.Partial("_ValidationSummary", ViewData.ModelState)
+@using (Html.BeginForm("Create", "Applications", new TypeStorage(){ classType = Model.ProjectInfo.GetType().FullName}))
 {
     // Render Project Info
     <div class="sidebar col-xs-0 col-md-3">
@@ -33,7 +34,7 @@
         @*
             So Asp.net is an object-oriented framework that does not support object-oriented model-binding views.
             So we have to make due with a custom model binder in the controller to diffrentiate type*@
-        @Html.PartialFor(m => m.ProjectInfo, "_ProjectInfoEditor");
+        @Html.PartialFor(m => m.ProjectInfo, "_ProjectInfoEditor")
         <button class="btn btn-primary" type="submit" style="width: 100%;">Create!</button>
     </div>
 }

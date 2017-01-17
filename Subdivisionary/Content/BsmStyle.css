@@ -9,6 +9,7 @@
     /*background-color: #3097d1;*/
     border-color: #1c73a5;
     background-image: none;
+    margin-bottom: 0;
 }
 
 
@@ -93,6 +94,7 @@ p {
     margin: 0 0 20px;
 }
 
+
 .bsm-form-control {
     border: 0px;
     border-bottom: 3px;
@@ -106,6 +108,18 @@ p {
     padding-bottom: 0px;
 
 }
+
+li.list-group-item.list-group-item-info.file-upload-list {
+    line-height: .9;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.input-validation-error {
+    border: 2px solid red;
+}
+
+/*
 .btn-file {
     position: relative;
     overflow: hidden;
@@ -124,4 +138,4 @@ p {
     background: white;
     cursor: inherit;
     display: block;
-}
+}*/

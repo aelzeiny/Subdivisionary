@@ -20,5 +20,11 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    /*max-width: 280px;*/
+}
+
+
+/* Site Validation Errors should be red*/
+.field-validation-error {
+    color: red;
 }

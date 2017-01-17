@@ -12,13 +12,13 @@ namespace Subdivisionary.Models
     public class Applicant
     {
         public int Id { get; set; }
-        public virtual ICollection<AApplication> Applications { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
 
         [Required]
         public virtual ApplicationUser User { get; set; }
         public Applicant()
         {
-            Applications = new LinkedList<AApplication>();
+            Applications = new LinkedList<Application>();
         }
     }
 }

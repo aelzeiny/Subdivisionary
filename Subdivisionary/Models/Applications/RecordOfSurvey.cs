@@ -8,34 +8,20 @@ using Subdivisionary.Models.ProjectInfos;
 
 namespace Subdivisionary.Models.Applications
 {
-    public class RecordOfSurvey : AApplication
+    public class RecordOfSurvey : Application
     {
-        public virtual ApplicationCheckForm ApplicationCheckForm { get; set; }
-        public virtual TitleReportForm TitleReportForm { get; set; }
-        public virtual ClosureCalcsForm ClosureCalcsForm { get; set; }
-        private RecordOfSurvey()
+        protected override void Init()
         {
-            ApplicationCheckForm = new ApplicationCheckForm();
-            ClosureCalcsForm = new ClosureCalcsForm();
-            TitleReportForm = new TitleReportForm();
+            ProjectInfo = new BasicProjectInfo();
         }
 
-
-        public static RecordOfSurvey Create()
+        protected override Type[] GetDefaultApplicationForms()
         {
-            return new RecordOfSurvey()
+            return new Type[]
             {
-                ProjectInfo = new BasicProjectInfo()
-            };
-        }
-
-        protected override IForm[] GetForms()
-        {
-            return new IForm[]
-            {
-                ApplicationCheckForm,
-                TitleReportForm,
-                ClosureCalcsForm
+                typeof(ApplicationCheckForm),
+                typeof(TitleReportForm),
+                typeof(ClosureCalcsForm)
             };
         }
 

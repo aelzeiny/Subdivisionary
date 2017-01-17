@@ -222,6 +222,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DAL\CustomModelBinder.cs" />
+    <Compile Include="DAL\DebugModelBinder.cs" />
+    <Compile Include="DAL\RequiredUploadValidation.cs" />
     <Compile Include="DAL\FormModelBinder.cs" />
     <Compile Include="DAL\ProjectInfoModelBinder.cs" />
     <Compile Include="Dtos\AddressDto.cs" />
@@ -231,49 +233,38 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="DAL\IdentityModels.cs" />
+    <Compile Include="Helpers\DirectoryHelper.cs" />
+    <Compile Include="Helpers\FormJavaScriptHelper.cs" />
     <Compile Include="Helpers\PartialViewHelper.cs" />
-    <Compile Include="Migrations\201612202148402_InitialModel.cs" />
-    <Compile Include="Migrations\201612202148402_InitialModel.Designer.cs">
-      <DependentUpon>201612202148402_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201701050117437_InitialModel.cs" />
+    <Compile Include="Migrations\201701050117437_InitialModel.Designer.cs">
+      <DependentUpon>201701050117437_InitialModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612202149296_SeedUsers.cs" />
-    <Compile Include="Migrations\201612202149296_SeedUsers.Designer.cs">
-      <DependentUpon>201612202149296_SeedUsers.cs</DependentUpon>
+    <Compile Include="Migrations\201701050118308_SeedUsers.cs" />
+    <Compile Include="Migrations\201701050118308_SeedUsers.Designer.cs">
+      <DependentUpon>201701050118308_SeedUsers.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612202332547_RemoveGrantDeedForm.cs" />
-    <Compile Include="Migrations\201612202332547_RemoveGrantDeedForm.Designer.cs">
-      <DependentUpon>201612202332547_RemoveGrantDeedForm.cs</DependentUpon>
+    <Compile Include="Migrations\201701050123492_AddFileUploadList.cs" />
+    <Compile Include="Migrations\201701050123492_AddFileUploadList.Designer.cs">
+      <DependentUpon>201701050123492_AddFileUploadList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612210534169_ReAddGrantDeed.cs" />
-    <Compile Include="Migrations\201612210534169_ReAddGrantDeed.Designer.cs">
-      <DependentUpon>201612210534169_ReAddGrantDeed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612252155447_ApplicationInheritance.cs" />
-    <Compile Include="Migrations\201612252155447_ApplicationInheritance.Designer.cs">
-      <DependentUpon>201612252155447_ApplicationInheritance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612252213002_SharedTitleReportColumn.cs" />
-    <Compile Include="Migrations\201612252213002_SharedTitleReportColumn.Designer.cs">
-      <DependentUpon>201612252213002_SharedTitleReportColumn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612260016189_SharedMoreColumns.cs" />
-    <Compile Include="Migrations\201612260016189_SharedMoreColumns.Designer.cs">
-      <DependentUpon>201612260016189_SharedMoreColumns.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612271639106_FormIsAssignedBool.cs" />
-    <Compile Include="Migrations\201612271639106_FormIsAssignedBool.Designer.cs">
-      <DependentUpon>201612271639106_FormIsAssignedBool.cs</DependentUpon>
+    <Compile Include="Migrations\201701110314137_UpdatedFileUploadList.cs" />
+    <Compile Include="Migrations\201701110314137_UpdatedFileUploadList.Designer.cs">
+      <DependentUpon>201701110314137_UpdatedFileUploadList.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Collections\AdditionalDocsList.cs" />
     <Compile Include="Models\Collections\CheckList.cs" />
-    <Compile Include="Models\Collections\CsvList.cs" />
+    <Compile Include="Models\Collections\SerializableList.cs" />
+    <Compile Include="Models\Collections\BasicFileUploadList.cs" />
+    <Compile Include="Models\Collections\FileUploadList.cs" />
     <Compile Include="Models\Collections\GrantDeedList.cs" />
+    <Compile Include="Models\FileUploadProperty.cs" />
     <Compile Include="Models\Forms\IFileForm.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Applicant.cs" />
-    <Compile Include="Models\Applications\AApplication.cs" />
+    <Compile Include="Models\Applications\Application.cs" />
     <Compile Include="Models\Applications\CertificateOfCompliance.cs" />
     <Compile Include="Models\Applications\RecordOfSurvey.cs" />
     <Compile Include="ViewModels\ApplicationViewModels.cs" />
@@ -282,7 +273,7 @@
     <Compile Include="Models\Forms\ApplicationCheckForm.cs" />
     <Compile Include="Models\Forms\ClosureCalcsForm.cs" />
     <Compile Include="Models\Forms\GrantDeedForm.cs" />
-    <Compile Include="Models\Forms\IForm.cs" />
+    <Compile Include="Models\Forms\Form.cs" />
     <Compile Include="Models\Forms\PhotographForm.cs" />
     <Compile Include="Models\Forms\TitleReportForm.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -341,6 +332,7 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\fileinput.js" />
     <Content Include="Scripts\fileinput.min.js" />
+    <None Include="Scripts\jquery-2.1.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -445,6 +437,9 @@
     <Content Include="Views\Shared\_BsmSidebar.cshtml" />
     <Content Include="Views\Shared\_BannerLayout.cshtml" />
     <Content Include="Views\Applications\_FormEditor.cshtml" />
+    <Content Include="Views\Applications\_FileUploadPropsEditor.cshtml" />
+    <Content Include="Views\Shared\_ValidationSummary.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_CheckListEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -454,29 +449,17 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612202148402_InitialModel.resx">
-      <DependentUpon>201612202148402_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701050117437_InitialModel.resx">
+      <DependentUpon>201701050117437_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612202149296_SeedUsers.resx">
-      <DependentUpon>201612202149296_SeedUsers.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701050118308_SeedUsers.resx">
+      <DependentUpon>201701050118308_SeedUsers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612202332547_RemoveGrantDeedForm.resx">
-      <DependentUpon>201612202332547_RemoveGrantDeedForm.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701050123492_AddFileUploadList.resx">
+      <DependentUpon>201701050123492_AddFileUploadList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612210534169_ReAddGrantDeed.resx">
-      <DependentUpon>201612210534169_ReAddGrantDeed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612252155447_ApplicationInheritance.resx">
-      <DependentUpon>201612252155447_ApplicationInheritance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612252213002_SharedTitleReportColumn.resx">
-      <DependentUpon>201612252213002_SharedTitleReportColumn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612260016189_SharedMoreColumns.resx">
-      <DependentUpon>201612260016189_SharedMoreColumns.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612271639106_FormIsAssignedBool.resx">
-      <DependentUpon>201612271639106_FormIsAssignedBool.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701110314137_UpdatedFileUploadList.resx">
+      <DependentUpon>201701110314137_UpdatedFileUploadList.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

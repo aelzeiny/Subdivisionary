@@ -9,19 +9,18 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_BannerLayout.cshtml";
-    ViewBag.Banner = Model.Application.DisplayName;
+    ViewBag.Banner = Model.DisplayName;
 }
 
 @{
-    var application = Model.Application;
-    var forms = application.Forms;
+    var forms = Model.Forms;
     IForm activeForm = null;
 }
 <div class="row">
     <div class="sidebar col-xs-0 col-md-3">
         <h2>Directory</h2>
         <ul class="nav nav-pills nav-stacked" style="margin-bottom: 20px;">
-            @for (int i = 0; i < @forms.Length; i++)
+            @for (int i = 0; i < @forms.Count; i++)
             {
                 var form = forms[i];
                 string liClass = null;
@@ -32,7 +31,7 @@
                 }
                 var icon = form.IsAssigned ? "fa fa-check" : "fa fa-times";
                 <li role="presentation" class="@liClass">
-                    <a href="@Url.Action( "Details", "Applications", new {id = application.Id.ToString(), editId = i}, null)" class="list-group-item">
+                    <a href="@Url.Action( "Details", "Applications", new {id = Model.ApplicationId, editId = i}, null)" class="list-group-item">
                         @form.DisplayName
                         <div class="badge">
                             <i class="@icon" aria-hidden="true"></i>
@@ -48,27 +47,22 @@
             var formEditor = new EditFormViewModel()
             {
                 Form = activeForm,
-                ApplicationId = Model.Application.Id
+                ApplicationId = Model.ApplicationId,
+                EditId = Model.EditId
             };
         }
         @Html.Partial("_FormEditor", formEditor)
     </div>
 </div>
 
-
-
-@section Scripts {
-    @*<script type="text/javascript">
-        $(document)
-            .on('ready',
-                function() {
-                    $("input[type=file]").each(function () {
-                        $(this).fileinput({
-                            maxFileCount: 10,
-                            allowedFileExtensions: ["jpg", "gif", "png", "txt"]
-                        });
-                    });
+@if (activeForm is IUploadableFileForm)
+{
+    @section Scripts {
+        <script type="text/javascript">
+            $(document)
+                .ready(function() {
+                    @Html.RenderUploadableFileJavascript((IUploadableFileForm)activeForm, Server)
                 });
-    </script>*@
-
+        </script>
+    }
 }

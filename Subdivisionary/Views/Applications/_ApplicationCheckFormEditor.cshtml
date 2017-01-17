@@ -1,2 +1,20 @@
-﻿
-<h1>ROGUE ONE</h1>
+﻿@model Subdivisionary.Models.Forms.ApplicationCheckForm
+@using Subdivisionary.Helpers
+@using Subdivisionary.ViewModels
+
+<h3 style="font-style: italic; font-weight: normal;">Can be replaced by a payment gateway</h3>
+
+@{
+    var uploads = Model.FileUploadProperties();
+    var lists = uploads.Select(x => Model.GetFileUploadList(x.UniqueKey)).ToList();
+    ViewData.TemplateInfo.HtmlFieldPrefix = "Form";
+}
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Select Deed for the Subject Parcel",
+    UploadProperty = uploads[0],
+    UploadList = lists[0],
+    Index = 0,
+    PartialView = "CollectionEditors//_CheckListEditor"
+}, ViewData)

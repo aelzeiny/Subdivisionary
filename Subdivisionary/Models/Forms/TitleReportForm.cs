@@ -7,20 +7,15 @@ using System.Web;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class TitleReportForm : IForm
+    public class TitleReportForm : Form
     {
-        [DisplayName("TitleReportForm_TitleCompany")]
         public TitleCompany Company { get; set; } = TitleCompany.Other;
-        [Column("TitleReportForm_ScanPath")]
-        public string ScanPath { get; set; }
-        public string DisplayName => "Preliminary Title Report";
-        public string PropertyName => "TitleReportForm";
 
-        [Column("TitleReportForm_IsAssigned")]
-        public bool IsAssigned { get; set; }
+        public string ScanPath { get; set; }
+        public override string DisplayName => "Preliminary Title Report";
+
         public TitleReportForm()
         {
-            IsAssigned = false;
         }
     }
     

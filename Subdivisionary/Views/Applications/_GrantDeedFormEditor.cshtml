@@ -1,15 +1,22 @@
-﻿@model Subdivisionary.Models.Forms.GrantDeedForm
-@*<div class="input-group">
-    <label class="input-group-btn">
-        <span class="btn btn-primary">
-            Browse… <input type="file" name="exampleKey" style="display: none;">
-        </span>
-    </label>
-    <input type="text" class="form-control" readonly="" >
-</div>*@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.GrantDeedForm
 
-<label class="control-label" for="inputSubject">Select Deed for the Subject Parcel</label>
-<input type="file" id="inputSubject" name="subject" class="file" data-show-upload="false" data-show-preview="true" data-allowed-file-extensions='["pdf", "doc", "docx", "png", "jpg", "JPG", "PNG", "JPEG", "jpeg", "xls", "xlsx"]'>
-<br/>
-<label class="control-label" for="inputAdjoiner">Select Deeds for the Adjoiner Parcels</label>
-<input type="file" id="inputAdjoiner" name="adjoiner" class="file" multiple data-show-preview="true" data-allowed-file-extensions='["pdf", "doc", "docx", "png", "jpg", "JPG", "PNG", "JPEG", "jpeg", "xls", "xlsx"]'>
+@{
+    var uploads = Model.FileUploadProperties();
+    var lists = uploads.Select(x => Model.GetFileUploadList(x.UniqueKey)).ToList();
+}
+
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Select Deed for the Subject Parcel",
+    UploadProperty = uploads[0],
+    UploadList = lists[0]
+})
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Select Deeds for the Adjoiner Lots",
+    UploadProperty = uploads[1],
+    UploadList = lists[1]
+})

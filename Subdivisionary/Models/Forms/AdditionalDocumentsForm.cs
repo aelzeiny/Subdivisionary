@@ -7,20 +7,14 @@ using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.Models.Forms
 {
-    [ComplexType]
-    public class AdditionalDocumentsForm : IForm
+    public class AdditionalDocumentsForm : Form
     {
         public AdditionalDocsList AdditionalDocsList { get; set; }
-        public string DisplayName => "Additional Forms";
-        public string PropertyName => "AdditionalDocumentsForm";
-
-        [Column("AdditionalDocumentsForm_IsAssigned")]
-        public bool IsAssigned { get; set; }
+        public override string DisplayName => "Additional Documents Form";
 
         public AdditionalDocumentsForm()
         {
             AdditionalDocsList = new AdditionalDocsList();
-            IsAssigned = false;
         }
     }
 

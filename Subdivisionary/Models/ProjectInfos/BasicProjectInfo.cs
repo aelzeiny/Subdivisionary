@@ -17,7 +17,10 @@ namespace Subdivisionary.Models.ProjectInfos
 
 
         public int ApplicationId { get; set; }
-        public AApplication Application { get; set; }
+        public Application Application { get; set; }
+
+        public bool IsAssigned { get; set; }
+
 
         [Required]
         public string Block { get; set; }
@@ -30,10 +33,6 @@ namespace Subdivisionary.Models.ProjectInfos
 
         
         public virtual string DisplayName => "Project Information";
-        public virtual string PropertyName => "ProjectInfo";
-
-        [Column("ProjectInfo_IsAssigned")]
-        public bool IsAssigned { get; set; }
 
         public BasicProjectInfo()
         {
@@ -41,7 +40,7 @@ namespace Subdivisionary.Models.ProjectInfos
             Address = new Address();
         }
 
-        internal void CopyValues(BasicProjectInfo other)
+        public void CopyValues(IForm other)
         {
             var type = this.GetType();
             foreach (var props in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))

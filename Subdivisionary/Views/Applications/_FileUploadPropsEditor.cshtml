@@ -1,0 +1,27 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Subdivisionary.Helpers
+@model Subdivisionary.ViewModels.FileUploadViewModel
+
+<div class="form-group">
+    <label class="control-label" for=@Model.UploadProperty.UniqueKey>@Model.LabelMessage</label>
+    <input id="@Model.UploadProperty.UniqueKey" type="file" name="@Model.UploadProperty.UniqueKey" class="file-loading" multiple="@(!Model.UploadProperty.IsSingleUpload)">
+    @{
+        string htmlPrefix = ViewData.TemplateInfo.HtmlFieldPrefix;
+    }
+    <ul class="list-group">
+        @foreach (var file in Model.UploadList)
+        {
+            <li class="list-group-item list-group-item-info file-upload-list">
+                @if (!Model.PartialView.IsNullOrWhiteSpace())
+                {
+                    ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("{0}.{1}[{2}]", htmlPrefix, Model.UploadProperty.UniqueKey, Model.Index);
+                    @Html.Partial(Model.PartialView, file, ViewData)
+                }
+                <div style="text-align: center">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    @Html.ActionLink("Download " + System.IO.Path.GetFileName(file.FilePath), "Download", new { file = file.FilePath })
+                </div>
+            </li>
+        }
+    </ul>
+</div>

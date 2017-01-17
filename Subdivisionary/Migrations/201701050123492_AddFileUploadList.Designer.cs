@@ -7,13 +7,13 @@ namespace Subdivisionary.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialModel : IMigrationMetadata
+    public sealed partial class AddFileUploadList : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddFileUploadList));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612202148402_InitialModel"; }
+            get { return "201701050123492_AddFileUploadList"; }
         }
         
         string IMigrationMetadata.Source

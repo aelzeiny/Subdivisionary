@@ -10,17 +10,17 @@
     <meta name="description" content="The description of my page" />
 </head>
 <body>
-<h1 class="banner">@ViewBag.Banner</h1>
-@Html.Partial("_NavBar");
-<div class="container body-content">
-    @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Subdivisionary</p>
-    </footer>
-</div>
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", required: false)
+    <h1 class="banner">@ViewBag.Banner</h1>
+    @Html.Partial("_NavBar")
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Subdivisionary</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </body>
 </html>

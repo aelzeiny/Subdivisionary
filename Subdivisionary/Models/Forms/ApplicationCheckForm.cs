@@ -10,34 +10,46 @@ using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.Models.Forms
 {
-    [ComplexType]
-    public class ApplicationCheckForm : IForm
+    public class ApplicationCheckForm : Form, IUploadableFileForm
     {
         public CheckList Checks { get; set; }
-        public string DisplayName => "Application Fees";
-        public string PropertyName => "ApplicationCheckForm";
 
-        [Column("ApplicationCheckForm_IsAssigned")]
-        public bool IsAssigned { get; set; }
+        public override string DisplayName => "Application Fees";
+
+        public static readonly string CHECK_DIRECTORY = "App Fees";
+        public static readonly string CHECK_KEY = "appFeesId";
+
 
         public ApplicationCheckForm()
         {
             Checks = new CheckList();
-            IsAssigned = false;
         }
-    }
 
-    //[ComplexType]
-    public class CheckInfo
-    {
-        public float Amount { get; set; }
-        public string ScanPath { get; set; }
+        public FileUploadProperty[] FileUploadProperties()
+        {
+            FileUploadProperty[] property = 
+            {
+                new FileUploadProperty(CHECK_KEY, CHECK_DIRECTORY, "Check") { IsSingleUpload = false}
+            };
+            return property;
+        }
 
-        [DisplayName("Check Number")]
-        public string CheckNumber { get; set; }
-        [DisplayName("Routing Number")]
-        public string RoutingNumber { get; set; }
-        [DisplayName("Account Number")]
-        public string AccountNumber { get; set; }
+        public FileUploadList[] FileUploadsLists()
+        {
+            return new FileUploadList[]
+            {
+                Checks
+            };
+        }
+
+        public FileUploadList GetFileUploadList(string key)
+        {
+            return Checks;
+        }
+
+        public void SyncFile(string key, string file)
+        {
+            this.Checks.Add(new CheckInfo() {FilePath = file});
+        }
     }
 }

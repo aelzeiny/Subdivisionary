@@ -6,20 +6,13 @@ using System.Web;
 
 namespace Subdivisionary.Models.Forms
 {
-    [ComplexType]
-    public class ClosureCalcsForm : IForm
+    public class ClosureCalcsForm : Form
     {
-        [Column("ClosureCalcsForm_ScanPath")]
         public string ScanPath { get; set; }
-        public string DisplayName => "Electronic Closure Calculations";
-        public string PropertyName => "ClosureCalcsForm";
-
-        [Column("ClosureCalcsForm_IsAssigned")]
-        public bool IsAssigned { get; set; }
+        public override string DisplayName => "Electronic Closure Calculations";
 
         public ClosureCalcsForm()
         {
-            IsAssigned = false;
         }
     }
 }

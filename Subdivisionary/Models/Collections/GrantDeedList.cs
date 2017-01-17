@@ -16,7 +16,7 @@ namespace Subdivisionary.Models.Collections
     }
     */
     [ComplexType]
-    public class GrantDeedList : CsvList<GrantDeedInfo>
+    public class GrantDeedList : SerializableList<GrantDeedInfo>
     {
         protected override int ParamCount => 3;
 

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Subdivisionary.Models.ProjectInfos;
 
 namespace Subdivisionary.DAL
 {
@@ -20,7 +23,7 @@ namespace Subdivisionary.DAL
             List<Tuple<string, string>> propertiesList = new List<Tuple<string, string>>();
             foreach (var key in form.AllKeys)
                 if (key.StartsWith(propName))
-                    propertiesList.Add(new Tuple<string, string>(key.Substring(propName.Length), form[key]));
+                    propertiesList.Add(new Tuple<string, string>(key, form[key]));
             return propertiesList;
         }
 
@@ -32,14 +35,14 @@ namespace Subdivisionary.DAL
         /// <param name="attributeList">List of properties defined in (NAME, VALUE) format</param>
         /// <param name="infoType">Type of object that is ready to parse</param>
         /// <returns>Parsed Object</returns>
-        protected object ParseObject(List<Tuple<string, string>> attributeList, Type infoType)
+        protected object ParseObject(ModelBindingContext bindingContext, string propName, List<Tuple<string, string>> attributeList, Type infoType)
         {
             // Create instance of object based on type
             var answer = Activator.CreateInstance(infoType);
             // Foreach property in all the attributes
             foreach (var prop in attributeList)
             {
-                string propertyName = prop.Item1;
+                string propertyName = prop.Item1.Substring(propName.Length+1);
                 // parse properties based on '.' delmiter. Example "ContactInfo.City"
                 string[] depth = propertyName.Split('.');
                 Type containerType = infoType;
@@ -53,10 +56,40 @@ namespace Subdivisionary.DAL
                 // Get the last property name
                 if (depth.Length > 1)
                     propertyName = propertyName.Substring(propertyName.LastIndexOf('.') + 1);
+
                 // Get Property Type from container & property name
                 var propertyType = containerType.GetProperty(propertyName);
                 // Use property type to convert primitive & set value of parsed property
-                propertyType.SetValue(containerValue, ParsePrimitive(prop.Item2, propertyType.PropertyType));
+                object primitive = null;
+                try
+                {
+                    primitive = ParsePrimitive(prop.Item2, propertyType.PropertyType);
+                }
+                catch (Exception ex)
+                {
+                    bindingContext.ModelState.AddModelError(prop.Item1, new ValidationException("Invalid value for " + propertyName));
+                    continue;
+                }
+                propertyType.SetValue(containerValue, primitive);
+
+                // And we can't forget about model binding validations, now can we...
+                bindingContext.ModelState.Add(prop.Item1, new ModelState());
+                bindingContext.ModelState.SetModelValue(prop.Item1, 
+                    new ValueProviderResult(new string[] {prop.Item2}, prop.Item2, CultureInfo.CurrentCulture));
+
+                var vc = new ValidationContext(containerValue, null, null);
+                var validationRslt = new List<ValidationResult>();
+                var validationAttr = propertyType.GetCustomAttributes(false).OfType<ValidationAttribute>();
+                vc.MemberName = propertyName;
+
+                if (!Validator.TryValidateProperty(primitive, vc, validationRslt))
+                {
+                    foreach (var rslt in validationRslt)
+                    {
+                        bindingContext.ModelState.AddModelError(prop.Item1,
+                            new ValidationException(rslt, validationAttr.First(), primitive));
+                    }
+                }
             }
             return answer;
         }
@@ -69,6 +102,6 @@ namespace Subdivisionary.DAL
             var converter = TypeDescriptor.GetConverter(propType);
             return converter.ConvertFrom(primitive);
         }
-
+        
     }
 }

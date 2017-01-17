@@ -1,0 +1,23 @@
+﻿@model Subdivisionary.Models.Collections.CheckInfo
+    
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Amount, new { @class = "col-sm-2 col-form-label" })
+    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control col-sm-10", placeholder = "###" })
+    @Html.ValidationMessageFor(m => m.Amount)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.AccountNumber, new { @class = "col-sm-2 col-form-label" })
+    @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control col-sm-10", placeholder = "###" })
+    @Html.ValidationMessageFor(m => m.AccountNumber)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.CheckNumber, new { @class = "col-sm-2 col-form-label" })
+    @Html.TextBoxFor(m => m.CheckNumber, new { @class = "form-control col-sm-10", placeholder = "###" })
+    @Html.ValidationMessageFor(m => m.CheckNumber)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.RoutingNumber, new { @class = "col-sm-2 col-form-label" })
+    @Html.TextBoxFor(m => m.RoutingNumber, new { @class = "form-control col-sm-10", placeholder = "###" })
+    @Html.ValidationMessageFor(m => m.RoutingNumber)
+</div>

@@ -16,7 +16,7 @@ namespace Subdivisionary.Models.Collections
     /// an array of objects as a Comma-seperated-value list.
     /// </summary>
     [ComplexType]
-    public abstract class CsvList<T> : ICollection<T>
+    public abstract class SerializableList<T> : ICollection<T>
     {
         /// <summary>
         /// DO NOT alter value of the seperator. Lists are forever comma seperated. Character conflicts are
@@ -27,15 +27,21 @@ namespace Subdivisionary.Models.Collections
         /// <summary>
         /// Stores list of objects once loaded from database
         /// </summary>
-        private List<T> data;
+        protected List<T> data;
 
         /// <summary>
         /// Constructor init list as empty
         /// </summary>
-        public CsvList()
+        protected SerializableList()
         {
             data = new List<T>();
         }
+
+        public T this[int key]
+        {
+            get { return data[key]; }
+            set { data[key] = value; }
+        } 
 
         /// <summary>
         /// Populates data field from database
@@ -46,7 +52,7 @@ namespace Subdivisionary.Models.Collections
         {
             get
             {
-                string serializedValue = string.Join(SEPERATOR.ToString(),
+                string serializedValue = string.Join(SEPERATOR[0],
                     data.Select(x => SerializeObjectList(SerializeObject(x))).ToArray());
                 return serializedValue;
             }
@@ -82,14 +88,26 @@ namespace Subdivisionary.Models.Collections
             {
                 string param = serializeParams[i];
                 // Check for conflicts with seperator characters
-                foreach (string seperator in SEPERATOR)
-                    param = param.Replace(seperator, "");
+                if (param != null)
+                    foreach (string seperator in SEPERATOR)
+                        param = param.Replace(seperator, "");
                 builder.Append(param);
                 // Deliniate seperate parameters with the seperator character
                 if (i != serializeParams.Length - 1)
                     builder.Append(SEPERATOR[0]);
             }
             return builder.ToString();
+        }
+
+        
+        public void AddRange(IEnumerable<T> uploads)
+        {
+            this.data.AddRange(uploads);
+        }
+
+        public List<T> ToList()
+        {
+            return this.data;
         }
 
         /// <summary>
@@ -143,6 +161,11 @@ namespace Subdivisionary.Models.Collections
         public bool IsReadOnly
         {
             get { return false; }
+        }
+
+        public T First()
+        {
+            return data.First();
         }
 
         public bool Remove(T item)

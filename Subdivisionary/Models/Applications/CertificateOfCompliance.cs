@@ -8,40 +8,22 @@ using Subdivisionary.Models.ProjectInfos;
 namespace Subdivisionary.Models.Applications
 {
    
-    public class CertificateOfCompliance : AApplication
+    public class CertificateOfCompliance : Application
     {
-        public virtual ApplicationCheckForm ApplicationCheckForm { get; set; }
-        public virtual TitleReportForm TitleReportForm { get; set; }
-        public virtual GrantDeedForm GrantDeedForm { get; set; }
-        public virtual ClosureCalcsForm ClosureCalcsForm { get; set; }
-        public virtual PhotographForm PhotographForm { get; set; }
-
-        private CertificateOfCompliance()
+        protected override void Init()
         {
-            TitleReportForm = new TitleReportForm();
-            ApplicationCheckForm = new ApplicationCheckForm();
-            PhotographForm = new PhotographForm();
-            GrantDeedForm = new GrantDeedForm();
-            ClosureCalcsForm = new ClosureCalcsForm();
+            ProjectInfo = new ExtendedProjectInfo();
         }
 
-        public static CertificateOfCompliance Create()
+        protected override Type[] GetDefaultApplicationForms()
         {
-            return new CertificateOfCompliance()
+            return new Type[]
             {
-                ProjectInfo = new ExtendedProjectInfo()
-            };
-        }
-
-        protected override IForm[] GetForms()
-        {
-            return new IForm[]
-            {
-                ApplicationCheckForm,
-                TitleReportForm,
-                PhotographForm,
-                GrantDeedForm,
-                ClosureCalcsForm
+                typeof(ApplicationCheckForm),
+                typeof(TitleReportForm),
+                typeof(PhotographForm),
+                typeof(GrantDeedForm),
+                typeof(ClosureCalcsForm)
             };
         }
 

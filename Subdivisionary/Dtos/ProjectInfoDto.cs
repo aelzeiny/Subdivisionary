@@ -25,7 +25,7 @@ namespace Subdivisionary.Dtos
         public ContactInfoDto PrimaryContactInfo { get; set; }
 
         public int ApplicationId { get; set; }
-        public AApplication Application { get; set; }
+        public Application Application { get; set; }
 
         public BasicProjectInfoDto()
         {

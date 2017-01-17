@@ -12,7 +12,7 @@ namespace Subdivisionary.Models.Collections
         public string ScanPath { get; set; }
     */
     [ComplexType]
-    public class AdditionalDocsList : CsvList<AdditionalDocumentInfo>
+    public class AdditionalDocsList : SerializableList<AdditionalDocumentInfo>
     {
         protected override int ParamCount => 2;
 

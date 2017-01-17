@@ -7,13 +7,13 @@ namespace Subdivisionary.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class SharedTitleReportColumn : IMigrationMetadata
+    public sealed partial class SeedUsers : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SharedTitleReportColumn));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedUsers));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612252213002_SharedTitleReportColumn"; }
+            get { return "201701050118308_SeedUsers"; }
         }
         
         string IMigrationMetadata.Source

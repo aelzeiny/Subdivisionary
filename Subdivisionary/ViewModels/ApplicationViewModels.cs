@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -8,7 +9,9 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc.Html;
 using Subdivisionary.Dtos;
+using Subdivisionary.Models;
 using Subdivisionary.Models.Applications;
+using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
 
@@ -17,20 +20,28 @@ namespace Subdivisionary.ViewModels
     public class EditApplicationViewModel
     {
         public int EditId { get; set; }
-        public AApplication Application { get; set; }
+        public int ApplicationId { get; set; }
+        public IList<IForm> Forms { get; set; }
+        public string DisplayName { get; set; }
     }
 
     public class EditFormViewModel
     {
         public IForm Form { get; set; }
         public int ApplicationId { get; set; }
+        public int EditId { get; set; }
+
+        public string Editor()
+        {
+            if (Form is BasicProjectInfo)
+                return "_ProjectInfoEditor";
+            return "_" + ObjectContext.GetObjectType(Form.GetType()).Name + "Editor";
+        }
     }
 
-    public class NewApplicationViewModel
+    public class NewApplicationViewModel<T> : NewApplicationViewModel where T : BasicProjectInfo
     {
-        [Display(Name = "Type")]
-        public ApplicationTypeViewModel ApplicationType { get; set; }
-        public BasicProjectInfo ProjectInfo { get; set; }
+        public T ProjectInfo { get; set; }
 
         /// <summary>
         /// ASP.NET Model Binding uses system.reflection to create an object.
@@ -48,36 +59,34 @@ namespace Subdivisionary.ViewModels
         {
             this.ApplicationType = appType;
             var application = CreateApplication();
-            ProjectInfo = application.ProjectInfo;
+            ProjectInfo = (T) application.ProjectInfo;
         }
 
-        public AApplication CreateApplication()
+        public override Application CreateApplication()
         {
             var answer = CreateApplication(ApplicationType);
-
-            // We do this because EF can call default constructors blindly.
-            // So we ensure that this is always the case
             if (ProjectInfo != null)
                 answer.ProjectInfo = ProjectInfo;
-
-            /*foreach (var prop in ProjectInfo.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
-            {
-                var val = prop.GetValue(ProjectInfo);
-                if (prop.GetSetMethod() != null)
-                    prop.SetValue(answer.ProjectInfo, val);
-            }*/
-            // Assign a current project info to the existing project
-            // if it has already been initialized
             return answer;
         }
 
-        internal static AApplication CreateApplication(ApplicationTypeViewModel appType)
+    }
+
+    public abstract class NewApplicationViewModel
+    {
+        [Display(Name = "Type")]
+        public ApplicationTypeViewModel ApplicationType { get; set; }
+
+        public static readonly string PROJECT_INFO_TYPE_KEY = "classType";
+
+        public abstract Application CreateApplication();
+        internal static Application CreateApplication(ApplicationTypeViewModel appType)
         {
-            AApplication answer = null;
+            Application answer = null;
             if (appType == ApplicationTypeViewModel.RecordOfSurvey)
-                answer = RecordOfSurvey.Create();
+                answer = Application.Create<RecordOfSurvey>();
             else if (appType == ApplicationTypeViewModel.CertificateOfCompliance)
-                answer = CertificateOfCompliance.Create();
+                answer = Application.Create<CertificateOfCompliance>();
             /*else if (appType == ApplicationTypeViewModel.CcBypass)
                 answer = new CcBypass(); 
             else if (appType == ApplicationTypeViewModel.LotLineAdjustment)
@@ -92,18 +101,29 @@ namespace Subdivisionary.ViewModels
         }
     }
 
-    public static class ApplicationTypeViewModelExtension
+    /// <summary>
+    /// This class eliminates a magic string "classType" and is used in both a view and
+    /// its related model binder. 
+    /// </summary>
+    public class TypeStorage
     {
-        public static Type GetApplicationType(this ApplicationTypeViewModel appType)
+        public string classType { get; set; }
+
+        public static string GetBinderClassName()
         {
-            return NewApplicationViewModel.CreateApplication(appType).GetType();
+            return nameof(classType);
         }
-        public static Type GetProjectInfoType(this ApplicationTypeViewModel appType)
-        {
-            return NewApplicationViewModel.
-                CreateApplication(appType).
-                ProjectInfo.GetType();
-        }
+    }
+
+    public class FileUploadViewModel
+    {
+        public string LabelMessage { get; set; }
+        public string PartialView { get; set; }
+
+        public int Index { get; set; }
+
+        public FileUploadProperty UploadProperty { get; set; }
+        public FileUploadList UploadList { get; set; }
     }
 
     public enum ApplicationTypeViewModel

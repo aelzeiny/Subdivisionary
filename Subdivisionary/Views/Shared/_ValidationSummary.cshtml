@@ -1,0 +1,31 @@
+﻿@using Microsoft.Ajax.Utilities
+@model ModelStateDictionary
+
+@if (!Html.ViewData.ModelState.IsValid)
+{
+    <div class="panel-group">
+        <div class="validation-summary-errors panel panel-danger" data-valmsg-summary="true">
+
+            <div class="panel-heading" data-toggle="collapse" href="#collapsableErrorPanel">
+                Please correct the following errors:
+            </div>
+            <div id="collapsableErrorPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="padding: 0px;">
+                    @foreach (var modelKeyPair in Model)
+                    {
+                        foreach (var modelError in modelKeyPair.Value.Errors)
+                        {
+                            string msg = modelError.ErrorMessage.IsNullOrWhiteSpace() ? modelError.Exception.Message : modelError.ErrorMessage;
+                            <div class="alert alert-danger" role="alert" style="margin: 0px;">
+                                <a href="#@modelKeyPair.Key.Replace(".", "_")" class="alert-link">@msg</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@* SOURCE:
+ http://www.leniel.net/2013/08/customizing-aspnet-mvc-html-validation-summary-with-bootstrap-3-panel.html#sthash.fsjdMpyT.dpuf
+*@

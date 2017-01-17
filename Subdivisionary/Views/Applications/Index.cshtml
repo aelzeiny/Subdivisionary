@@ -18,7 +18,7 @@ else
         @foreach (var app in Model.Applications)
         {
             var projInfo = app.ProjectInfo;
-            string info = string.Format("{0} - {1}/{2}", projInfo.GetType().Name, projInfo.Block, projInfo.Lot);
+            string info = string.Format("{0} - {1} / {2}", app.DisplayName, projInfo.Block, projInfo.Lot);
             <li>
                 @Html.ActionLink(info, "Details", "Applications", new { id = projInfo.Id.ToString() }, null)
             </li>

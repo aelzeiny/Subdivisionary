@@ -6,21 +6,13 @@ using System.Web;
 
 namespace Subdivisionary.Models.Forms
 {
-    [ComplexType]
-    public class PhotographForm : IForm
+    public class PhotographForm : Form
     {
-        public string DisplayName => "Photographs";
-        public string PropertyName => "PhotographForm";
-
-        [Column("PhotographForm_ScanPath")]
+        public override string DisplayName => "Photographs";
+        
         public string ScanPath { get; set; }
-
-        [Column("PhotographForm_IsAssigned")]
-        public bool IsAssigned { get; set; }
-
         public PhotographForm()
         {
-            IsAssigned = false;
         }
     }
 }

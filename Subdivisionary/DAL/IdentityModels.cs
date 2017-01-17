@@ -37,10 +37,21 @@ namespace Subdivisionary.DAL
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<AApplication> Applications { get; set; }
+        public DbSet<Application> Applications { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<BasicProjectInfo> ProjectInfos { get; set; }
-        //public DbSet<IForm> Forms { get; set; }
+        public DbSet<Form> Forms { get; set; }
+
+        public bool ProxyEnabled {
+            get
+            {
+                return this.Configuration.ProxyCreationEnabled;
+            }
+            set
+            {
+                this.Configuration.ProxyCreationEnabled = value;
+            }
+        }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -62,6 +73,11 @@ namespace Subdivisionary.DAL
                 .HasMany(a => a.Applications)
                 .WithRequired(app => app.Applicant);
 
+            // Map one application to many forms
+            modelBuilder.Entity<Application>()
+                .HasMany(app => app.Forms)
+                .WithRequired(f => f.Application);
+
             // map the two-way relationship between ProjectInfos & Applications where both are required
             modelBuilder.Entity<BasicProjectInfo>()
                 .HasRequired(info => info.Application) // issue requirement
@@ -72,8 +88,6 @@ namespace Subdivisionary.DAL
             modelBuilder.Entity<ApplicationUser>()
                 .HasRequired(user => user.Data)
                 .WithRequiredPrincipal(data => data.User);
-            
-
             
             base.OnModelCreating(modelBuilder);
         }
