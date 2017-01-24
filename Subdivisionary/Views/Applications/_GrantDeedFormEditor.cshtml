@@ -1,4 +1,5 @@
-﻿@using Subdivisionary.ViewModels
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.ViewModels
 @model Subdivisionary.Models.Forms.GrantDeedForm
 
 @{
@@ -6,17 +7,28 @@
     var lists = uploads.Select(x => Model.GetFileUploadList(x.UniqueKey)).ToList();
 }
 
+<div class="form-group">
+    <h3>Grant Deed Files</h3>
+    @Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+    {
+        LabelMessage = "Select Deed for the Subject Parcel",
+        UploadProperty = uploads[0],
+        UploadList = lists[0]
+    })
 
-@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
-{
-    LabelMessage = "Select Deed for the Subject Parcel",
-    UploadProperty = uploads[0],
-    UploadList = lists[0]
-})
+    @Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+    {
+        LabelMessage = "Select Deeds for the Adjoiner Lots",
+        UploadProperty = uploads[1],
+        UploadList = lists[1]
+    })
+</div>
 
-@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
-{
-    LabelMessage = "Select Deeds for the Adjoiner Lots",
-    UploadProperty = uploads[1],
-    UploadList = lists[1]
-})
+<div class="form-group">
+    <h3>Enter Adjoiner Lots</h3>
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<ApnInfo>()
+    {
+        List = Model.ApnList,
+        EmptyDataDefault = Model.GetEmptyItem()
+    })
+</div>

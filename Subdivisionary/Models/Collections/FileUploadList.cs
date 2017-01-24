@@ -13,21 +13,19 @@ namespace Subdivisionary.Models.Collections
     /// FileUploadList&lt;T&gt; where T inherits from the IFileUploadItem interface
     /// </summary>
     [ComplexType]
-    public abstract class FileUploadList : SerializableList<IFileUploadItem>
+    public class FileUploadList : SerializableList<string>
     {
-    }
+        protected override int ParamCount => 1;
 
-    /// <summary>
-    /// File Upload Lists are serializable lists that MUST contain the FilePath property
-    /// </summary>
-    [ComplexType]
-    public abstract class FileUploadList<T> : FileUploadList where T : IFileUploadItem
-    {
-    }
+        protected override string ParseObject(string[] param)
+        {
+            return param[0];
+        }
 
-    public interface IFileUploadItem
-    {
-        string FilePath { get; set; }
+        protected override string[] SerializeObject(string serialize)
+        {
+            return new[] {serialize};
+        }
     }
 
 }

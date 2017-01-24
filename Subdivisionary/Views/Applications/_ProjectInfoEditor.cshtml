@@ -1,20 +1,25 @@
 ﻿@model Subdivisionary.Models.ProjectInfos.BasicProjectInfo
 @using Subdivisionary.Helpers
+@using Subdivisionary.Models.Collections
 @using Subdivisionary.Models.ProjectInfos
+@using Subdivisionary.ViewModels
 
 @if (Model is ExtendedProjectInfo)
 {
-    <h3>Project Information</h3>
     <div class="form-group">
-        @Html.LabelFor(m => (m as ExtendedProjectInfo).NumberOfUnits, new { @class = "col-sm-2 col-form-label" })
-        @Html.TextBoxFor(m => (m as ExtendedProjectInfo).NumberOfUnits, new
-   {
-       @class = "form-control",
-       style = "max-width:100px;text-align:center;",
-       placeholder = "###"
-   })
-        @Html.ValidationMessageFor(m => (m as ExtendedProjectInfo).NumberOfUnits)
+        <h3>Project Information</h3>
+        <div class="form-group" style="max-width: 150px;">
+            @Html.LabelFor(m => (m as ExtendedProjectInfo).NumberOfUnits, new { @class = "control-label" })
+            @Html.TextBoxFor(m => (m as ExtendedProjectInfo).NumberOfUnits, new
+            {
+                @class = "form-control",
+                style = "text-align:center;",
+                placeholder = "###"
+            })
+            @Html.ValidationMessageFor(m => (m as ExtendedProjectInfo).NumberOfUnits)
+        </div>
     </div>
+
 }
 
 <div class="form-group">
@@ -27,19 +32,12 @@
         @Html.PartialFor(m => (m as ExtendedProjectInfo).FirmContactInfo, "_ContactEditor")
     }
 </div>
-
 <div class="form-group">
-    <h3>Project Location</h3>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Block, new { @class = "col-sm-2 col-form-label" })
-        @Html.TextBoxFor(m => m.Block, new { @class = "form-control col-sm-10", placeholder = @Html.DisplayNameFor(m => m.Block) })
-        @Html.ValidationMessageFor(m => m.Block)
-    </div>
+    <h3>Address</h3>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Lot, new { @class = "col-sm-2 col-form-label" })
-        @Html.TextBoxFor(m => m.Lot, new { @class = "form-control col-sm-10", placeholder = @Html.DisplayNameFor(m => m.Lot) })
-        @Html.ValidationMessageFor(m => m.Lot)
-    </div>
-    @Html.PartialFor(m => m.Address, "_AddressEditor")
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<ParcelInfo>()
+    {
+        List = Model.AddressList,
+        EmptyDataDefault = Model.GetEmptyItem()
+    })
 </div>

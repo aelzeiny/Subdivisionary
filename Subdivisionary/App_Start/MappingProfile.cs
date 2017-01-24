@@ -46,7 +46,7 @@ namespace Subdivisionary.App_Start
             Mapper.CreateMap<ContactInfo, ContactInfoDto>();
             Mapper.CreateMap<ContactInfoDto, ContactInfo>();
 
-            Mapper.AssertConfigurationIsValid();
+            // DISABLED UNTIL WE FINALIZE API: Mapper.AssertConfigurationIsValid();
         }
     }
 }

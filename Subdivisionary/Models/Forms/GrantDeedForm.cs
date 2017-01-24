@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
@@ -10,13 +11,14 @@ using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class GrantDeedForm : Form, IUploadableFileForm
+    public class GrantDeedForm : Form, IUploadableFileForm, ICollectionForm
     {
-        public GrantDeedList List { get; set; }
         public override string DisplayName => "Grant Deeds";
 
-        public BasicFileUploadList GrantPiqFile { get; set; }
-        public BasicFileUploadList GrantAdjoinerFiles { get; set; }
+        public FileUploadList GrantPiqFile { get; set; }
+        public FileUploadList GrantAdjoinerFiles { get; set; }
+
+        public ApnList ApnList { get; set; }
 
         private static readonly string GRANT_PIQ_KEY = "grantPIQId";
         private static readonly string GRANT_ADJOINER_KEY = "grantAdjoinerId";
@@ -24,11 +26,12 @@ namespace Subdivisionary.Models.Forms
 
         public GrantDeedForm()
         {
-            GrantPiqFile = new BasicFileUploadList();
-            GrantAdjoinerFiles = new BasicFileUploadList();
-            List = new GrantDeedList();
+            GrantPiqFile = new FileUploadList();
+            GrantAdjoinerFiles = new FileUploadList();
+            ApnList = new ApnList();
         }
 
+        #region IUploadableFileForm Implementation
         public FileUploadProperty[] FileUploadProperties()
         {
             FileUploadProperty[] property = new FileUploadProperty[2]
@@ -37,14 +40,6 @@ namespace Subdivisionary.Models.Forms
                 new FileUploadProperty(GRANT_ADJOINER_KEY, GRANT_DIRECTORY, "Deed Adjoiner", false)
             };
             return property;
-        }
-
-        public BasicFileUploadList[] FileUploadsLists()
-        {
-            return new BasicFileUploadList[]
-            {
-                GrantPiqFile, GrantAdjoinerFiles
-            };
         }
 
         public FileUploadList GetFileUploadList(string key)
@@ -72,14 +67,23 @@ namespace Subdivisionary.Models.Forms
                 GrantAdjoinerFiles.Add(file);
             }
         }
-    }
+        #endregion
 
-    //[ComplexType]
-    public class GrantDeedInfo
-    {
-        public string Block { get; set; }
-        public string Lot { get; set; }
+        #region IListForm Implementation
+        public ICollection GetListCollection()
+        {
+            return ApnList.ToList();
+        }
 
-        public string ScanPath { get; set; }
+        public object GetEmptyItem()
+        {
+            return new ApnInfo();
+        }
+
+        public void ModifyCollection(int index, object newValue)
+        {
+            ApnList.AddUntilIndex(index, newValue as ApnInfo, GetEmptyItem() as ApnInfo);
+        }
+        #endregion
     }
 }

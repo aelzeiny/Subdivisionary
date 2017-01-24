@@ -14,16 +14,40 @@
 }
 else
 {
-    <ul>
-        @foreach (var app in Model.Applications)
-        {
-            var projInfo = app.ProjectInfo;
-            string info = string.Format("{0} - {1} / {2}", app.DisplayName, projInfo.Block, projInfo.Lot);
-            <li>
-                @Html.ActionLink(info, "Details", "Applications", new { id = projInfo.Id.ToString() }, null)
-            </li>
-        }
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped" id="projectsTable">
+            <thead>
+                <tr>
+                    <th>Project Type</th>
+                    <th>APN(s)</th>
+                    <th>Street(s)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var app in Model.Applications)
+                {
+                    var aHref = Url.Action("Details", "Applications", new {id = app.Id});
+                    <tr>
+                        <td><a href="@aHref">@app.DisplayName</a></td>
+                        <td><a href="@aHref">@string.Join(", ", app.ProjectInfo.AddressList.Select(x => x.Block + "/" + x.Lot).ToArray())</a></td>
+                        <td><a href="@aHref">@string.Join(", ", app.ProjectInfo.AddressList.Select(x => x.AddressRangeStart + "-" + x.AddressRangeEnd + " " + x.AddressStreet).ToArray())</a></td>
+                        <td style="text-align: center">
+                            @if (app.IsSubmitted)
+                            {
+                                <i class="fa fa-check"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times"></i>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 <a class="btn btn-default js-create" role="button">Create New</a>
 
@@ -45,7 +69,9 @@ else
 @section scripts{
     <script type="text/javascript">
         $(document)
-            .ready(function() {
+            .ready(function () {
+                $('#projectsTable').DataTable();
+                
                 $('.js-create')
                     .on("click",
                         function() {

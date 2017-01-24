@@ -1,1 +1,46 @@
-﻿<h1>Title Report</h1>
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.TitleReportForm
+    
+
+@{
+    var uploads = Model.FileUploadProperties();
+    var lists = uploads.Select(x => Model.GetFileUploadList(x.UniqueKey)).ToList();
+}
+
+<div class="form-group">
+    <h3>Title Company Information</h3>
+    <div class="form-group col-xs-12 col-md-4">
+        @Html.LabelFor(m => m.TitleCompany, new { @class = "control-label" })
+        @Html.EnumDropDownListFor(m => m.TitleCompany, "[Select Title Company]", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TitleCompany)
+    </div>
+    <div class="form-group col-xs-12 col-md-4">
+        @Html.LabelFor(m => m.OtherTitleCompany, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.OtherTitleCompany, new { @class = "form-control", placeholder = "" })
+        @Html.ValidationMessageFor(m => m.OtherTitleCompany)
+    </div>
+    <div class="form-group col-xs-12 col-md-4">
+        @Html.LabelFor(m => m.OrderNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.OrderNumber, new { @class = "form-control", placeholder = "Order or Escrow Number on PTR" })
+        @Html.ValidationMessageFor(m => m.OrderNumber)
+    </div>
+
+
+    @Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+    {
+        LabelMessage = "Select Deed for the Subject Parcel",
+        UploadProperty = uploads[0],
+        UploadList = lists[0]
+    })
+</div>
+
+    <div class="form-group">
+        <h3>Title Officer Contact Information</h3>
+
+        @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<PtrContactInfo>()
+{
+    List = Model.PtrContactList,
+    EmptyDataDefault = Model.GetEmptyItem()
+})
+    </div>

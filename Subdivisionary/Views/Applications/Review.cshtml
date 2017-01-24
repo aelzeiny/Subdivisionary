@@ -1,0 +1,39 @@
+﻿@using System.Web.Mvc.Html
+@using Subdivisionary.Models.Applications
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Applications.Application
+
+@{
+    ViewBag.Title = "Review Application";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Review " + Model.DisplayName + " (ID #" +Model.Id + ")" ;
+}
+
+<h2>Application ID: <span style="font-weight: 100; font-size: 24px;">@Model.Id</span></h2>
+<h2>Address(es)</h2> <h3>@Model.ProjectInfo.ToString()</h3>
+
+<div id="reviewDiv">
+    @foreach (IForm form in Model.GetOrderedForms())
+    {
+        <div class="form-group" style="border-bottom: 1px solid; border-bottom-color: darkblue">
+            <h2>@form.DisplayName</h2>
+
+            @Html.Partial(EditFormViewModel.GetPartialViewEditor(form), form)
+        </div>
+    }
+</div>
+
+@section scripts
+{
+    <script>
+        $(document)
+            .ready(function () {
+                $('.file-loading').remove();
+                $('.add-entry').remove();
+                $("#reviewDiv :input").prop("disabled", true);
+            });
+    </script>
+}
+
+

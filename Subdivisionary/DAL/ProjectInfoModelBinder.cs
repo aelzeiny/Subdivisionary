@@ -8,19 +8,21 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper.Internal;
 using Newtonsoft.Json.Linq;
-using Subdivisionary.Models.ProjectInfos;
+using Subdivisionary.Models.Forms;
 using Subdivisionary.ViewModels;
 
 namespace Subdivisionary.DAL
 {
-    public class ProjectInfoModelBinder : CustomModelBinder
+    public class ProjectInfoModelBinder : CustomIFormModelBinder
     {
+        public static readonly string TYPE_KEY = "projectInfoType";
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            Type desiredType = Type.GetType(controllerContext.HttpContext.Request.Params[TypeStorage.GetBinderClassName()]);
-            desiredType = typeof(NewApplicationViewModel<>).MakeGenericType(new Type[] { desiredType });
+            Type desiredType = Type.GetType(controllerContext.HttpContext.Request.Params[TYPE_KEY]);
+            desiredType = typeof(NewApplicationViewModel<>).MakeGenericType(desiredType);
             bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, desiredType);
             var answer = base.BindModel(controllerContext, bindingContext);
+            SyncFileForm(controllerContext, bindingContext, ((NewApplicationViewModel)answer).GetListForm());
             return answer;
         }
     }

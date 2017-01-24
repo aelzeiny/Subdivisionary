@@ -15,15 +15,15 @@ namespace Subdivisionary.Models.Applications
             ProjectInfo = new ExtendedProjectInfo();
         }
 
-        protected override Type[] GetDefaultApplicationForms()
+        protected override Form[] GetDefaultApplicationForms()
         {
-            return new Type[]
+            return new Form[]
             {
-                typeof(ApplicationCheckForm),
-                typeof(TitleReportForm),
-                typeof(PhotographForm),
-                typeof(GrantDeedForm),
-                typeof(ClosureCalcsForm)
+                new ApplicationCheckForm(),
+                new TitleReportForm(),
+                new PhotographForm(),
+                new GrantDeedForm(),
+                new ClosureCalcsForm()
             };
         }
 

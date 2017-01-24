@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using AutoMapper.Internal
+@using Subdivisionary.DAL
 @using Subdivisionary.Helpers
 @using Subdivisionary.Models
 @using Subdivisionary.Models.Applications
@@ -29,7 +30,7 @@
                     liClass = "active";
                     activeForm = form;
                 }
-                var icon = form.IsAssigned ? "fa fa-check" : "fa fa-times";
+                var icon = form.IsAssigned ? "fa fa-check" : (form.IsRequired ? "fa fa-times" : "fa fa-minus");
                 <li role="presentation" class="@liClass">
                     <a href="@Url.Action( "Details", "Applications", new {id = Model.ApplicationId, editId = i}, null)" class="list-group-item">
                         @form.DisplayName
@@ -39,6 +40,14 @@
                     </a>
                 </li>
             }
+            <li role="presentation" class="liClass">
+                <a href="@Url.Action( "Review", "Applications", new {id = Model.ApplicationId})" class="list-group-item disabled">
+                    Review Application
+                    <div class="badge disabled">
+                        <i class="fa fa-share" aria-hidden="true"></i>
+                    </div>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="partialbar col-xs-12 col-md-9">
@@ -55,14 +64,19 @@
     </div>
 </div>
 
-@if (activeForm is IUploadableFileForm)
-{
-    @section Scripts {
-        <script type="text/javascript">
-            $(document)
-                .ready(function() {
-                    @Html.RenderUploadableFileJavascript((IUploadableFileForm)activeForm, Server)
-                });
-        </script>
+
+@section Scripts {
+    @if (activeForm is IUploadableFileForm)
+    {
+            <script type="text/javascript">
+                $(document)
+                    .ready(function() {
+                        @Html.RenderUploadableFileJavascript((IUploadableFileForm)activeForm, Server)
+                    });
+            </script>
+    }
+    @if (activeForm is ICollectionForm)
+    {
+        @Html.Partial("CollectionEditors/_CollectionFormJavascript", (ICollectionForm)activeForm)
     }
 }

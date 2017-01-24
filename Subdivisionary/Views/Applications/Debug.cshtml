@@ -1,0 +1,41 @@
+﻿@using Subdivisionary.Models.Collections
+
+@{
+    ViewBag.Title = "Debug";
+}
+
+<div id="uploadDataEntries">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title pull-left">
+                Check Information
+            </h3>
+            @*Remove Button Goes here*@
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            @Html.Partial("CollectionEditors//_CheckListEditor", new CheckInfo())
+        </div>
+    </div>
+</div>
+<button class="btn btn-primary" id="addUploadData"><i class="fa fa-plus" aria-hidden="true"></i> Add Additional Entry</button>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#addUploadData").click(function () {
+            console.log("button clicks");
+            @{
+                string toadd = HttpUtility.JavaScriptStringEncode(@Html.Partial("CollectionEditors//_CheckListEditor", new CheckInfo()).ToString());
+            }
+            $("#uploadDataEntries").append("<div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title pull-left'>Check Information</h3><button class='btn btn-danger pull-right j-removeBtn'><i class='fa fa-close'></i></button><div class='clearfix'></div></div><div class='panel-body'>@Html.Raw(toadd)</div></div>");
+        });
+        $("#uploadDataEntries")
+            .on('click', ".j-removeBtn", function() {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this item?", function() {
+                    button.parent("div").parent("div").remove();
+                });
+            });
+    </script>
+}

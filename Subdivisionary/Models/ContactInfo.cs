@@ -29,7 +29,7 @@ namespace Subdivisionary.Models
         public string AddressLine1 { get; set; }
 
         [StringLength(255)]
-        [Display(Name = "Line 2")]
+        [Display(Name = "Address Line 2")]
         public string AddressLine2 { get; set; }
 
         [Required]

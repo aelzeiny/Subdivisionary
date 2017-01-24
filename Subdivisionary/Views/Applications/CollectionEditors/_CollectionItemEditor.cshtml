@@ -1,0 +1,17 @@
+﻿@using Subdivisionary.DAL
+@model Subdivisionary.ViewModels.ListItemEditorViewModel
+
+<div class="panel panel-default list-item-editor">
+    <div class="panel-heading">
+        @*At least one entry is required, so no remove button on first entry*@
+        @if (Model.AddRemoveButton)
+        {
+            <button class="btn btn-primary pull-right j-removeBtn" type="button"><i class="fa fa-trash"></i></button>
+        }
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+        @Html.Partial(Model.GetPartialViewEditor(), Model.Data)
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Collections.PtrContactInfo
+    
+
+<div class="form-group col-xs-12 col-md-5">
+    @Html.LabelFor(m => m.ContactType, new { @class = "control-label" })
+    @Html.EnumDropDownListFor(m => m.ContactType, "[Select Officer Type]", new {@class = "form-control" })
+    @Html.ValidationMessageFor(m => m.ContactType)
+</div>
+<div class="form-group col-xs-12 col-md-7">
+    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "joe@something.com" })
+    @Html.ValidationMessageFor(m => m.Email)
+</div>
+

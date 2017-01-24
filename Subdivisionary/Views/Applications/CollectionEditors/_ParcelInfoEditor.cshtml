@@ -1,0 +1,37 @@
+﻿@model Subdivisionary.Models.Collections.ParcelInfo
+
+<div class="form-surround">
+    <label class="form-group form-surround col-xs-1">(</label>
+    <div class="form-group col-xs-4">
+        @Html.LabelFor(m => m.Block, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Block, new { @class = "form-control", placeholder = "####" })
+        @Html.ValidationMessageFor(m => m.Block)
+    </div>
+    <label class="form-group form-surround col-xs-2" style="margin-top: -20px">/</label>
+    <div class="form-group col-xs-4">
+        @Html.LabelFor(m => m.Lot, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Lot, new { @class = "form-control", placeholder = "###" })
+        @Html.ValidationMessageFor(m => m.Lot)
+    </div>
+    <label class="form-group form-surround col-xs-1">)</label>
+</div>
+
+<div class="form-surround">
+    <div class="form-group col-xs-5 col-sm-2">
+        @Html.LabelFor(m => m.AddressRangeStart, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.AddressRangeStart, new { @class = "form-control", placeholder = "###" })
+        @Html.ValidationMessageFor(m => m.AddressRangeStart)
+    </div>
+    <label class="form-group form-surround col-xs-1" style="margin-top: -25px;">-</label>
+    <div class="form-group col-xs-6 col-sm-2">
+        @Html.LabelFor(m => m.AddressRangeEnd, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.AddressRangeEnd, new { @class = "form-control", placeholder = "###" })
+        @Html.ValidationMessageFor(m => m.AddressRangeEnd)
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-7">
+        @Html.LabelFor(m => m.AddressStreet, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.AddressStreet, new { @class = "form-control", placeholder = "###" })
+        @Html.ValidationMessageFor(m => m.AddressStreet)
+    </div>
+</div>

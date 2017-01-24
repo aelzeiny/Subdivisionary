@@ -18,10 +18,7 @@ namespace Subdivisionary.Dtos
         public int Id { get; internal set; }
 
         public bool IsAssigned { get; set; }
-
-        public string Block { get; set; }
-        public string Lot { get; set; }
-        public AddressDto Address { get; set; }
+        
         public ContactInfoDto PrimaryContactInfo { get; set; }
 
         public int ApplicationId { get; set; }
@@ -29,7 +26,6 @@ namespace Subdivisionary.Dtos
 
         public BasicProjectInfoDto()
         {
-            this.Address = new AddressDto();
             this.PrimaryContactInfo = new ContactInfoDto();
         }
     }

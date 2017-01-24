@@ -1,4 +1,5 @@
 ﻿@using System.Data.Entity.Core.Objects
+@using Subdivisionary.DAL
 @using Subdivisionary.Helpers
 @using Subdivisionary.ViewModels
 @model Subdivisionary.ViewModels.EditFormViewModel
@@ -7,9 +8,9 @@
 @Html.Partial("_ValidationSummary", ViewData.ModelState)
 @using (Html.BeginForm("Edit", "Applications",
     new {applicationId = Model.ApplicationId, editId = Model.EditId},
-    FormMethod.Post, new { method = "post", id="formEditor", runat = "server", enctype = "multipart/form-data" }))
+    FormMethod.Post, new { method = "post", id="formGetPartialViewEditor", runat = "server", enctype = "multipart/form-data" }))
 {
-    @Html.Hidden(TypeStorage.GetBinderClassName(), ObjectContext.GetObjectType(Model.Form.GetType()).FullName)
-    @Html.Partial(Model.Editor(), Model.Form)
+    @Html.Hidden(FormModelBinder.TYPE_KEY, ObjectContext.GetObjectType(Model.Form.GetType()).FullName)
+    @Html.Partial(Model.GetPartialViewEditor(), Model.Form)
     <button class="btn btn-info" type="submit" style="width: 100%;">Save</button>
 }

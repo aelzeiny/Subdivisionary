@@ -24,17 +24,9 @@ namespace Subdivisionary.Models.Forms
 
         int ApplicationId { get; set; }
         Application Application { get; set; }
+        bool IsRequired { get; }
 
         void CopyValues(IForm other);
-    }
-
-    public interface IUploadableFileForm
-    {
-        FileUploadProperty[] FileUploadProperties();
-
-        FileUploadList GetFileUploadList(string key);
-
-        void SyncFile(string key, string file);
     }
 
     public abstract class Form : IForm
@@ -46,10 +38,12 @@ namespace Subdivisionary.Models.Forms
 
         public abstract string DisplayName { get; }
         public bool IsAssigned { get; set; }
+        public bool IsRequired { get; set; }
 
         protected Form()
         {
             this.IsAssigned = false;
+            this.IsRequired = true;
         }
 
         public void CopyValues(IForm other)
@@ -64,7 +58,7 @@ namespace Subdivisionary.Models.Forms
         public virtual bool CanCopyProperty(PropertyInfo prop)
         {
             return prop.CanWrite && prop.Name != nameof(Id) && prop.Name != nameof(ApplicationId) &&
-                   prop.Name != nameof(Application) && prop.GetMemberType().Equals(typeof(BasicFileUploadList));
+                   prop.Name != nameof(Application) && prop.GetMemberType() != (typeof(FileUploadList));
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿@model Subdivisionary.Models.Collections.ApnInfo
+
+
+<div class="form-surround">
+    <label class="form-group form-surround col-xs-1">(</label>
+    <div class="form-group col-xs-4">
+        @Html.LabelFor(m => m.Block, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Block, new { @class = "form-control", placeholder = "####" })
+        @Html.ValidationMessageFor(m => m.Block)
+    </div>
+    <label class="form-group form-surround col-xs-2" style="margin-top: -20px">/</label>
+    <div class="form-group col-xs-4">
+        @Html.LabelFor(m => m.Lot, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Lot, new { @class = "form-control", placeholder = "###" })
+        @Html.ValidationMessageFor(m => m.Lot)
+    </div>
+    <label class="form-group form-surround col-xs-1">)</label>
+</div>
+

@@ -1,0 +1,41 @@
+﻿@model Subdivisionary.Models.Forms.ICollectionForm
+@using Subdivisionary.DAL
+@using Subdivisionary.ViewModels
+
+
+<script type="text/javascript">
+    $("#addEntryData").click(function () {
+        @{
+            var vm = new ListItemEditorViewModel()
+            {
+                AddRemoveButton = true,
+                Data = Model.GetEmptyItem()
+            };
+            var oldHtmlPrefix = ViewData.TemplateInfo.HtmlFieldPrefix;
+            ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY;
+            string container = HttpUtility.JavaScriptStringEncode(@Html.Partial("CollectionEditors//_CollectionItemEditor", vm).ToString());
+            ViewData.TemplateInfo.HtmlFieldPrefix = oldHtmlPrefix;
+        }
+        var thing = "@Html.Raw(container)";
+        var length = $('.list-item-editor').length;
+        thing = replaceAll(thing, '@CustomIFormModelBinder.ENTRY_CLASS_KEY', '@CustomIFormModelBinder.ENTRY_CLASS_KEY' + length);
+        thing = replaceAll(thing, '@CustomIFormModelBinder.ENTRY_ID_KEY', '@CustomIFormModelBinder.ENTRY_ID_KEY' + length);
+        $("#uploadDataEntries").append(thing);
+    }
+    );
+    $("#uploadDataEntries")
+        .on('click', ".j-removeBtn", function () {
+            var button = $(this);
+            bootbox.confirm("Are you sure you want to delete this item?", function () {
+                button.parent("div").parent("div").remove();
+            });
+        });
+
+    function replaceAll(str, find, replace) {
+        return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+    }
+
+    function escapeRegExp(str) {
+        return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    }
+</script>

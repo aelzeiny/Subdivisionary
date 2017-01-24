@@ -99,15 +99,12 @@ namespace Subdivisionary.Models.Collections
             return builder.ToString();
         }
 
-        
-        public void AddRange(IEnumerable<T> uploads)
+        public void AddUntilIndex(int index, T item, T blankItem)
         {
-            this.data.AddRange(uploads);
-        }
-
-        public List<T> ToList()
-        {
-            return this.data;
+            if (index >= data.Count)
+                for (int i = data.Count - 1; i != index; i++)
+                    data.Add(blankItem);
+            data[index] = item;
         }
 
         /// <summary>
@@ -151,6 +148,16 @@ namespace Subdivisionary.Models.Collections
         public void CopyTo(T[] array, int arrayIndex)
         {
             data.CopyTo(array, arrayIndex);
+        }
+        
+        public void AddRange(IEnumerable<T> uploads)
+        {
+            this.data.AddRange(uploads);
+        }
+
+        public List<T> ToList()
+        {
+            return this.data;
         }
 
         public int Count

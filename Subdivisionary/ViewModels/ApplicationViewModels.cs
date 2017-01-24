@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Core.Objects;
@@ -31,11 +32,16 @@ namespace Subdivisionary.ViewModels
         public int ApplicationId { get; set; }
         public int EditId { get; set; }
 
-        public string Editor()
+        public string GetPartialViewEditor()
         {
-            if (Form is BasicProjectInfo)
+            return GetPartialViewEditor(Form);
+        }
+
+        public static string GetPartialViewEditor(IForm form)
+        {
+            if (form is BasicProjectInfo)
                 return "_ProjectInfoEditor";
-            return "_" + ObjectContext.GetObjectType(Form.GetType()).Name + "Editor";
+            return "_" + ObjectContext.GetObjectType(form.GetType()).Name + "Editor";
         }
     }
 
@@ -62,6 +68,11 @@ namespace Subdivisionary.ViewModels
             ProjectInfo = (T) application.ProjectInfo;
         }
 
+        public override ICollectionForm GetListForm()
+        {
+            return ProjectInfo;
+        }
+
         public override Application CreateApplication()
         {
             var answer = CreateApplication(ApplicationType);
@@ -69,7 +80,6 @@ namespace Subdivisionary.ViewModels
                 answer.ProjectInfo = ProjectInfo;
             return answer;
         }
-
     }
 
     public abstract class NewApplicationViewModel
@@ -79,6 +89,8 @@ namespace Subdivisionary.ViewModels
 
         public static readonly string PROJECT_INFO_TYPE_KEY = "classType";
 
+
+        public abstract ICollectionForm GetListForm();
         public abstract Application CreateApplication();
         internal static Application CreateApplication(ApplicationTypeViewModel appType)
         {
@@ -101,29 +113,49 @@ namespace Subdivisionary.ViewModels
         }
     }
 
-    /// <summary>
-    /// This class eliminates a magic string "classType" and is used in both a view and
-    /// its related model binder. 
-    /// </summary>
-    public class TypeStorage
-    {
-        public string classType { get; set; }
-
-        public static string GetBinderClassName()
-        {
-            return nameof(classType);
-        }
-    }
-
     public class FileUploadViewModel
     {
         public string LabelMessage { get; set; }
-        public string PartialView { get; set; }
-
-        public int Index { get; set; }
 
         public FileUploadProperty UploadProperty { get; set; }
         public FileUploadList UploadList { get; set; }
+    }
+
+
+    public class ListItemEditorViewModel
+    {
+        public object Data { get; set; }
+
+        public bool AddRemoveButton { get; set; } = false;
+
+        public string GetPartialViewEditor()
+        {
+            return "CollectionEditors/_" + Data.GetType().Name + "Editor";
+        }
+    }
+
+    public abstract class ListEditorViewModel
+    {
+        public bool AddRemoveButton { get; set; } = false;
+        public object EmptyDataDefault { get; set; }
+
+        public abstract int Count();
+        public abstract IEnumerable GetList();
+    }
+
+    public class ListEditorViewModel<T> : ListEditorViewModel
+    {
+        public SerializableList<T> List { get; set; }
+
+        public override IEnumerable GetList()
+        {
+            return List;
+        }
+
+        public override int Count()
+        {
+            return List.Count;
+        }
     }
 
     public enum ApplicationTypeViewModel

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Collections;
+using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.ProjectInfos;
 
 namespace Subdivisionary.Models.Applications
@@ -47,7 +48,7 @@ namespace Subdivisionary.Models.Applications
         public abstract string DisplayName { get; }
         public string DirectoryName => this.Id + "_" + this.DisplayName;
 
-        protected abstract Type[] GetDefaultApplicationForms();
+        protected abstract Form[] GetDefaultApplicationForms();
 
         protected abstract void Init();
 
@@ -66,7 +67,7 @@ namespace Subdivisionary.Models.Applications
             var forms = application.GetDefaultApplicationForms();
             application.Forms = new List<Form>(forms.Length);
             foreach (var form in forms)
-                application.Forms.Add((Form)(Activator.CreateInstance(form)));
+                application.Forms.Add(form);
             return application;
         }
 
@@ -80,8 +81,7 @@ namespace Subdivisionary.Models.Applications
 
         public override string ToString()
         {
-            return string.Format("{0}_{1}({2}-{3})", this.Id, this.DisplayName, this.ProjectInfo.Block,
-                this.ProjectInfo.Lot);
+            return string.Format("{0}_{1} {2}", this.Id, this.DisplayName, ProjectInfo.ToString());
         }
     }
 }

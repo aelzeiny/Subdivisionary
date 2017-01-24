@@ -51,6 +51,7 @@ namespace Subdivisionary.Controllers
             return View(applicant);
         }
 
+        #region Create & New Applications
         // GET: Applications
         public ViewResult New(int id)
         {
@@ -61,20 +62,41 @@ namespace Subdivisionary.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-        public ActionResult Create([ModelBinder(typeof(DebugModelBinder))] NewApplicationViewModel newApp)
+        public ActionResult Create([ModelBinder(typeof(ProjectInfoModelBinder))] NewApplicationViewModel newApp)
         {
             //ReverifyModel();
             var application = newApp.CreateApplication();
             var user = GetCurrentApplicant();
             user.Applications.Add(application);
             if (!ModelState.IsValid)
-                return View("New", newApp);
+                return View("New", new NewApplicationViewModel<BasicProjectInfo>(newApp.ApplicationType));
             _context.SaveChanges();
             application.ProjectInfoId = application.ProjectInfo.Id;
             application.ProjectInfo.ApplicationId = application.Id;
             application.ProjectInfo.IsAssigned = true;
             _context.SaveChanges();
             return RedirectToAction("Details", "Applications", new { id = application.Id});
+        }
+        #endregion
+
+        #region Details & Edit Applications
+        public ActionResult Details(int id, int? editId)
+        {
+            var applicant = GetCurrentApplicant();
+            var application = (applicant.Applications.FirstOrDefault(x => x.Id == id));
+
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            EditApplicationViewModel toEdit = new EditApplicationViewModel()
+            {
+                Forms =  application.GetOrderedForms(),
+                EditId = editId.HasValue ? editId.Value : 0,
+                DisplayName =  application.DisplayName,
+                ApplicationId = application.Id
+            };
+            
+            return View(toEdit);
         }
         
         [System.Web.Mvc.HttpPost]
@@ -122,39 +144,30 @@ namespace Subdivisionary.Controllers
                     FileUploadProperty uploadProperty = fileUploadProperty.FirstOrDefault(x => x.UniqueKey == key);
                     if (uploadProperty.UniqueKey != key) // if no key found
                         continue; // continue to next file
-                    
+
                     // Now upload all files
                     string directory = Path.Combine(Server.GetApplicationDirectory(application), uploadProperty.FolderPath);
                     DirectoryHelper.EnsureDirectoryExists(directory);
                     FileUploadList savedBasicFiles = fileForm.GetFileUploadList(uploadProperty.UniqueKey);
                     if (uploadProperty.IsSingleUpload && savedBasicFiles.Count > 0)
-                        new FileInfo(Server.MapPath(savedBasicFiles.First().FilePath)).Delete();
+                        new FileInfo(Server.MapPath(savedBasicFiles.First())).Delete();
                     string fileName = DirectoryHelper.FindUntakenFilename(directory, uploadProperty.StandardName, Path.GetExtension(file.FileName));
                     file.SaveAs(fileName);
                     fileForm.SyncFile(uploadProperty.UniqueKey, Server.UnmapPath(fileName));
                 }
             }
             _context.SaveChanges();
-            return RedirectToAction("Details", "Applications", new { id = application.Id, editId = editId});
+            return RedirectToAction("Details", "Applications", new { id = application.Id, editId = editId });
         }
-        
-        public ActionResult Details(int id, int? editId)
+        #endregion
+
+        public ActionResult Review(int id)
         {
             var applicant = GetCurrentApplicant();
             var application = (applicant.Applications.FirstOrDefault(x => x.Id == id));
-
             if (application == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
-
-            EditApplicationViewModel toEdit = new EditApplicationViewModel()
-            {
-                Forms =  application.GetOrderedForms(),
-                EditId = editId.HasValue ? editId.Value : 0,
-                DisplayName =  application.DisplayName,
-                ApplicationId = application.Id
-            };
-            
-            return View(toEdit);
+            return View(application);
         }
 
         public FileResult Download(string file)
@@ -165,8 +178,9 @@ namespace Subdivisionary.Controllers
             // for security purposes we have to ensure that the download link is coming from the right applicant
             if (GetCurrentApplicant().Applications.All(x => x.Id.ToString() != appId))
                 throw new HttpResponseException(HttpStatusCode.BadGateway);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath(file));
-            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, System.IO.Path.GetFileName(file));
+            // Read all fileBytes to memory & initiate download
+            return File(System.IO.File.ReadAllBytes(Server.MapPath(file)),
+                System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(file));
         }
 
         public Applicant GetCurrentApplicant()

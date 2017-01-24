@@ -15,13 +15,13 @@ namespace Subdivisionary.Models.Applications
             ProjectInfo = new BasicProjectInfo();
         }
 
-        protected override Type[] GetDefaultApplicationForms()
+        protected override Form[] GetDefaultApplicationForms()
         {
-            return new Type[]
+            return new Form[]
             {
-                typeof(ApplicationCheckForm),
-                typeof(TitleReportForm),
-                typeof(ClosureCalcsForm)
+                new ApplicationCheckForm(), 
+                new TitleReportForm() {IsRequired = false}, 
+                new ClosureCalcsForm()
             };
         }
 

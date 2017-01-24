@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,9 +11,11 @@ using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class ApplicationCheckForm : Form, IUploadableFileForm
+    public class ApplicationCheckForm : Form, IUploadableFileForm, ICollectionForm
     {
-        public CheckList Checks { get; set; }
+        public FileUploadList ChecksUploadList { get; set; }
+
+        public CheckList ChecksList { get; set; }
 
         public override string DisplayName => "Application Fees";
 
@@ -22,7 +25,8 @@ namespace Subdivisionary.Models.Forms
 
         public ApplicationCheckForm()
         {
-            Checks = new CheckList();
+            ChecksUploadList = new FileUploadList();
+            ChecksList = new CheckList();
         }
 
         public FileUploadProperty[] FileUploadProperties()
@@ -34,22 +38,29 @@ namespace Subdivisionary.Models.Forms
             return property;
         }
 
-        public FileUploadList[] FileUploadsLists()
-        {
-            return new FileUploadList[]
-            {
-                Checks
-            };
-        }
-
         public FileUploadList GetFileUploadList(string key)
         {
-            return Checks;
+            return (key == CHECK_KEY) ? ChecksUploadList : null;
         }
 
         public void SyncFile(string key, string file)
         {
-            this.Checks.Add(new CheckInfo() {FilePath = file});
+            this.ChecksUploadList.Add(file);
+        }
+
+        public ICollection GetListCollection()
+        {
+            return ChecksList.ToList();
+        }
+
+        public object GetEmptyItem()
+        {
+            return new CheckInfo();
+        }
+
+        public void ModifyCollection(int index, object newValue)
+        {
+            ChecksList.AddUntilIndex(index, newValue as CheckInfo, GetEmptyItem() as CheckInfo);
         }
     }
 }
