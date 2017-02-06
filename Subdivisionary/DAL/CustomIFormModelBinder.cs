@@ -2,47 +2,32 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Subdivisionary.Models.Forms;
-using Subdivisionary.Models.ProjectInfos;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Subdivisionary.DAL
 {
-    public abstract class CustomIFormModelBinder : DefaultModelBinder
+    public class CustomIFormModelBinder : DefaultModelBinder
     {
         public static readonly string ENTRY_CLASS_KEY = "Form.Entries[]";
-        public static readonly string ENTRY_ID_KEY = "Form_Entries__";
-        /// <summary>
-        /// Adds IListForm Data to form
-        /// </summary>
-        protected void SyncFileForm(ControllerContext controllerContext, ModelBindingContext bindingContext, ICollectionForm answer)
-        {
-            for (int i = 0; true; i++)
-            {
-                string listPrefix = ENTRY_CLASS_KEY + i;
-                var tuples = GetPropertiesTuples(controllerContext.HttpContext.Request.Form, listPrefix);
-                if (tuples.Count == 0)
-                    break;
-                var info = ParseObject(bindingContext, listPrefix, tuples, answer.GetEmptyItem().GetType());
-                answer.ModifyCollection(i, info);
-            }
-        }
-        
+        public static readonly string ENTRY_ID_KEY = ENTRY_CLASS_KEY.Replace('.','_').Replace('[','_').Replace(']','_');
+
         /// <summary>
         /// Get All property strings related to the object
         /// </summary>
-        protected List<Tuple<string, string>> GetPropertiesTuples(NameValueCollection form, string propName)
+        protected NameValueCollection FilterPropertyCollection(NameValueCollection form, string propName)
         {
             if (!propName.EndsWith("."))
                 propName += '.';
-            List<Tuple<string, string>> propertiesList = new List<Tuple<string, string>>();
-            foreach (var key in form.AllKeys)
+            NameValueCollection propertiesList = new NameValueCollection();
+            var keys = form.AllKeys;
+            foreach (var key in keys)
                 if (key.StartsWith(propName))
-                    propertiesList.Add(new Tuple<string, string>(key, form[key]));
+                    propertiesList.Add(key, form[key]);
             return propertiesList;
         }
 
@@ -54,14 +39,15 @@ namespace Subdivisionary.DAL
         /// <param name="attributeList">List of properties defined in (NAME, VALUE) format</param>
         /// <param name="infoType">Type of object that is ready to parse</param>
         /// <returns>Parsed Object</returns>
-        protected object ParseObject(ModelBindingContext bindingContext, string propName, List<Tuple<string, string>> attributeList, Type infoType)
+        protected object ParseObject(ModelBindingContext bindingContext, string propName, NameValueCollection attributeList, Type infoType)
         {
             // Create instance of object based on type
             var answer = Activator.CreateInstance(infoType);
             // Foreach property in all the attributes
-            foreach (var prop in attributeList)
+            foreach (var prop in attributeList.AllKeys)
             {
-                string propertyName = prop.Item1.Substring(propName.Length+1);
+                var val = attributeList.Get(prop);
+                string propertyName = prop.Substring(propName.Length + 1);
                 // parse properties based on '.' delmiter. Example "ContactInfo.City"
                 string[] depth = propertyName.Split('.');
                 Type containerType = infoType;
@@ -82,32 +68,30 @@ namespace Subdivisionary.DAL
                 object primitive = null;
                 try
                 {
-                    primitive = ParsePrimitive(prop.Item2, propertyType.PropertyType);
+                    primitive = ParsePrimitive(val, propertyType.PropertyType);
                 }
                 catch (Exception ex)
                 {
-                    bindingContext.ModelState.AddModelError(prop.Item1, new ValidationException("Invalid value for " + propertyName));
+                    bindingContext.ModelState.AddModelError(prop, new ValidationException("Invalid value for " + propertyName));
                     continue;
                 }
                 propertyType.SetValue(containerValue, primitive);
 
                 // And we can't forget about model binding validations, now can we...
-                bindingContext.ModelState.Add(prop.Item1, new ModelState());
-                bindingContext.ModelState.SetModelValue(prop.Item1, 
-                    new ValueProviderResult(new string[] {prop.Item2}, prop.Item2, CultureInfo.CurrentCulture));
+                bindingContext.ModelState.Add(prop, new ModelState());
+                bindingContext.ModelState.SetModelValue(prop,
+                    new ValueProviderResult(new string[] { val }, val, CultureInfo.CurrentCulture));
 
                 var vc = new ValidationContext(containerValue, null, null);
-                var validationRslt = new List<ValidationResult>();
-                var validationAttr = propertyType.GetCustomAttributes(false).OfType<ValidationAttribute>();
-                vc.MemberName = propertyName;
-
-                if (!Validator.TryValidateProperty(primitive, vc, validationRslt))
+                var nameAttrs = propertyType.GetCustomAttributes(typeof(DisplayNameAttribute), false).Cast<DisplayNameAttribute>();
+                vc.MemberName = nameAttrs.Any() ? nameAttrs.Single().DisplayName : propertyName;
+                try
                 {
-                    foreach (var rslt in validationRslt)
-                    {
-                        bindingContext.ModelState.AddModelError(prop.Item1,
-                            new ValidationException(rslt, validationAttr.First(), primitive));
-                    }
+                    Validator.ValidateProperty(primitive, vc);
+                }
+                catch (ValidationException ex)
+                {
+                    bindingContext.ModelState.AddModelError(prop, ex);
                 }
             }
             return answer;
@@ -121,6 +105,49 @@ namespace Subdivisionary.DAL
             var converter = TypeDescriptor.GetConverter(propType);
             return converter.ConvertFrom(primitive);
         }
-        
+
+        /// <summary>
+        /// Sync Collection to Form
+        /// </summary>
+        protected void SyncCollectionForm(ControllerContext controllerContext, ModelBindingContext bindingContext, ICollectionForm answer)
+        {
+            var form = controllerContext.HttpContext.Request.Form;
+            NameValueCollection collection = FilterPropertyCollection(form, ENTRY_CLASS_KEY);
+            for (int i = 0; true; i++)
+            {
+                string key = ENTRY_CLASS_KEY + i;
+                NameValueCollection entryCollection = FilterPropertyCollection(collection, key);
+                if (!entryCollection.HasKeys())
+                    break;
+                var obj = ParseObject(bindingContext, key, entryCollection, answer.GetEmptyItem().GetType());
+                answer.ModifyCollection(i, obj);
+            }
+        }
+
+        /// <summary>
+        /// Binds object into ModelStateDictionary
+        /// </summary>
+        protected void BindObjectIntoModelState(string key, object value, ModelStateDictionary modelState)
+        {
+            var type = value.GetType();
+            foreach (var prop in type.GetProperties())
+            {
+                var attrNames = prop.GetCustomAttributes(false).OfType<DisplayNameAttribute>();
+                var vc = new ValidationContext(value, null, null)
+                {
+                    MemberName = prop.Name,
+                    DisplayName = attrNames.Any() ? attrNames.First().DisplayName : prop.Name
+                };
+
+                try
+                {
+                    Validator.ValidateProperty(prop.GetValue(value), vc);
+                }
+                catch (ValidationException ex)
+                {
+                    modelState.AddModelError(key, ex);
+                }
+            }
+        }
     }
 }

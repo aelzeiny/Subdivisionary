@@ -157,11 +157,11 @@ namespace Subdivisionary.Controllers
             if (ModelState.IsValid)
             {
                 var applicant = new Applicant();
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Data = applicant};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Data = applicant, Name = model.Name};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Temporary Code
+                    // Temporary Code for Seeding Users
                     /*string roleName = "BsmRole";
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var roleManager = new RoleManager<IdentityRole>(roleStore);

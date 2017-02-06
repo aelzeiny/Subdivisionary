@@ -1,0 +1,9 @@
+﻿@model Subdivisionary.Models.Collections.EmailInfo
+    
+
+<div class="form-group col-xs-12">
+    @Html.LabelFor(m => m.EmailAddress, new { @class = "col-form-label" })
+    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", placeholder = "joe@something.com" })
+    @Html.ValidationMessageFor(m => m.EmailAddress)
+</div>
+

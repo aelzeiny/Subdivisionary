@@ -24,6 +24,8 @@ namespace Subdivisionary
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootbox.js",
+                      "~/Scripts/jSignature.min.js",
+                      //"~/Scripts/signature_pad.js",
                       "~/Scripts/fileinput.js",
                       "~/Scripts/respond.js"));
 
@@ -31,6 +33,7 @@ namespace Subdivisionary
                       "~/Content/bootstrap-cerulean.css",
                       "~/Content/datatables/css/datatables.bootstrap.css",
                       "~/Content/font-awesome.css",
+                      //"~/Content/signature-pad.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-fileinput/css/fileinput.css",
                       "~/Content/BsmStyle.css"));

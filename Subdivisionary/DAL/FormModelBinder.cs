@@ -19,7 +19,7 @@ namespace Subdivisionary.DAL
             bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, desiredType);
             var answer = base.BindModel(controllerContext, bindingContext);
             if (answer is ICollectionForm)
-                SyncFileForm(controllerContext, bindingContext, (ICollectionForm)answer);
+                SyncCollectionForm(controllerContext, bindingContext, (ICollectionForm)answer);
             return answer;
         }
     }

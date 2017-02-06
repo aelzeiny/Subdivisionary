@@ -1,36 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Subdivisionary.Models.ProjectInfos.ExtendedProjectInfo">
-    <Position X="2.5" Y="3" Width="1.5" />
+    <Position X="2.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ProjectInfos\ExtendedProjectInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Subdivisionary.Models.ProjectInfos.BasicProjectInfo" Collapsed="true">
-    <Position X="2.5" Y="2" Width="1.5" />
+  <Class Name="Subdivisionary.Models.ProjectInfos.BasicProjectInfo">
+    <Position X="2.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAGEAIAABAAIAAAAQAAAAAAAAgAAAACAAAAAAAgAAA=</HashCode>
+      <HashCode>AAACUAIAABQAIACUAQAAAAAgAAAAAAAAAAQAAAAgAAA=</HashCode>
       <FileName>Models\ProjectInfos\BasicProjectInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Subdivisionary.Models.ProjectInfos.BypassInfo">
-    <Position X="4" Y="5.5" Width="1.5" />
+    <Position X="4" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ProjectInfos\BypassInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Subdivisionary.Models.ProjectInfos.DeveloperExtendedProjectInfo">
-    <Position X="1" Y="5.75" Width="1.5" />
+  <Class Name="Subdivisionary.Models.ProjectInfos.LlaAndCocProjectInfo">
+    <Position X="1" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\ProjectInfos\DeveloperExtendedProjectInfo.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\LlaAndCocProjectInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Subdivisionary.Models.ProjectInfos.EcpInfo">
-    <Position X="4" Y="7.25" Width="1.5" />
+    <Position X="4" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ProjectInfos\EcpInfo.cs</FileName>
@@ -54,14 +54,15 @@
   <Class Name="Subdivisionary.Models.Forms.ClosureCalcsForm" Collapsed="true">
     <Position X="15.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAEAIAAAAAAAAAAAAAAAAAACAAAAIIAAAAAAAIAAA=</HashCode>
       <FileName>Models\Forms\ClosureCalcsForm.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Subdivisionary.Models.Forms.Form" Collapsed="true">
     <Position X="10.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAACEAAAABAAIAAAAQAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>ECACEAAAABAAIAAAAQAAAAAgAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Models\Forms\Form.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -85,14 +86,15 @@
   <Class Name="Subdivisionary.Models.Forms.TitleReportForm" Collapsed="true">
     <Position X="13.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAEQIAAAQAQACQAAAAACAAAQAAAAIAAAAgAACIEAA=</HashCode>
       <FileName>Models\Forms\TitleReportForm.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Subdivisionary.Models.Applications.Application" Collapsed="true">
     <Position X="12" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAiMAAAAAAAAAAEAAAAAAAAAAAAQmAACCACAAAAGAA=</HashCode>
+      <HashCode>AAAiMICAAAAAAAAECAAAAAAAAAAEQmAACCACAAAAGAA=</HashCode>
       <FileName>Models\Applications\Application.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -110,11 +112,11 @@
       <FileName>Models\Applications\RecordOfSurvey.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Subdivisionary.Models.Forms.IListForm" Collapsed="true">
+  <Interface Name="Subdivisionary.Models.Forms.ICollectionForm" Collapsed="true">
     <Position X="13" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Forms\IListForm.cs</FileName>
+      <FileName>Models\Forms\ICollectionForm.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Subdivisionary.Models.Forms.IUploadableFileForm">
@@ -127,7 +129,7 @@
   <Interface Name="Subdivisionary.Models.Forms.IForm" Collapsed="true">
     <Position X="9.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACEAAAABAAIAAAAQAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AAACEAAAABAAIAAAAQAAAAAgAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Models\Forms\Form.cs</FileName>
     </TypeIdentifier>
   </Interface>

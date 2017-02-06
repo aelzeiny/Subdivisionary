@@ -10,14 +10,11 @@ namespace Subdivisionary.Models.ProjectInfos
     public class ExtendedProjectInfo : BasicProjectInfo
     {
         [Required]
-        [Display(Name="Number of Units")]
-        public int NumberOfUnits { get; set; }
-        [Required]
-        public ContactInfo FirmContactInfo { get; set; }
+        public ContactInfo LandFirmContactInfo { get; set; }
 
         public ExtendedProjectInfo()
         {
-            FirmContactInfo = new ContactInfo();
+            LandFirmContactInfo = new ContactInfo();
         }
     }
 }

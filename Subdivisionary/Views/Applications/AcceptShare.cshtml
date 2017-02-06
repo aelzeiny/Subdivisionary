@@ -1,0 +1,23 @@
+﻿
+@model Subdivisionary.ViewModels.ShareApplicationViewModel
+@{
+    ViewBag.Title = "Accept Invitation";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Accept Invitation for " + Model.DisplayName;
+}
+<div class="col-sm-3 col-xs-0">
+    @Html.Partial("_BsmSidebar")
+</div>
+<div class="col-sm-9 col-xs-12">
+
+    <h2>You've been invited to work on the following Project</h2>
+    <h4>@Model.DisplayName, located on @Model.ProjectInfoDisplay</h4>
+    <strong> Note: </strong>
+    <p>
+        With a click of a button you can begin to modify forms, sign documents, and edit users for the stated project.
+        Please note that once that the once you accept these privileges, you become equally accountable for the completeness of the application upon submittal.
+    </p>
+    
+    <a class="btn btn-lg btn-primary center-block" style="width: 250px; margin-bottom: 40px;" type="button" href="@Url.Action("AcceptInvitation", "Applications", new {id = Model.ApplicationId})"><i class="fa fa-pencil"></i> Accept Editing Privileges</a>
+
+</div>

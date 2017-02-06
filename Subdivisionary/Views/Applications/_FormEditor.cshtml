@@ -12,5 +12,6 @@
 {
     @Html.Hidden(FormModelBinder.TYPE_KEY, ObjectContext.GetObjectType(Model.Form.GetType()).FullName)
     @Html.Partial(Model.GetPartialViewEditor(), Model.Form)
-    <button class="btn btn-info" type="submit" style="width: 100%;">Save</button>
+    <button class="btn btn-lg btn-info center-block" type="submit" style="width: 75%;">Save <i class="fa fa-save"></i></button>
+    //<button class="btn btn-lg btn-info col-xs-12 col-sm-4" type="submit">Save & Continue <i class="fa fa-arrow-circle-o-right"></i></button>
 }

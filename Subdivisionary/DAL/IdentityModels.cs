@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
@@ -20,6 +21,7 @@ namespace Subdivisionary.DAL
     {
         public Applicant Data { get; set; }
         public int DataId { get; set; }
+        public string Name { get; set; }
 
         public ApplicationUser()
         {
@@ -68,10 +70,17 @@ namespace Subdivisionary.DAL
             // so I removed it
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            // Map one applicant to many applications
+            // Map many applicant to many applications
             modelBuilder.Entity<Applicant>()
                 .HasMany(a => a.Applications)
-                .WithRequired(app => app.Applicant);
+                .WithMany(app => app.Applicants)
+                .Map(cs =>
+                    {
+                        cs.MapLeftKey("ApplicantRefId");
+                        cs.MapRightKey("ApplicationRefId");
+                        cs.ToTable("ApplicantsToApplications");
+                    }
+                );
 
             // Map one application to many forms
             modelBuilder.Entity<Application>()

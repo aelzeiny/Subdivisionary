@@ -221,9 +221,10 @@
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DAL\ApplicantionApplicantModelBinder.cs" />
+    <Compile Include="DAL\ApplicationInvitesModelBinder.cs" />
     <Compile Include="DAL\CustomIFormModelBinder.cs" />
     <Compile Include="DAL\DebugModelBinder.cs" />
-    <Compile Include="DAL\RequiredUploadValidation.cs" />
     <Compile Include="DAL\FormModelBinder.cs" />
     <Compile Include="DAL\ProjectInfoModelBinder.cs" />
     <Compile Include="Dtos\AddressDto.cs" />
@@ -284,7 +285,41 @@
     <Compile Include="Migrations\201701191556212_AddIsRequiredToForm.Designer.cs">
       <DependentUpon>201701191556212_AddIsRequiredToForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701280624258_UpdateClosureCalcsForm.cs" />
+    <Compile Include="Migrations\201701280624258_UpdateClosureCalcsForm.Designer.cs">
+      <DependentUpon>201701280624258_UpdateClosureCalcsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702020224570_AddTentativeMapForm.cs" />
+    <Compile Include="Migrations\201702020224570_AddTentativeMapForm.Designer.cs">
+      <DependentUpon>201702020224570_AddTentativeMapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702022000102_UpdateProjectInfos.cs" />
+    <Compile Include="Migrations\201702022000102_UpdateProjectInfos.Designer.cs">
+      <DependentUpon>201702022000102_UpdateProjectInfos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702040955231_AddApplicantsToApplicationsTable.cs" />
+    <Compile Include="Migrations\201702040955231_AddApplicantsToApplicationsTable.Designer.cs">
+      <DependentUpon>201702040955231_AddApplicantsToApplicationsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702041137195_AddShareRequestsToApplications.cs" />
+    <Compile Include="Migrations\201702041137195_AddShareRequestsToApplications.Designer.cs">
+      <DependentUpon>201702041137195_AddShareRequestsToApplications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702061534551_AddLegalUserNames.cs" />
+    <Compile Include="Migrations\201702061534551_AddLegalUserNames.Designer.cs">
+      <DependentUpon>201702061534551_AddLegalUserNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702061535442_SeedLegalUserNames.cs" />
+    <Compile Include="Migrations\201702061535442_SeedLegalUserNames.Designer.cs">
+      <DependentUpon>201702061535442_SeedLegalUserNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Applications\CcBypass.cs" />
+    <Compile Include="Models\Applications\CcEcp.cs" />
+    <Compile Include="Models\Applications\LotLineAdjustment.cs" />
+    <Compile Include="Models\Applications\LotMerger.cs" />
+    <Compile Include="Models\Applications\LotSubdivision.cs" />
+    <Compile Include="Models\Applications\NewConstruction.cs" />
     <Compile Include="Models\Collections\AdditionalDocsList.cs" />
     <Compile Include="Models\Collections\AddressList.cs" />
     <Compile Include="Models\Collections\CheckList.cs" />
@@ -292,9 +327,21 @@
     <Compile Include="Models\Collections\SerializableList.cs" />
     <Compile Include="Models\Collections\FileUploadList.cs" />
     <Compile Include="Models\Collections\ApnList.cs" />
+    <Compile Include="Models\Collections\EmailList.cs" />
+    <Compile Include="Models\Collections\SignatureList.cs" />
+    <Compile Include="Models\EmailFormModel.cs" />
     <Compile Include="Models\FileUploadProperty.cs" />
     <Compile Include="Models\Forms\ICollectionForm.cs" />
+    <Compile Include="Models\Forms\IObservable.cs" />
+    <Compile Include="Models\Forms\ISignatureForm.cs" />
     <Compile Include="Models\Forms\IUploadableFileForm.cs" />
+    <Compile Include="Models\Forms\NeighborhoodNotificationForm.cs" />
+    <Compile Include="Models\Forms\TentativeMapForm.cs" />
+    <Compile Include="Models\ProjectInfos\LotMergerAndSubdivisionInfo.cs" />
+    <Compile Include="Models\ProjectInfos\NewConstructionInfo.cs" />
+    <Compile Include="Models\Validation\FileUploadRequired.cs" />
+    <Compile Include="Models\Validation\TitleCompanyOtherValidation.cs" />
+    <Compile Include="Models\Validation\UnitsAddUpToTotalValidation.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Applicant.cs" />
@@ -312,9 +359,9 @@
     <Compile Include="Models\Forms\TitleReportForm.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ProjectInfos\BasicProjectInfo.cs" />
-    <Compile Include="Models\ProjectInfos\BypassInfo.cs" />
-    <Compile Include="Models\ProjectInfos\DeveloperExtendedProjectInfo.cs" />
-    <Compile Include="Models\ProjectInfos\EcpInfo.cs" />
+    <Compile Include="Models\ProjectInfos\CcBypassInfo.cs" />
+    <Compile Include="Models\ProjectInfos\CocAndLlaProjectInfo.cs" />
+    <Compile Include="Models\ProjectInfos\CcEcpInfo.cs" />
     <Compile Include="Models\ProjectInfos\ExtendedProjectInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -442,6 +489,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\pwLogo.png" />
+    <Content Include="Content\signature-pad.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -592,6 +640,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\signature_pad.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -654,6 +703,9 @@
     <Content Include="Views\Applications\CollectionEditors\_PtrContactInfoEditor.cshtml" />
     <Content Include="Views\Applications\CollectionEditors\_CollectionFormJavascript.cshtml" />
     <Content Include="Views\Applications\Review.cshtml" />
+    <Content Include="Views\Applications\Share.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_EmailInfoEditor.cshtml" />
+    <Content Include="Views\Applications\AcceptShare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -698,6 +750,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701191556212_AddIsRequiredToForm.resx">
       <DependentUpon>201701191556212_AddIsRequiredToForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701280624258_UpdateClosureCalcsForm.resx">
+      <DependentUpon>201701280624258_UpdateClosureCalcsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702020224570_AddTentativeMapForm.resx">
+      <DependentUpon>201702020224570_AddTentativeMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702022000102_UpdateProjectInfos.resx">
+      <DependentUpon>201702022000102_UpdateProjectInfos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702040955231_AddApplicantsToApplicationsTable.resx">
+      <DependentUpon>201702040955231_AddApplicantsToApplicationsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702041137195_AddShareRequestsToApplications.resx">
+      <DependentUpon>201702041137195_AddShareRequestsToApplications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702061534551_AddLegalUserNames.resx">
+      <DependentUpon>201702061534551_AddLegalUserNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702061535442_SeedLegalUserNames.resx">
+      <DependentUpon>201702061535442_SeedLegalUserNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

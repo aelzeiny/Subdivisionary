@@ -21,9 +21,7 @@ namespace Subdivisionary.ViewModels
     public class EditApplicationViewModel
     {
         public int EditId { get; set; }
-        public int ApplicationId { get; set; }
-        public IList<IForm> Forms { get; set; }
-        public string DisplayName { get; set; }
+        public Application Application { get; set; }
     }
 
     public class EditFormViewModel
@@ -92,21 +90,33 @@ namespace Subdivisionary.ViewModels
 
         public abstract ICollectionForm GetListForm();
         public abstract Application CreateApplication();
+
+        /// <summary>
+        /// Create Application given the Application Type Enum. 
+        /// </summary>
+        /// <param name="appType">Type of Application we wish to make</param>
+        /// <returns>Freshly minted Application</returns>
         internal static Application CreateApplication(ApplicationTypeViewModel appType)
         {
             Application answer = null;
             if (appType == ApplicationTypeViewModel.RecordOfSurvey)
-                answer = Application.Create<RecordOfSurvey>();
-            else if (appType == ApplicationTypeViewModel.CertificateOfCompliance)
-                answer = Application.Create<CertificateOfCompliance>();
-            /*else if (appType == ApplicationTypeViewModel.CcBypass)
-                answer = new CcBypass(); 
-            else if (appType == ApplicationTypeViewModel.LotLineAdjustment)
-                answer = new LotLineAdjustment();
-            else if (appType == ApplicationTypeViewModel.NewConstruction)
-                answer = new NewConstruction();
+                answer = Application.FactoryCreate<RecordOfSurvey>();
+
+            else if (appType == ApplicationTypeViewModel.CcBypass)
+                answer = Application.FactoryCreate<CcBypass>();
             else if (appType == ApplicationTypeViewModel.CcEcp)
-                answer = new CcEcp();*/
+                answer = Application.FactoryCreate<CcEcp>();
+            else if (appType == ApplicationTypeViewModel.NewConstruction)
+                answer = Application.FactoryCreate<NewConstruction>();
+
+            else if (appType == ApplicationTypeViewModel.LotLineAdjustment)
+                answer = Application.FactoryCreate<LotLineAdjustment>();
+            else if (appType == ApplicationTypeViewModel.CertificateOfCompliance)
+                answer = Application.FactoryCreate<CertificateOfCompliance>();
+            else if (appType == ApplicationTypeViewModel.LotMerger)
+                answer = Application.FactoryCreate<LotMerger>();
+            else if (appType == ApplicationTypeViewModel.LotSubdivision)
+                answer = Application.FactoryCreate<LotSubdivision>();
             else
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             return answer;
@@ -119,6 +129,40 @@ namespace Subdivisionary.ViewModels
 
         public FileUploadProperty UploadProperty { get; set; }
         public FileUploadList UploadList { get; set; }
+    }
+
+    public class ShareApplicationViewModel : ICollectionForm
+    {
+        public string UserEmail { get; set; }
+        public List<EmailInfo> ApplicantEmails { get; set; }
+        public EmailList ShareRequests { get; set; }
+        public string DisplayName { get; set; }
+        public string ProjectInfoDisplay { get; set; }
+        public object ApplicationId { get; set; }
+
+        public ShareApplicationViewModel(Application application, Applicant applicant)
+        {
+            ApplicationId = application.Id;
+            ApplicantEmails = application.Applicants.Select(x => new EmailInfo() {EmailAddress = x.User.Email}).ToList();
+            DisplayName = application.DisplayName;
+            ProjectInfoDisplay = application.ProjectInfo.ToString();
+            ShareRequests = application.SharedRequests;
+            UserEmail = applicant.User.Email;
+        }
+
+        public ICollection GetListCollection()
+        {
+            return ApplicantEmails;
+        }
+
+        public object GetEmptyItem()
+        {
+            return new EmailInfo();
+        }
+
+        public void ModifyCollection(int index, object newValue)
+        {
+        }
     }
 
 
@@ -162,15 +206,19 @@ namespace Subdivisionary.ViewModels
     {
         [Display(Name = "Record of Survey")]
         RecordOfSurvey,
+        [Display(Name = "Condo Conversion - Bypass")]
+        CcBypass,
+        [Display(Name = "Condo Conversion - ECP")]
+        CcEcp,
         [Display(Name = "New Construction Condominium")]
         NewConstruction,
         [Display(Name = "Certificate of Compliance")]
         CertificateOfCompliance,
         [Display(Name = "Lot Line Adjustment")]
         LotLineAdjustment,
-        [Display(Name = "Condo Conversion - Bypass")]
-        CcBypass,
-        [Display(Name = "Condo Conversion - ECP")]
-        CcEcp
+        [Display(Name = "Lot Merger")]
+        LotMerger,
+        [Display(Name = "Lot Subdivsion")]
+        LotSubdivision,
     }
 }

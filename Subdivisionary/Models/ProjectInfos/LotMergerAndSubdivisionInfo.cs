@@ -6,9 +6,10 @@ using System.Web;
 
 namespace Subdivisionary.Models.ProjectInfos
 {
-    public class BypassInfo : ExtendedProjectInfo
+    public class LotMergerAndSubdivisionInfo : CocAndLlaProjectInfo
     {
         [Required]
-        public int TenantOccupiedUnits { get; set; }
+        [Display(Name = "Number of Proposed Lots")]
+        public int NumOfProposedLots { get; set; }
     }
 }

@@ -25,7 +25,7 @@ body.warm {
     background-color: rgba(255,255,255,0);
 }
 
-/*Center Form Labels*/
+/*Form Labels*/
 .col-form-label {
     padding-top: 8px;
     padding-bottom: 8px;
@@ -92,6 +92,21 @@ label.form-surround {
     background-color: #3097D1;
     width: 100%;
     padding: 20px 20px;
+}
+
+.bsm-border {
+    border-color: #CCD6E7;
+    border-style: double;
+}
+
+.big-checkbox {
+     width: 25px;
+     height: 25px;
+
+ }
+.center-div {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h1 {
@@ -171,4 +186,33 @@ button.j-removeBtn {
     background-color: transparent;
     border-color: transparent;
     padding: 0px;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #EEF1F7;
+}
+
+.nav > li > a:hover, .nav > li > a:focus{
+    background-color: aliceblue;
+}
+.nav > li.disabled > a {
+    background-color: #DDE4EF;
+}
+
+.nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
+    background-color: #EEF1F7;
+}
+
+.file-loading {
+    min-height: 39px;
+}
+
+.js-removeApplicant {
+    float: right;
+    margin-top: -5px;
+}
+
+.bsmSignature {
+    background-color: #EEF1F7;
+    color: #456CAA;
 }

@@ -53,7 +53,7 @@ namespace Subdivisionary.Models.Collections
             get
             {
                 string serializedValue = string.Join(SEPERATOR[0],
-                    data.Select(x => SerializeObjectList(SerializeObject(x))).ToArray());
+                    data.Select(x => SerializeObjectList(SerializeObject(x))));
                 return serializedValue;
             }
             set
@@ -130,6 +130,12 @@ namespace Subdivisionary.Models.Collections
         protected abstract string[] SerializeObject(T serialize);
 
         #region Boring ICollection Stuff
+
+        public int IndexOf(T item)
+        {
+            return data.IndexOf(item);
+        }
+
         public void Add(T item)
         {
             data.Add(item);
@@ -138,6 +144,11 @@ namespace Subdivisionary.Models.Collections
         public void Clear()
         {
             data.Clear();
+        }
+
+        public void RemoveAt(int index)
+        {
+            data.RemoveAt(index);
         }
 
         public bool Contains(T item)

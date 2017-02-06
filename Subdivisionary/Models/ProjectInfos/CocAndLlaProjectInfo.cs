@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -7,12 +8,18 @@ using System.Web;
 
 namespace Subdivisionary.Models.ProjectInfos
 {
-    public class DeveloperExtendedProjectInfo : ExtendedProjectInfo
+    /// <summary>
+    /// For Coc & LLA Apps
+    /// </summary>
+    public class CocAndLlaProjectInfo : ExtendedProjectInfo
     {
-        [Required]
         public ContactInfo DeveloperContactInfo { get; set; }
 
-        public DeveloperExtendedProjectInfo()
+        [Required]
+        [Display(Name = "Number of Existing Lots")]
+        public int NumOfExisitingLots { get; set; }
+
+        public CocAndLlaProjectInfo()
         {
             DeveloperContactInfo = new ContactInfo();
         }

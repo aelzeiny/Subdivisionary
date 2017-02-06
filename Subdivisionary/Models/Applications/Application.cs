@@ -8,11 +8,14 @@ using System.Web;
 using System.Collections;
 using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.ProjectInfos;
+using WebGrease.Css.Extensions;
 
 namespace Subdivisionary.Models.Applications
 {
     public abstract class Application
     {
+        public static readonly int MAX_PARCEL_MAP_UNITS = 4;
+
         /**
          * This stores the id of this class
          */
@@ -34,13 +37,14 @@ namespace Subdivisionary.Models.Applications
          * automatically linked together.
          */
         [Required]
-        public Applicant Applicant { get; set; }
-        public int ApplicantId { get; set; }
+        public virtual ICollection<Applicant> Applicants { get; set; }
 
         /**
          * Represents whether or not an application has been submitted yet
          */
         public bool IsSubmitted { get; set; }
+
+        public EmailList SharedRequests { get; set; }
 
         /**
          * Display name of application
@@ -52,6 +56,11 @@ namespace Subdivisionary.Models.Applications
 
         protected abstract void Init();
 
+        protected Application()
+        {
+            SharedRequests = new EmailList();
+        }
+
         public virtual IList<IForm> GetOrderedForms()
         {
             List<IForm> answer = new List<IForm>();
@@ -60,7 +69,47 @@ namespace Subdivisionary.Models.Applications
             return answer;
         }
 
-        public static Application Create<T>() where T : Application
+        /// <summary>
+        /// Gets IForm using form type. If you define an application as a collection of forms,
+        /// where no one form is repeated twice, this operator makes a lot of sense.
+        /// </summary>
+        /// <param name="key">Type of form needed</param>
+        /// <returns>Returns null if no form found of given type</returns>
+        protected virtual IForm this[Type key]
+        {
+            get
+            {
+                foreach (IForm form in this.GetOrderedForms())
+                    if (form.GetType() == key)
+                        return form;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// This uses a modified version of the Observer Design pattern to notify
+        /// all forms of the IObservable form interface when one form within the application 
+        /// has changed. 
+        /// </summary>
+        /// <param name="modified"></param>
+        public virtual void FormUpdated(IForm before, IForm after)
+        {
+            foreach (var form in Forms)
+            {
+                var observer = form as IObservableForm;
+                if (observer != null)
+                    observer.UpdateForm(before, after);
+            }
+        }
+
+        /// <summary>
+        /// Factory Design Pattern used to create a new Application. The constructor is reserved
+        /// for Entity Framework by practice. Here we can create forms using their constructor and modify
+        /// their variables (such as requirement).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static Application FactoryCreate<T>() where T : Application
         {
             Application application = (Application) Activator.CreateInstance(typeof(T));
             application.Init();
@@ -70,13 +119,21 @@ namespace Subdivisionary.Models.Applications
                 application.Forms.Add(form);
             return application;
         }
-
+        
         public int GetFormIdByType(Type type)
         {
-            foreach (var form in this.GetOrderedForms())
+            foreach (var form in GetOrderedForms())
                 if (form.GetType() == type)
                     return form.Id;
             return -1;
+        }
+
+        public bool AllFormsSubmitted()
+        {
+            foreach (var form in GetOrderedForms())
+                if (!form.IsAssigned && form.IsRequired)
+                    return false;
+            return true;
         }
 
         public override string ToString()

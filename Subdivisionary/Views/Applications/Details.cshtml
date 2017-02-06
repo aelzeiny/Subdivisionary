@@ -10,18 +10,19 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_BannerLayout.cshtml";
-    ViewBag.Banner = Model.DisplayName;
+    ViewBag.Banner = Model.Application.DisplayName;
 }
 
 @{
-    var forms = Model.Forms;
+    var forms = Model.Application.GetOrderedForms();
     IForm activeForm = null;
+    var allSubmitted = Model.Application.AllFormsSubmitted();
 }
 <div class="row">
     <div class="sidebar col-xs-0 col-md-3">
         <h2>Directory</h2>
         <ul class="nav nav-pills nav-stacked" style="margin-bottom: 20px;">
-            @for (int i = 0; i < @forms.Count; i++)
+            @for (int i = 0; i < forms.Count; i++)
             {
                 var form = forms[i];
                 string liClass = null;
@@ -32,7 +33,7 @@
                 }
                 var icon = form.IsAssigned ? "fa fa-check" : (form.IsRequired ? "fa fa-times" : "fa fa-minus");
                 <li role="presentation" class="@liClass">
-                    <a href="@Url.Action( "Details", "Applications", new {id = Model.ApplicationId, editId = i}, null)" class="list-group-item">
+                    <a href="@Url.Action( "Details", "Applications", new {id = Model.Application.Id, editId = i}, null)" class="list-group-item">
                         @form.DisplayName
                         <div class="badge">
                             <i class="@icon" aria-hidden="true"></i>
@@ -40,14 +41,28 @@
                     </a>
                 </li>
             }
-            <li role="presentation" class="liClass">
-                <a href="@Url.Action( "Review", "Applications", new {id = Model.ApplicationId})" class="list-group-item disabled">
-                    Review Application
-                    <div class="badge disabled">
-                        <i class="fa fa-share" aria-hidden="true"></i>
-                    </div>
-                </a>
-            </li>
+            @if (allSubmitted)
+            {
+                <li role="presentation" class="liClass">
+                    <a href="@Url.Action("Review", "Applications", new {id = Model.Application.Id})" class="list-group-item">
+                        Review Application
+                        <div class="badge">
+                            <i class="fa fa-share" aria-hidden="true"></i>
+                        </div>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li role="presentation" class="liClass disabled">
+                    <a class="list-group-item">
+                        Review Application
+                        <div class="badge disabled">
+                            <i class="fa fa-share" aria-hidden="true"></i>
+                        </div>
+                    </a>
+                </li>
+            }
         </ul>
     </div>
     <div class="partialbar col-xs-12 col-md-9">
@@ -56,7 +71,7 @@
             var formEditor = new EditFormViewModel()
             {
                 Form = activeForm,
-                ApplicationId = Model.ApplicationId,
+                ApplicationId = Model.Application.Id,
                 EditId = Model.EditId
             };
         }

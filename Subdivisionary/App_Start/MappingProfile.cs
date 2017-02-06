@@ -15,27 +15,27 @@ namespace Subdivisionary.App_Start
         {
             // Map Project Info & all classes that inherit from it FORWARDS
             Mapper.CreateMap<BasicProjectInfo, BasicProjectInfoDto>()
-                .Include<BypassInfo, BypassInfoDto>()
-                .Include<DeveloperExtendedProjectInfo, DeveloperExtendedProjectInfoDto>()
-                .Include<EcpInfo, EcpInfoDto>()
+                .Include<CcBypassInfo, BypassInfoDto>()
+                .Include<CocAndLlaProjectInfo, DeveloperExtendedProjectInfoDto>()
+                .Include<CcEcpInfo, EcpInfoDto>()
                 .Include<ExtendedProjectInfo, ExtendedProjectInfoDto>();
 
             // Map Project Info & all classes that inherit from it BACKWARDS
             Mapper.CreateMap<BasicProjectInfoDto, BasicProjectInfo>()
-                .Include<BypassInfoDto, BypassInfo>()
-                .Include<DeveloperExtendedProjectInfoDto, DeveloperExtendedProjectInfo>()
-                .Include<EcpInfoDto, EcpInfo>()
+                .Include<BypassInfoDto, CcBypassInfo>()
+                .Include<DeveloperExtendedProjectInfoDto, CocAndLlaProjectInfo>()
+                .Include<EcpInfoDto, CcEcpInfo>()
                 .Include<ExtendedProjectInfoDto, ExtendedProjectInfo>();
 
             // Map Remaining Subclasses forwards & backwards
-            Mapper.CreateMap<BypassInfo, BypassInfoDto>();
-            Mapper.CreateMap<BypassInfoDto, BypassInfo>();
+            Mapper.CreateMap<CcBypassInfo, BypassInfoDto>();
+            Mapper.CreateMap<BypassInfoDto, CcBypassInfo>();
 
-            Mapper.CreateMap<DeveloperExtendedProjectInfo, DeveloperExtendedProjectInfoDto>();
-            Mapper.CreateMap<DeveloperExtendedProjectInfoDto, DeveloperExtendedProjectInfo>();
+            Mapper.CreateMap<CocAndLlaProjectInfo, DeveloperExtendedProjectInfoDto>();
+            Mapper.CreateMap<DeveloperExtendedProjectInfoDto, CocAndLlaProjectInfo>();
 
-            Mapper.CreateMap<EcpInfo, EcpInfoDto>();
-            Mapper.CreateMap<EcpInfoDto, EcpInfo>();
+            Mapper.CreateMap<CcEcpInfo, EcpInfoDto>();
+            Mapper.CreateMap<EcpInfoDto, CcEcpInfo>();
 
             Mapper.CreateMap<ExtendedProjectInfo, ExtendedProjectInfoDto>();
             Mapper.CreateMap<ExtendedProjectInfoDto, ExtendedProjectInfo>();

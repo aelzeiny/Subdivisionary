@@ -12,7 +12,7 @@ namespace Subdivisionary.Models.Applications
     {
         protected override void Init()
         {
-            ProjectInfo = new ExtendedProjectInfo();
+            ProjectInfo = new CocAndLlaProjectInfo();
         }
 
         protected override Form[] GetDefaultApplicationForms()

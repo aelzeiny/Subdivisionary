@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Subdivisionary.Models.Collections;
+using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
@@ -16,11 +17,15 @@ namespace Subdivisionary.Models.Forms
         
         public override string DisplayName => "Preliminary Title Report";
 
+        [FileUploadRequired]
         public FileUploadList PtrFile { get; set; }
         public PtrContactList PtrContactList { get; set; }
 
+        [Required]
         [DisplayName("Order/Escrow Number")]
         public string OrderNumber { get; set; }
+
+        [TitleCompanyOtherValidation]
         [DisplayName("Other Title Company (if applicable)")]
         public string OtherTitleCompany { get; set; }
 

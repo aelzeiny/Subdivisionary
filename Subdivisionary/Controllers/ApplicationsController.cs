@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,9 +8,9 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.IO;
 using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Results;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Subdivisionary.DAL;
@@ -19,6 +20,7 @@ using Subdivisionary.Models.Applications;
 using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
+using Subdivisionary.Models.Validation;
 using Subdivisionary.ViewModels;
 
 namespace Subdivisionary.Controllers
@@ -30,7 +32,8 @@ namespace Subdivisionary.Controllers
 
         public ApplicationsController()
         {
-            _context = new ApplicationDbContext();// {ProxyEnabled = false};
+            _context = new ApplicationDbContext();
+            _context.Configuration.ValidateOnSaveEnabled = false;
         }
 
         protected override void Dispose(bool disposing)
@@ -90,10 +93,8 @@ namespace Subdivisionary.Controllers
 
             EditApplicationViewModel toEdit = new EditApplicationViewModel()
             {
-                Forms =  application.GetOrderedForms(),
                 EditId = editId.HasValue ? editId.Value : 0,
-                DisplayName =  application.DisplayName,
-                ApplicationId = application.Id
+                Application = application
             };
             
             return View(toEdit);
@@ -111,14 +112,12 @@ namespace Subdivisionary.Controllers
             IForm form = allforms[editId];
 
             // Ensure Model Validation
-            if (!ModelState.IsValid)
+            if (!ModelStateIsValid(ModelState))
             {
                 EditApplicationViewModel toEdit = new EditApplicationViewModel()
                 {
-                    Forms = application.GetOrderedForms(),
                     EditId = editId,
-                    DisplayName = application.DisplayName,
-                    ApplicationId = applicationId
+                    Application = application
                 };
                 return View("Details", toEdit);
             }
@@ -126,6 +125,9 @@ namespace Subdivisionary.Controllers
             // Ensure that nobody messed with the form params by checking application type before copying
             if (editApp.GetType() != ObjectContext.GetObjectType(form.GetType()))
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            // Notify all Observing forms within the application that a single form has been updated
+            application.FormUpdated(form, editApp);
 
             form.CopyValues(editApp);
 
@@ -159,7 +161,23 @@ namespace Subdivisionary.Controllers
             _context.SaveChanges();
             return RedirectToAction("Details", "Applications", new { id = application.Id, editId = editId });
         }
+
+        /// <summary>
+        /// Checks if model state is valid, taking into consideration BackgroundValidations.
+        /// </summary>
+        /// <param name="modelStateDictionary"></param>
+        /// <returns></returns>
+        private bool ModelStateIsValid(ModelStateDictionary modelStateDictionary)
+        {
+            return modelStateDictionary.IsValid;
+        }
         #endregion
+
+        [System.Web.Mvc.AllowAnonymous]
+        public ActionResult Debug()
+        {
+            return View();
+        }
 
         public ActionResult Review(int id)
         {
@@ -194,6 +212,129 @@ namespace Subdivisionary.Controllers
             return System.Web.HttpContext.Current.GetOwinContext()
                 .GetUserManager<ApplicationUserManager>()
                 .FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+        }
+
+
+        /// <summary>
+        /// Add email addresses to an application
+        /// </summary>
+        /// <param name="id">application id</param>
+        public ActionResult Share(int id)
+        {
+            var applicant = GetCurrentApplicant();
+            var application = _context.Applications.Find(id);
+
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            ShareApplicationViewModel vm = new ShareApplicationViewModel(application, applicant);
+            
+            // If applicant is not registered with application
+            if (application.Applicants.All(x => x.Id != applicant.Id)) { 
+                // If on share request list
+                if (application.SharedRequests.Any(x => x.EmailAddress == applicant.User.Email))
+                    return View("AcceptShare", vm);
+            }
+            else
+                return View(vm);
+
+            throw new HttpResponseException(HttpStatusCode.Forbidden);
+        }
+
+        public ActionResult RemoveApplicationApplicants([ModelBinder(typeof(ApplicantionApplicantModelBinder))]List<string> toRemove, int applicationId)
+        {
+            var applicant = GetCurrentApplicant();
+            var application = (applicant.Applications.FirstOrDefault(x => x.Id == applicationId));
+
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            foreach (var removable in toRemove)
+            {
+                var removableApplicant = application.Applicants.First(x => x.User.Email == removable);
+                removableApplicant.Applications.Remove(application);
+                application.Applicants.Remove(removableApplicant);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Review", "Applications", new { id = applicationId });
+        }
+
+        public ActionResult AcceptInvitation(int id)
+        {
+
+            var applicant = GetCurrentApplicant();
+            var application = _context.Applications.Find(id);
+
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            EmailInfo info = new EmailInfo(applicant.User.Email);
+            int index = application.SharedRequests.IndexOf(info);
+            if (index < 0)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            application.SharedRequests.RemoveAt(index);
+            application.Applicants.Add(applicant);
+            applicant.Applications.Add(application);
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Applications", new {id = id});
+        }
+
+        public async Task<ActionResult> UpdateApplicationInvites([ModelBinder(typeof(ApplicationInvitesModelBinder))] List<EmailInfo> emailList, int applicationId)
+        {
+            var applicant = GetCurrentApplicant();
+            var application = (applicant.Applications.FirstOrDefault(x => x.Id == applicationId));
+
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            if (!ModelState.IsValid)
+            {
+                ShareApplicationViewModel vm = new ShareApplicationViewModel(application, applicant);
+                vm.ShareRequests.Clear();
+                vm.ShareRequests.AddRange(emailList);
+                return View("Share", vm);
+            }
+
+            foreach (var toshare in emailList)
+            {
+                List<MailMessage> messages = new List<MailMessage>();
+                if (!application.SharedRequests.Contains(toshare))
+                {
+                    MailMessage message = new MailMessage("ahmed.elzeiny2@sfdpw.org",toshare.EmailAddress);
+                    message.Subject =
+                        $"[Application ID #{applicationId}] {applicant.User.Email} invites you to work a {application.DisplayName}";
+                    message.Body =
+                        $"<p>Dear {toshare.EmailAddress},</p><p>You are invited to edit the following project </p><strong>{application.ProjectInfo}</strong>" +
+                        $"<p>Blah Blah Blah. Test. Test. Test. Can Office 365 server send emails on my behalf? That would be cool. If this works, please disregard. </p>";
+                    message.IsBodyHtml = true;
+                    // Send invite via email
+                    messages.Add(message);
+                }
+                await Contact(messages);
+            }
+            application.SharedRequests.Clear();
+            application.SharedRequests.AddRange(emailList);
+            _context.SaveChanges();
+            return RedirectToAction("Share", "Applications", new { id = applicationId });
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Contact(List<MailMessage> messages)
+        {
+            if (messages.Count != 0)
+            {
+                using (var smtp = new SmtpClient())
+                {
+                    var credential = new NetworkCredential("ahmed.elzeiny2@sfdpw.org", "$Allah1999");
+                    smtp.Credentials = credential;
+                    smtp.Host = "smtp.office365.com";
+                    smtp.Port = 587;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.EnableSsl = true;
+                    foreach (var msg in messages)
+                        await smtp.SendMailAsync(msg);
+                }
+            }
+            return Content("SENT");
         }
     }
 }

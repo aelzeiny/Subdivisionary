@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Subdivisionary.Models.Collections;
+using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
@@ -11,9 +12,13 @@ namespace Subdivisionary.Models.Forms
     {
         public override string DisplayName => "Photographs";
 
+        [FileUploadRequired]
         public FileUploadList PhotoLeft { get; set; }
+        [FileUploadRequired]
         public FileUploadList PhotoRight { get; set; }
+        [FileUploadRequired]
         public FileUploadList PhotoFront { get; set; }
+        [FileUploadRequired]
         public FileUploadList PhotoBack { get; set; }
 
         private static readonly string PHOTO_FRONT_KEY = "grantFrontId";

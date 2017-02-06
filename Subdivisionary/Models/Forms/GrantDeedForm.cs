@@ -8,6 +8,7 @@ using System.Web;
 using Microsoft.Ajax.Utilities;
 using Subdivisionary.DAL;
 using Subdivisionary.Models.Collections;
+using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
@@ -15,7 +16,9 @@ namespace Subdivisionary.Models.Forms
     {
         public override string DisplayName => "Grant Deeds";
 
+        [FileUploadRequired]
         public FileUploadList GrantPiqFile { get; set; }
+        [FileUploadRequired]
         public FileUploadList GrantAdjoinerFiles { get; set; }
 
         public ApnList ApnList { get; set; }

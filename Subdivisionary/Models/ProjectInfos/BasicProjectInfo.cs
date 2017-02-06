@@ -14,27 +14,30 @@ using Subdivisionary.Models.Forms;
 
 namespace Subdivisionary.Models.ProjectInfos
 {
+    /// <summary>
+    /// Base class for all Project Info Types. Specifically for Record of Surveys, which
+    /// have the least basic requirements in comparison to all apps.
+    /// </summary>
     public class BasicProjectInfo : IForm, ICollectionForm
     {
         public int Id { get; set; }
-
-
         public int ApplicationId { get; set; }
         public Application Application { get; set; }
-
         public bool IsAssigned { get; set; }
         public bool IsRequired => true;
-
         public AddressList AddressList { get; set; }
         
         [Required]
         public ContactInfo PrimaryContactInfo { get; set; }
-        
+
+        public ContactInfo OwnerContactInfo { get; set; }
+
         public virtual string DisplayName => "Project Information";
 
         public BasicProjectInfo()
         {
             PrimaryContactInfo = new ContactInfo();
+            OwnerContactInfo = new ContactInfo();
             AddressList = new AddressList();
         }
 

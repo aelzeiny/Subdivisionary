@@ -60,5 +60,9 @@ namespace Subdivisionary.Models.Forms
             return prop.CanWrite && prop.Name != nameof(Id) && prop.Name != nameof(ApplicationId) &&
                    prop.Name != nameof(Application) && prop.GetMemberType() != (typeof(FileUploadList));
         }
+        
+        protected virtual void UpdateObserver(Form observer)
+        {
+        }
     }
 }

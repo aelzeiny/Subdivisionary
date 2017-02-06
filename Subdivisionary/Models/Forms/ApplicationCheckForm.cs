@@ -8,11 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using Subdivisionary.Models.Collections;
+using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
     public class ApplicationCheckForm : Form, IUploadableFileForm, ICollectionForm
     {
+        [FileUploadRequired]
         public FileUploadList ChecksUploadList { get; set; }
 
         public CheckList ChecksList { get; set; }

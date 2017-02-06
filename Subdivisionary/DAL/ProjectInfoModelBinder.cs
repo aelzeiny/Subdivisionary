@@ -22,7 +22,7 @@ namespace Subdivisionary.DAL
             desiredType = typeof(NewApplicationViewModel<>).MakeGenericType(desiredType);
             bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, desiredType);
             var answer = base.BindModel(controllerContext, bindingContext);
-            SyncFileForm(controllerContext, bindingContext, ((NewApplicationViewModel)answer).GetListForm());
+            SyncCollectionForm(controllerContext, bindingContext, ((NewApplicationViewModel)answer).GetListForm());
             return answer;
         }
     }

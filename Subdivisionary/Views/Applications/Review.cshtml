@@ -7,22 +7,29 @@
 @{
     ViewBag.Title = "Review Application";
     Layout = "~/Views/Shared/_BannerLayout.cshtml";
-    ViewBag.Banner = "Review " + Model.DisplayName + " (ID #" +Model.Id + ")" ;
+    ViewBag.Banner = "Review " + Model.DisplayName;
+    bool everythingComplete = Model.AllFormsSubmitted();
 }
 
-<h2>Application ID: <span style="font-weight: 100; font-size: 24px;">@Model.Id</span></h2>
-<h2>Address(es)</h2> <h3>@Model.ProjectInfo.ToString()</h3>
+<h2>Application ID: <span style="font-weight: 100; font-size: 24px;">#@Model.Id</span></h2>
+<h2>Address(es): <span style="font-weight: 100; font-size: 24px;">@Model.ProjectInfo.ToString()</span></h2>
 
 <div id="reviewDiv">
     @foreach (IForm form in Model.GetOrderedForms())
     {
+        var icon = form.IsAssigned ? "fa fa-check-square" : "fa fa-times";
         <div class="form-group" style="border-bottom: 1px solid; border-bottom-color: darkblue">
-            <h2>@form.DisplayName</h2>
+            <h2>@form.DisplayName <i class="@icon"></i></h2>
 
             @Html.Partial(EditFormViewModel.GetPartialViewEditor(form), form)
         </div>
     }
 </div>
+
+@if (everythingComplete)
+{
+    <a class="btn btn-lg btn-success center-block" href="@Url.Action("Index", "Applications")" style="max-width: 300px;">Submit Application <i class="fa fa-envelope"></i></a>
+}
 
 @section scripts
 {
