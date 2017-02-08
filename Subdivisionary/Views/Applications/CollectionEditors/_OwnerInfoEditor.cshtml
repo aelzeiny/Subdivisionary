@@ -1,0 +1,7 @@
+﻿@model Subdivisionary.Models.Collections.OwnerInfo
+<div class="form-group">
+    @Html.LabelFor(m => m.OwnerName, new { @class = "col-form-label" })
+    @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", placeholder = "John Doe & Jane Doe" })
+    @Html.ValidationMessageFor(m => m.OwnerName)
+</div>
+

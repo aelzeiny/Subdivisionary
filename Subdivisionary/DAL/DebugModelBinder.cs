@@ -14,11 +14,8 @@ namespace Subdivisionary.DAL
     {
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            Type desiredType = Type.GetType(controllerContext.HttpContext.Request.Params["classType"]);
-            desiredType = typeof(NewApplicationViewModel<>).MakeGenericType(new Type[] {desiredType});
-            bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, desiredType);
             var answer = base.BindModel(controllerContext, bindingContext);
-            return answer as NewApplicationViewModel;
+            return answer;
         }
 
         protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)

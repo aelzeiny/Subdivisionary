@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Core.Objects;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Routing;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Subdivisionary.Dtos;
 using Subdivisionary.Models;
 using Subdivisionary.Models.Applications;
@@ -43,9 +47,57 @@ namespace Subdivisionary.ViewModels
         }
     }
 
-    public class NewApplicationViewModel<T> : NewApplicationViewModel where T : BasicProjectInfo
+    public struct FileUploadJsonViewModel
     {
-        public T ProjectInfo { get; set; }
+        public bool append { get; set; }
+        public List<InitialPreivewConfigViewModel> initialPreviewConfig { get; set; }
+        public string initialPreview { get; set; }
+
+        public static FileUploadJsonViewModel Create()
+        {
+            return new FileUploadJsonViewModel()
+            {
+                append = true,
+                initialPreviewConfig = new List<InitialPreivewConfigViewModel>(),
+                initialPreview = ""
+            };
+        }
+        public struct InitialPreivewConfigViewModel
+        {
+            public string caption { get; set; }
+            public string filetype { get; set; }
+            public long size { get; set; }
+            public bool previewAsData { get; set; }
+            /// <summary>
+            /// Deletion Url
+            /// </summary>
+            public string url { get; set; }
+        }
+
+        public void AddFile(UrlHelper url, string absoluteUri, BlobProperties blob, FileUploadProperty props)
+        {
+            initialPreview = "<div class='file-preview-text'><h1><i class='fa fa-check-circle'></i></h1></div>";
+            this.initialPreviewConfig.Add(new InitialPreivewConfigViewModel()
+            {
+                caption = $"<i class='fa fa-check'></i> {props.StandardName}",
+                filetype = blob.ContentType,
+                size = blob.Length,
+                previewAsData = false,
+                url = url.Action("DeleteFile","Applications", new
+                {
+                    formId = props.FormId,
+                    uniqueKey = props.UniqueKey,
+                    fileUrl = Path.GetFileName(absoluteUri)
+                })
+
+            });
+        }
+    }
+
+    public class NewApplicationViewModel
+    {
+        public BasicProjectInfo ProjectInfo { get; set; }
+        public ApplicationTypeViewModel ApplicationType { get; set; }
 
         /// <summary>
         /// ASP.NET Model Binding uses system.reflection to create an object.
@@ -55,74 +107,16 @@ namespace Subdivisionary.ViewModels
         {
         }
 
-        public NewApplicationViewModel(int appTypeId) : this((ApplicationTypeViewModel)appTypeId)
+        public NewApplicationViewModel(int appTypeId, BasicProjectInfo projInfo) : this((ApplicationTypeViewModel)appTypeId, projInfo)
         {
         }
 
-        public NewApplicationViewModel(ApplicationTypeViewModel appType)
+        public NewApplicationViewModel(ApplicationTypeViewModel appType, BasicProjectInfo projInfo)
         {
             this.ApplicationType = appType;
-            var application = CreateApplication();
-            ProjectInfo = (T) application.ProjectInfo;
-        }
-
-        public override ICollectionForm GetListForm()
-        {
-            return ProjectInfo;
-        }
-
-        public override Application CreateApplication()
-        {
-            var answer = CreateApplication(ApplicationType);
-            if (ProjectInfo != null)
-                answer.ProjectInfo = ProjectInfo;
-            return answer;
+            ProjectInfo = projInfo;
         }
     }
-
-    public abstract class NewApplicationViewModel
-    {
-        [Display(Name = "Type")]
-        public ApplicationTypeViewModel ApplicationType { get; set; }
-
-        public static readonly string PROJECT_INFO_TYPE_KEY = "classType";
-
-
-        public abstract ICollectionForm GetListForm();
-        public abstract Application CreateApplication();
-
-        /// <summary>
-        /// Create Application given the Application Type Enum. 
-        /// </summary>
-        /// <param name="appType">Type of Application we wish to make</param>
-        /// <returns>Freshly minted Application</returns>
-        internal static Application CreateApplication(ApplicationTypeViewModel appType)
-        {
-            Application answer = null;
-            if (appType == ApplicationTypeViewModel.RecordOfSurvey)
-                answer = Application.FactoryCreate<RecordOfSurvey>();
-
-            else if (appType == ApplicationTypeViewModel.CcBypass)
-                answer = Application.FactoryCreate<CcBypass>();
-            else if (appType == ApplicationTypeViewModel.CcEcp)
-                answer = Application.FactoryCreate<CcEcp>();
-            else if (appType == ApplicationTypeViewModel.NewConstruction)
-                answer = Application.FactoryCreate<NewConstruction>();
-
-            else if (appType == ApplicationTypeViewModel.LotLineAdjustment)
-                answer = Application.FactoryCreate<LotLineAdjustment>();
-            else if (appType == ApplicationTypeViewModel.CertificateOfCompliance)
-                answer = Application.FactoryCreate<CertificateOfCompliance>();
-            else if (appType == ApplicationTypeViewModel.LotMerger)
-                answer = Application.FactoryCreate<LotMerger>();
-            else if (appType == ApplicationTypeViewModel.LotSubdivision)
-                answer = Application.FactoryCreate<LotSubdivision>();
-            else
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            return answer;
-        }
-    }
-
     public class FileUploadViewModel
     {
         public string LabelMessage { get; set; }

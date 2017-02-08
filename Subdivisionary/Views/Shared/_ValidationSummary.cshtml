@@ -17,7 +17,8 @@
                         {
                             string msg = modelError.ErrorMessage.IsNullOrWhiteSpace() ? modelError.Exception.Message : modelError.ErrorMessage;
                             <div class="alert alert-danger" role="alert" style="margin: 0px;">
-                                <a href="#@modelKeyPair.Key.Replace(".", "_").Replace("[", "_").Replace("]", "_")" class="alert-link">@msg</a>
+                                <i class="fa fa-exclamation"></i>
+                                <a href="#@modelKeyPair.Key.Replace(".", "_").Replace("[", "_").Replace("]", "_")" class="alert-link"> @msg</a>
                             </div>
                         }
                     }

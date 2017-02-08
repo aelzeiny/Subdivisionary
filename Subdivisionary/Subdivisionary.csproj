@@ -88,11 +88,35 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.7.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.7.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.7.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=8.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.8.0.1\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -102,6 +126,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.7.0\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
@@ -219,6 +247,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ProjectsController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
+    <Compile Include="Controllers\DebugController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DAL\ApplicantionApplicantModelBinder.cs" />
@@ -226,7 +255,6 @@
     <Compile Include="DAL\CustomIFormModelBinder.cs" />
     <Compile Include="DAL\DebugModelBinder.cs" />
     <Compile Include="DAL\FormModelBinder.cs" />
-    <Compile Include="DAL\ProjectInfoModelBinder.cs" />
     <Compile Include="Dtos\AddressDto.cs" />
     <Compile Include="Dtos\ContactInfoDto.cs" />
     <Compile Include="Dtos\ProjectInfoDto.cs" />
@@ -234,6 +262,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="DAL\IdentityModels.cs" />
+    <Compile Include="Helpers\CloudHelper.cs" />
     <Compile Include="Helpers\DirectoryHelper.cs" />
     <Compile Include="Helpers\FormJavaScriptHelper.cs" />
     <Compile Include="Helpers\PartialViewHelper.cs" />
@@ -313,6 +342,10 @@
     <Compile Include="Migrations\201702061535442_SeedLegalUserNames.Designer.cs">
       <DependentUpon>201702061535442_SeedLegalUserNames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702061908595_AddOwnerForm.cs" />
+    <Compile Include="Migrations\201702061908595_AddOwnerForm.Designer.cs">
+      <DependentUpon>201702061908595_AddOwnerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applications\CcBypass.cs" />
     <Compile Include="Models\Applications\CcEcp.cs" />
@@ -323,6 +356,7 @@
     <Compile Include="Models\Collections\AdditionalDocsList.cs" />
     <Compile Include="Models\Collections\AddressList.cs" />
     <Compile Include="Models\Collections\CheckList.cs" />
+    <Compile Include="Models\Collections\OwnerList.cs" />
     <Compile Include="Models\Collections\PtrContactList.cs" />
     <Compile Include="Models\Collections\SerializableList.cs" />
     <Compile Include="Models\Collections\FileUploadList.cs" />
@@ -336,6 +370,7 @@
     <Compile Include="Models\Forms\ISignatureForm.cs" />
     <Compile Include="Models\Forms\IUploadableFileForm.cs" />
     <Compile Include="Models\Forms\NeighborhoodNotificationForm.cs" />
+    <Compile Include="Models\Forms\OwnerForm.cs" />
     <Compile Include="Models\Forms\TentativeMapForm.cs" />
     <Compile Include="Models\ProjectInfos\LotMergerAndSubdivisionInfo.cs" />
     <Compile Include="Models\ProjectInfos\NewConstructionInfo.cs" />
@@ -706,6 +741,10 @@
     <Content Include="Views\Applications\Share.cshtml" />
     <Content Include="Views\Applications\CollectionEditors\_EmailInfoEditor.cshtml" />
     <Content Include="Views\Applications\AcceptShare.cshtml" />
+    <Content Include="Views\Applications\SpeedTest.cshtml" />
+    <Content Include="Views\Applications\_OwnerFormEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_OwnerInfoEditor.cshtml" />
+    <Content Include="Views\Debug\UploadFileTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -771,6 +810,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702061535442_SeedLegalUserNames.resx">
       <DependentUpon>201702061535442_SeedLegalUserNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702061908595_AddOwnerForm.resx">
+      <DependentUpon>201702061908595_AddOwnerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

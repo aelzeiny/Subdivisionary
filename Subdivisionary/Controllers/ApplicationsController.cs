@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Newtonsoft.Json;
 using Subdivisionary.DAL;
 using Subdivisionary.Helpers;
 using Subdivisionary.Models;
@@ -49,40 +52,79 @@ namespace Subdivisionary.Controllers
             var applicant = _context.Applicants
                 .Include(app => app.Applications.Select(x => x.ProjectInfo))
                 .FirstOrDefault(app => app.Id == user.DataId);
-            
+
             // Pass into view
             return View(applicant);
         }
 
         #region Create & New Applications
-        // GET: Applications
+
         public ViewResult New(int id)
         {
-            // Get Applications From Database
-            NewApplicationViewModel viewModel = new NewApplicationViewModel<BasicProjectInfo>(id);
+            // Create Application given ApplicationTypeViewModel id
+            NewApplicationViewModel viewModel = new NewApplicationViewModel()
+            {
+                ApplicationType = (ApplicationTypeViewModel) id,
+                ProjectInfo = CreateApplication((ApplicationTypeViewModel) id).ProjectInfo
+            };
             // Pass into view
             return View(viewModel);
         }
 
         [System.Web.Mvc.HttpPost]
-        public ActionResult Create([ModelBinder(typeof(ProjectInfoModelBinder))] NewApplicationViewModel newApp)
+        public ActionResult Create(IForm projectInfo, int appTypeId)
         {
-            //ReverifyModel();
-            var application = newApp.CreateApplication();
+            if (!ModelState.IsValid)
+                return View("New", new NewApplicationViewModel(appTypeId, (BasicProjectInfo) projectInfo));
+
+            Application application = this.CreateApplication((ApplicationTypeViewModel) appTypeId);
+            application.ProjectInfo = (BasicProjectInfo) projectInfo;
             var user = GetCurrentApplicant();
             user.Applications.Add(application);
-            if (!ModelState.IsValid)
-                return View("New", new NewApplicationViewModel<BasicProjectInfo>(newApp.ApplicationType));
             _context.SaveChanges();
+
             application.ProjectInfoId = application.ProjectInfo.Id;
             application.ProjectInfo.ApplicationId = application.Id;
             application.ProjectInfo.IsAssigned = true;
             _context.SaveChanges();
-            return RedirectToAction("Details", "Applications", new { id = application.Id});
+            return RedirectToAction("Details", "Applications", new {id = application.Id});
         }
+
+        public ActionResult SpeedTest()
+        {
+            return View(new OwnerForm());
+        }
+
+        private Application CreateApplication(ApplicationTypeViewModel appType)
+        {
+            Application answer = null;
+            if (appType == ApplicationTypeViewModel.RecordOfSurvey)
+                answer = Application.FactoryCreate<RecordOfSurvey>();
+
+            else if (appType == ApplicationTypeViewModel.CcBypass)
+                answer = Application.FactoryCreate<CcBypass>();
+            else if (appType == ApplicationTypeViewModel.CcEcp)
+                answer = Application.FactoryCreate<CcEcp>();
+            else if (appType == ApplicationTypeViewModel.NewConstruction)
+                answer = Application.FactoryCreate<NewConstruction>();
+
+            else if (appType == ApplicationTypeViewModel.LotLineAdjustment)
+                answer = Application.FactoryCreate<LotLineAdjustment>();
+            else if (appType == ApplicationTypeViewModel.CertificateOfCompliance)
+                answer = Application.FactoryCreate<CertificateOfCompliance>();
+            else if (appType == ApplicationTypeViewModel.LotMerger)
+                answer = Application.FactoryCreate<LotMerger>();
+            else if (appType == ApplicationTypeViewModel.LotSubdivision)
+                answer = Application.FactoryCreate<LotSubdivision>();
+            else
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            return answer;
+        }
+
         #endregion
 
         #region Details & Edit Applications
+
         public ActionResult Details(int id, int? editId)
         {
             var applicant = GetCurrentApplicant();
@@ -96,12 +138,12 @@ namespace Subdivisionary.Controllers
                 EditId = editId.HasValue ? editId.Value : 0,
                 Application = application
             };
-            
+
             return View(toEdit);
         }
-        
+
         [System.Web.Mvc.HttpPost]
-        public ActionResult Edit([ModelBinder(typeof(FormModelBinder))] IForm editApp, int applicationId, int editId)
+        public ActionResult Edit(IForm editApp, int applicationId, int editId)
         {
             // ensure that application belongs to user
             Application application = this.GetCurrentApplicant().Applications.FirstOrDefault(x => x.Id == applicationId);
@@ -132,7 +174,7 @@ namespace Subdivisionary.Controllers
             form.CopyValues(editApp);
 
             // Sync File Uploads from server
-            IUploadableFileForm fileForm = form as IUploadableFileForm;
+            /*IUploadableFileForm fileForm = form as IUploadableFileForm;
             if (fileForm != null)
             {
                 var requestFiles = HttpContext.Request.Files;
@@ -148,18 +190,20 @@ namespace Subdivisionary.Controllers
                         continue; // continue to next file
 
                     // Now upload all files
-                    string directory = Path.Combine(Server.GetApplicationDirectory(application), uploadProperty.FolderPath);
+                    string directory = Path.Combine(Server.GetApplicationDirectory(application),
+                        uploadProperty.FolderPath);
                     DirectoryHelper.EnsureDirectoryExists(directory);
                     FileUploadList savedBasicFiles = fileForm.GetFileUploadList(uploadProperty.UniqueKey);
                     if (uploadProperty.IsSingleUpload && savedBasicFiles.Count > 0)
-                        new FileInfo(Server.MapPath(savedBasicFiles.First())).Delete();
-                    string fileName = DirectoryHelper.FindUntakenFilename(directory, uploadProperty.StandardName, Path.GetExtension(file.FileName));
+                        new FileInfo(Server.MapPath(savedBasicFiles.First().Url)).Delete();
+                    string fileName = DirectoryHelper.FindUntakenFilename(directory, uploadProperty.StandardName,
+                        Path.GetExtension(file.FileName));
                     file.SaveAs(fileName);
                     fileForm.SyncFile(uploadProperty.UniqueKey, Server.UnmapPath(fileName));
                 }
-            }
+            }*/
             _context.SaveChanges();
-            return RedirectToAction("Details", "Applications", new { id = application.Id, editId = editId });
+            return RedirectToAction("Details", "Applications", new {id = application.Id, editId = editId});
         }
 
         /// <summary>
@@ -171,6 +215,7 @@ namespace Subdivisionary.Controllers
         {
             return modelStateDictionary.IsValid;
         }
+
         #endregion
 
         [System.Web.Mvc.AllowAnonymous]
@@ -190,7 +235,7 @@ namespace Subdivisionary.Controllers
 
         public FileResult Download(string file)
         {
-            if(!Server.FilePathExists(file))
+            if (!Server.FilePathExists(file))
                 throw new HttpResponseException(HttpStatusCode.Gone);
             string appId = DirectoryHelper.GetApplicationIdFromFilePath(file);
             // for security purposes we have to ensure that the download link is coming from the right applicant
@@ -228,9 +273,10 @@ namespace Subdivisionary.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             ShareApplicationViewModel vm = new ShareApplicationViewModel(application, applicant);
-            
+
             // If applicant is not registered with application
-            if (application.Applicants.All(x => x.Id != applicant.Id)) { 
+            if (application.Applicants.All(x => x.Id != applicant.Id))
+            {
                 // If on share request list
                 if (application.SharedRequests.Any(x => x.EmailAddress == applicant.User.Email))
                     return View("AcceptShare", vm);
@@ -241,7 +287,8 @@ namespace Subdivisionary.Controllers
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
-        public ActionResult RemoveApplicationApplicants([ModelBinder(typeof(ApplicantionApplicantModelBinder))]List<string> toRemove, int applicationId)
+        public ActionResult RemoveApplicationApplicants(
+            [ModelBinder(typeof(ApplicantionApplicantModelBinder))] List<string> toRemove, int applicationId)
         {
             var applicant = GetCurrentApplicant();
             var application = (applicant.Applications.FirstOrDefault(x => x.Id == applicationId));
@@ -255,12 +302,11 @@ namespace Subdivisionary.Controllers
                 application.Applicants.Remove(removableApplicant);
             }
             _context.SaveChanges();
-            return RedirectToAction("Review", "Applications", new { id = applicationId });
+            return RedirectToAction("Review", "Applications", new {id = applicationId});
         }
 
         public ActionResult AcceptInvitation(int id)
         {
-
             var applicant = GetCurrentApplicant();
             var application = _context.Applications.Find(id);
 
@@ -277,7 +323,8 @@ namespace Subdivisionary.Controllers
             return RedirectToAction("Details", "Applications", new {id = id});
         }
 
-        public async Task<ActionResult> UpdateApplicationInvites([ModelBinder(typeof(ApplicationInvitesModelBinder))] List<EmailInfo> emailList, int applicationId)
+        public async Task<ActionResult> UpdateApplicationInvites(
+            [ModelBinder(typeof(ApplicationInvitesModelBinder))] List<EmailInfo> emailList, int applicationId)
         {
             var applicant = GetCurrentApplicant();
             var application = (applicant.Applications.FirstOrDefault(x => x.Id == applicationId));
@@ -298,7 +345,7 @@ namespace Subdivisionary.Controllers
                 List<MailMessage> messages = new List<MailMessage>();
                 if (!application.SharedRequests.Contains(toshare))
                 {
-                    MailMessage message = new MailMessage("ahmed.elzeiny2@sfdpw.org",toshare.EmailAddress);
+                    MailMessage message = new MailMessage("ahmed.elzeiny2@sfdpw.org", toshare.EmailAddress);
                     message.Subject =
                         $"[Application ID #{applicationId}] {applicant.User.Email} invites you to work a {application.DisplayName}";
                     message.Body =
@@ -313,7 +360,7 @@ namespace Subdivisionary.Controllers
             application.SharedRequests.Clear();
             application.SharedRequests.AddRange(emailList);
             _context.SaveChanges();
-            return RedirectToAction("Share", "Applications", new { id = applicationId });
+            return RedirectToAction("Share", "Applications", new {id = applicationId});
         }
 
         [System.Web.Mvc.HttpPost]
@@ -335,6 +382,79 @@ namespace Subdivisionary.Controllers
                 }
             }
             return Content("SENT");
+        }
+
+        /// <summary>
+        /// Upload File from designated Form
+        /// </summary>
+        /// <param name="id">Form Id</param>
+        /// <returns></returns>
+        public async Task<ActionResult> UploadFiles(int id)
+        {
+            Form mForm = await _context.Forms.FindAsync(id);
+            IUploadableFileForm form = mForm as IUploadableFileForm;
+            try
+            {
+                if (form == null)
+                    throw new HttpResponseException(HttpStatusCode.BadRequest);
+                int appId = mForm.ApplicationId;
+                // ensure that application belongs to user
+                Application application = this.GetCurrentApplicant().Applications.FirstOrDefault(x => x.Id == appId);
+                if (application == null)
+                    throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+                // Access Blob Storage
+                string containerName = CloudHelper.GetContainerName(application);
+                CloudStorageAccount cloudStorageAccount = CloudHelper.GetConnectionString();
+                CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+                CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(containerName);
+                if (await cloudBlobContainer.CreateIfNotExistsAsync())
+                {
+                    await
+                        cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions
+                        {
+                            PublicAccess = BlobContainerPublicAccessType.Blob
+                        });
+                }
+                var requestFiles = HttpContext.Request.Files;
+
+                FileUploadJsonViewModel vm = FileUploadJsonViewModel.Create();
+                for (int i = 0; i < requestFiles.Count; i++)
+                {
+                    var file = requestFiles[i];
+                    if (file == null || file.ContentLength <= 0)
+                        continue;
+                    var now = DateTime.Now;
+                    var fileProps = form.FileUploadProperties().First(x => x.UniqueKey == requestFiles.AllKeys[i]);
+                    string fileName =
+                        $"{fileProps.FolderPath}\\{appId}_{fileProps.StandardName}_{now:yyyyMMdd}_{now.Ticks}{Path.GetExtension(file.FileName)}";
+                    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
+                    cloudBlockBlob.Properties.ContentType = file.ContentType;
+                    //await cloudBlockBlob.UploadFromStreamAsync(file.InputStream);
+                    form.SyncFile(requestFiles.AllKeys[i], new FileUploadInfo()
+                    {
+                        Size = cloudBlockBlob.Properties.Length,
+                        Type = cloudBlockBlob.Properties.ContentType,
+                        Url = cloudBlockBlob.Uri.AbsolutePath
+                    });
+                    await _context.SaveChangesAsync();
+                    vm.AddFile(Url, cloudBlockBlob.Uri.AbsoluteUri, cloudBlockBlob.Properties, fileProps);
+                }
+                return Content(JsonConvert.SerializeObject(vm), "application/json");
+            }
+            catch (Exception ex)
+            {
+                string json = JsonConvert.SerializeObject(new
+                {
+                    error = ex.Message
+                });
+                return Content(json, "application/json");
+            }
+        }
+
+        public async Task<ActionResult> DeleteFile(int formId, string uniqueKey, string fileUrl)
+        {
+            throw new NotImplementedException("Not yet");
         }
     }
 }

@@ -20,10 +20,12 @@
         var length = $('.list-item-editor').length;
         thing = replaceAll(thing, '@CustomIFormModelBinder.ENTRY_CLASS_KEY', '@CustomIFormModelBinder.ENTRY_CLASS_KEY' + length);
         thing = replaceAll(thing, '@CustomIFormModelBinder.ENTRY_ID_KEY', '@CustomIFormModelBinder.ENTRY_ID_KEY' + length);
-        $("#uploadDataEntries").append(thing);
-    }
+            $("#uploadDataEntries").append(thing);
+        }
     );
-    $("#uploadDataEntries")
+    @* This is a dialog box that ensures that the applicant wants to delete item.
+        Comment out if you think that this feature is worthless. *@
+        $("#uploadDataEntries")
         .on('click', ".j-removeBtn", function () {
             var button = $(this);
             bootbox.confirm("Are you sure you want to delete this item?", function (result) {

@@ -20,6 +20,8 @@ namespace Subdivisionary.DAL
             var answer = base.BindModel(controllerContext, bindingContext);
             if (answer is ICollectionForm)
                 SyncCollectionForm(controllerContext, bindingContext, (ICollectionForm)answer);
+            if (answer is IUploadableFileForm)
+                SyncFileForm(controllerContext, bindingContext, (IUploadableFileForm)answer);
             return answer;
         }
     }

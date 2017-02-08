@@ -27,6 +27,7 @@ namespace Subdivisionary
                       "~/Scripts/jSignature.min.js",
                       //"~/Scripts/signature_pad.js",
                       "~/Scripts/fileinput.js",
+                      "~/Content/bootstrap-fileinput/themes/fa/theme.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

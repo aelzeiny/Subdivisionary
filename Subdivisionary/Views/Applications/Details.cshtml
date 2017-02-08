@@ -21,7 +21,7 @@
 <div class="row">
     <div class="sidebar col-xs-0 col-md-3">
         <h2>Directory</h2>
-        <ul class="nav nav-pills nav-stacked" style="margin-bottom: 20px;">
+        <ul class="nav nav-pills nav-stacked">
             @for (int i = 0; i < forms.Count; i++)
             {
                 var form = forms[i];
@@ -64,6 +64,10 @@
                 </li>
             }
         </ul>
+        <a class="btn btn-primary btn-xs" href="@Url.Action("Share", "Applications", new {id = Model.Application.Id})" role="button" style="float: right;">
+            <i class="fa fa-share-alt"></i>
+            Invite
+        </a>
     </div>
     <div class="partialbar col-xs-12 col-md-9">
         <h2>@forms[Model.EditId].DisplayName</h2>
@@ -83,15 +87,57 @@
 @section Scripts {
     @if (activeForm is IUploadableFileForm)
     {
-            <script type="text/javascript">
-                $(document)
-                    .ready(function() {
-                        @Html.RenderUploadableFileJavascript((IUploadableFileForm)activeForm, Server)
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".file-loading").each(function () {
+                    var up = $(this);
+                    console.log(up.data("files"));
+                    var files = up.data("files").split(",");
+                    var sizes = up.data("sizes").split(",");
+                    var types = up.data("types").split(",");
+                    var urls = up.data("urls").split(",");
+                    var initialConfigs = new Array();
+                    if (files[0]) {
+                        for (var i = 0; i < files.length; i++) {
+                            initialConfigs.push({
+                                type: types[i],
+                                size: sizes[i],
+                                caption: up.data("captions"),
+                                url: urls[i]
+                            });
+                        }
+                    } else {
+                        files.length = 0;
+                    }
+                    console.log(initialConfigs);
+                    up.fileinput({
+                        theme: "fa",
+                        showUpload: true,
+                        uploadAsync: true,
+                        overwriteInitial: false,
+                        uploadUrl: up.data("callback"),
+                        maxFileSize: up.data("maxFileSize"),
+                        maxFileCount: up.data("maxFileCount"),
+                        allowedFileExtensions: up.data("extensions").split(","),
+                        initialPreview: files,
+                        initialPreviewAsData: true,
+                        initialPreviewFileType: 'image',
+                        initialPreviewConfig: initialConfigs
                     });
-            </script>
+                });
+            });
+        </script>
+        @*<script type="text/javascript">
+            $(document)
+                .ready(function() {
+                    @Html.RenderUploadableFileJavascript((IUploadableFileForm) activeForm, Server)
+
+                });
+        </script>*@
     }
     @if (activeForm is ICollectionForm)
     {
-        @Html.Partial("CollectionEditors/_CollectionFormJavascript", (ICollectionForm)activeForm)
+        @Html.Partial("CollectionEditors/_CollectionFormJavascript", (ICollectionForm) activeForm)
     }
 }

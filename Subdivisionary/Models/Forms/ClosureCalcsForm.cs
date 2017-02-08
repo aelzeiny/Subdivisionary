@@ -28,7 +28,7 @@ namespace Subdivisionary.Models.Forms
         {
             return new[]
             {
-                new FileUploadProperty("closureCalcsId", "Closure Calcs", "Closure Calculations")
+                new FileUploadProperty(this.Id, "closureCalcsId", "Closure Calcs", "Closure Calculations", false)
             };
         }
 
@@ -37,9 +37,9 @@ namespace Subdivisionary.Models.Forms
             return ClosureCalcsFiles;
         }
 
-        void IUploadableFileForm.SyncFile(string key, string file)
+        void IUploadableFileForm.SyncFile(string key, FileUploadInfo file)
         {
-            ClosureCalcsFiles.Clear();
+            //ClosureCalcsFiles.Clear();
             ClosureCalcsFiles.Add(file);
         }
     }

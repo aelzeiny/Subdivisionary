@@ -35,7 +35,7 @@ namespace Subdivisionary.Models.Forms
         {
             FileUploadProperty[] property = 
             {
-                new FileUploadProperty(CHECK_KEY, CHECK_DIRECTORY, "Check") { IsSingleUpload = false}
+                new FileUploadProperty(this.Id, CHECK_KEY, CHECK_DIRECTORY, "Check") { IsSingleUpload = false}
             };
             return property;
         }
@@ -45,7 +45,7 @@ namespace Subdivisionary.Models.Forms
             return (key == CHECK_KEY) ? ChecksUploadList : null;
         }
 
-        public void SyncFile(string key, string file)
+        public void SyncFile(string key, FileUploadInfo file)
         {
             this.ChecksUploadList.Add(file);
         }

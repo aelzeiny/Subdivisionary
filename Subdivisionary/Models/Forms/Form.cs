@@ -33,8 +33,8 @@ namespace Subdivisionary.Models.Forms
     {
         public int Id { get; set; }
         
-        public int ApplicationId { get; set; }
         public virtual Application Application { get; set; }
+        public int ApplicationId { get; set; }
 
         public abstract string DisplayName { get; }
         public bool IsAssigned { get; set; }

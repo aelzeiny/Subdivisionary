@@ -8,6 +8,10 @@ using System.Web.Mvc;
 using Subdivisionary.Models.Forms;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.IO;
+using Subdivisionary.Helpers;
+using Subdivisionary.Models;
+using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.DAL
 {
@@ -21,8 +25,6 @@ namespace Subdivisionary.DAL
         /// </summary>
         protected NameValueCollection FilterPropertyCollection(NameValueCollection form, string propName)
         {
-            if (!propName.EndsWith("."))
-                propName += '.';
             NameValueCollection propertiesList = new NameValueCollection();
             var keys = form.AllKeys;
             foreach (var key in keys)
@@ -70,9 +72,14 @@ namespace Subdivisionary.DAL
                 {
                     primitive = ParsePrimitive(val, propertyType.PropertyType);
                 }
-                catch (Exception ex)
+                catch (NotSupportedException ex)
                 {
-                    bindingContext.ModelState.AddModelError(prop, new ValidationException("Invalid value for " + propertyName));
+                    bindingContext.ModelState.AddModelError(prop, new ValidationException($"Invalid value for {propertyName}. {ex.Message}"));
+                    continue;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    bindingContext.ModelState.AddModelError(prop, new ValidationException($"Empty value for {propertyName}. {ex.Message}"));
                     continue;
                 }
                 propertyType.SetValue(containerValue, primitive);
@@ -82,9 +89,12 @@ namespace Subdivisionary.DAL
                 bindingContext.ModelState.SetModelValue(prop,
                     new ValueProviderResult(new string[] { val }, val, CultureInfo.CurrentCulture));
 
-                var vc = new ValidationContext(containerValue, null, null);
+                var vc = new ValidationContext(containerValue, null, null)
+                {
+                    MemberName = propertyName
+                };
                 var nameAttrs = propertyType.GetCustomAttributes(typeof(DisplayNameAttribute), false).Cast<DisplayNameAttribute>();
-                vc.MemberName = nameAttrs.Any() ? nameAttrs.Single().DisplayName : propertyName;
+                string memberDisplayName = nameAttrs.Any() ? nameAttrs.Single().DisplayName : propertyName;
                 try
                 {
                     Validator.ValidateProperty(primitive, vc);
@@ -122,6 +132,35 @@ namespace Subdivisionary.DAL
                 var obj = ParseObject(bindingContext, key, entryCollection, answer.GetEmptyItem().GetType());
                 answer.ModifyCollection(i, obj);
             }
+        }
+
+        /// <summary>
+        /// Sync Uplaoded Files to Form. Note that we need server access to do this, so a good majority of this shouldn't be inside the model binder.
+        /// </summary>
+        protected void SyncFileForm(ControllerContext controllerContext, ModelBindingContext bindingContext, IUploadableFileForm fileForm)
+        {
+            /*FileUploadProperty[] fileUploadProperty = fileForm.FileUploadProperties();
+            HttpFileCollectionBase requestFiles = controllerContext.RequestContext.HttpContext.Request.Files;
+            for (int i = 0; i < requestFiles.Count; i++)
+            {
+                var file = requestFiles[i];
+                if (file == null || file.ContentLength <= 0)
+                    continue;
+                string key = requestFiles.AllKeys[i];
+                FileUploadProperty uploadProperty = fileUploadProperty.FirstOrDefault(x => x.UniqueKey == key);
+                if (uploadProperty.UniqueKey != key) // if no key found
+                    continue; // continue to next file
+
+                // Now upload all files
+                string directory = Path.Combine("", uploadProperty.FolderPath);
+                DirectoryHelper.EnsureDirectoryExists(directory);
+                FileUploadList savedBasicFiles = fileForm.GetFileUploadList(uploadProperty.UniqueKey);
+                if (uploadProperty.IsSingleUpload && savedBasicFiles.Count > 0)
+                    new FileInfo(Server.MapPath(savedBasicFiles.First())).Delete();
+                string fileName = DirectoryHelper.FindUntakenFilename(directory, uploadProperty.StandardName, Path.GetExtension(file.FileName));
+                file.SaveAs(fileName);
+                fileForm.SyncFile(uploadProperty.UniqueKey, Server.UnmapPath(fileName));
+            }*/
         }
 
         /// <summary>

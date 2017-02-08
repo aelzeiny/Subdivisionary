@@ -18,6 +18,7 @@ namespace Subdivisionary.Models.Applications
         {
             return new Form[]
             {
+                new OwnerForm(),
                 new ApplicationCheckForm(),
                 new TentativeMapForm(),
                 new TitleReportForm(),

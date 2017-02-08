@@ -43,7 +43,7 @@ namespace Subdivisionary.Models.Forms
         {
             return new FileUploadProperty[]
             {
-                new FileUploadProperty(PTR_KEY, PTR_DIRECTORY, "PTR"), 
+                new FileUploadProperty(this.Id, PTR_KEY, PTR_DIRECTORY, "PTR"), 
             };
         }
 
@@ -52,7 +52,7 @@ namespace Subdivisionary.Models.Forms
             return PtrFile;
         }
 
-        public void SyncFile(string key, string file)
+        public void SyncFile(string key, FileUploadInfo file)
         {
             PtrFile.Clear();
             PtrFile.Add(file);

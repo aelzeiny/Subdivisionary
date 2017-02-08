@@ -23,14 +23,17 @@ namespace Subdivisionary.Models
         [NotMapped]
         public string FolderPath { get; set; }
         [NotMapped]
+        public int FormId { get; set; }
+        [NotMapped]
         public int MaxFileSize { get; set; }
         [NotMapped]
         public int MaxFileCount { get;  set; }
         [NotMapped]
         public List<string> Extensions { get; set; }
-        
-        public FileUploadProperty(string uniqueKey, string folderPath, string standardName, bool isSingleUpload=true)
+
+        public FileUploadProperty(int formId, string uniqueKey, string folderPath, string standardName, bool isSingleUpload=true)
         {
+            FormId = formId;
             UniqueKey = uniqueKey;
             StandardName = standardName;
             IsSingleUpload = isSingleUpload;

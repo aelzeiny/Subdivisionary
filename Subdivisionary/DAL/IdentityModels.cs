@@ -1,9 +1,7 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Subdivisionary.Models;
 using Subdivisionary.Models.Applications;
+using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
 
@@ -43,6 +42,7 @@ namespace Subdivisionary.DAL
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<BasicProjectInfo> ProjectInfos { get; set; }
         public DbSet<Form> Forms { get; set; }
+        //public DbSet<FileUploadInfo> FileUploads { get; set; }
 
         public bool ProxyEnabled {
             get

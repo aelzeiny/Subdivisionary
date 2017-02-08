@@ -40,10 +40,10 @@ namespace Subdivisionary.Models.Forms
         {
             FileUploadProperty[] property = new FileUploadProperty[4]
             {
-                new FileUploadProperty(PHOTO_FRONT_KEY, PHOTO_DIRECTORY, "Front Photo"),
-                new FileUploadProperty(PHOTO_BACK_KEY, PHOTO_DIRECTORY, "Back Photo"),
-                new FileUploadProperty(PHOTO_LEFT_KEY, PHOTO_DIRECTORY, "Left Photo"),
-                new FileUploadProperty(PHOTO_RIGHT_KEY, PHOTO_DIRECTORY, "Right Photo")
+                new FileUploadProperty(this.Id, PHOTO_FRONT_KEY, PHOTO_DIRECTORY, "Front Photo"),
+                new FileUploadProperty(this.Id, PHOTO_BACK_KEY, PHOTO_DIRECTORY, "Back Photo"),
+                new FileUploadProperty(this.Id, PHOTO_LEFT_KEY, PHOTO_DIRECTORY, "Left Photo"),
+                new FileUploadProperty(this.Id, PHOTO_RIGHT_KEY, PHOTO_DIRECTORY, "Right Photo")
             };
             return property;
         }
@@ -61,7 +61,7 @@ namespace Subdivisionary.Models.Forms
             return null;
         }
 
-        public void SyncFile(string key, string file)
+        public void SyncFile(string key, FileUploadInfo file)
         {
             FileUploadList current = GetFileUploadList(key);
             current.Clear();

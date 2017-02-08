@@ -13,6 +13,6 @@ namespace Subdivisionary.Models.Forms
 
         FileUploadList GetFileUploadList(string key);
 
-        void SyncFile(string key, string file);
+        void SyncFile(string key, FileUploadInfo file);
     }
 }

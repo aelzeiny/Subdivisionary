@@ -39,8 +39,8 @@ namespace Subdivisionary.Models.Forms
         {
             FileUploadProperty[] property = new FileUploadProperty[2]
             {
-                new FileUploadProperty(GRANT_PIQ_KEY, GRANT_DIRECTORY, "Deed PIQ"),
-                new FileUploadProperty(GRANT_ADJOINER_KEY, GRANT_DIRECTORY, "Deed Adjoiner", false)
+                new FileUploadProperty(this.Id, GRANT_PIQ_KEY, GRANT_DIRECTORY, "Deed PIQ"),
+                new FileUploadProperty(this.Id, GRANT_ADJOINER_KEY, GRANT_DIRECTORY, "Deed Adjoiner", false)
             };
             return property;
         }
@@ -58,7 +58,7 @@ namespace Subdivisionary.Models.Forms
             return null;
         }
 
-        public void SyncFile(string key, string file)
+        public void SyncFile(string key, FileUploadInfo file)
         {
             if (key == GRANT_PIQ_KEY)
             {

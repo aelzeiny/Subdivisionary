@@ -9,6 +9,7 @@ using System.Web.Routing;
 using AutoMapper;
 using Subdivisionary.App_Start;
 using Subdivisionary.DAL;
+using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
 using Subdivisionary.ViewModels;
 
@@ -21,8 +22,7 @@ namespace Subdivisionary
             Mapper.Initialize(config => config.AddProfile<MappingProfile>());
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
-            ModelBinders.Binders.Add(typeof(NewApplicationViewModel), new ProjectInfoModelBinder());
-            ModelBinders.Binders.Add(typeof(EditFormViewModel), new FormModelBinder());
+            ModelBinders.Binders.Add(typeof(IForm), new FormModelBinder());
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
