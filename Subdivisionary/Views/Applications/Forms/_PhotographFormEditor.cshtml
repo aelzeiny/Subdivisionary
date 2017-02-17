@@ -1,0 +1,15 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.PhotographForm
+
+@{
+    var vmc = new FileUploadViewModelCollection(Model);
+}
+
+<p><strong>Note:</strong> Applications submitted with screenshots from Google Maps will be deemed incomplete.</p>
+
+@Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(PhotographForm.PHOTO_FRONT_KEY, "Select Front Photo"))
+@Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(PhotographForm.PHOTO_RIGHT_KEY, "Select Right Photo"))
+@Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(PhotographForm.PHOTO_LEFT_KEY, "Select Left Photo"))
+@Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(PhotographForm.PHOTO_BACK_KEY, "Select Back Photo (optional)"))

@@ -1,0 +1,32 @@
+﻿@using Newtonsoft.Json
+@using Subdivisionary.Helpers
+@using Subdivisionary.ViewModels
+@model SignatureCollectionViewModel
+
+@{
+    var sigs = Model.GenerateSignatureViewModels();
+    int k = 0;
+}
+
+@foreach (var sig in sigs)
+{
+    var idName = "signatureAt" + k;
+
+    <div class="signatureForm" >
+        <h4>
+            Signature for @sig.SignerName
+            <button id="@idName-clear" class="btn btn-circle btn-danger js-clear" type="button" style="float: right;" data-for="#@idName">
+                <i class="fa fa-eraser"></i>
+            </button>
+            <button id="@idName-upload" class="btn btn-circle btn-primary js-upload" type="button" style="float: right;" data-for="#@idName">
+                <i class="fa fa-cloud-upload"></i>
+            </button>
+        </h4>
+        <div class="bsmSignature" id="@idName" data-uploadbtn="#@idName-upload" data-clearBtn="#@idName-clear" data-url="@Url.Action("Sign", "Applications", new {id = Model.FormId})" data-deleteurl="@Url.Action("Unsign", "Applications", new {id = Model.FormId})" data-vm="@CustomHtmlHelper.EncodeJson(sig)">
+            <p class="datestamp">
+            </p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    k++;
+}

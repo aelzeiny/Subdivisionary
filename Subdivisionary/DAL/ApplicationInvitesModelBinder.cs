@@ -7,13 +7,12 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using Subdivisionary.Models.Collections;
-using ModelBindingContext = System.Web.Http.ModelBinding.ModelBindingContext;
 
 namespace Subdivisionary.DAL
 {
     public class ApplicationInvitesModelBinder : CustomIFormModelBinder
     {
-        public override object BindModel(ControllerContext controllerContext, System.Web.Mvc.ModelBindingContext bindingContext)
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             List<EmailInfo> answer = new List<EmailInfo>();
             var form = controllerContext.HttpContext.Request.Form;

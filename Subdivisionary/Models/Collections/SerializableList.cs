@@ -10,13 +10,18 @@ using Microsoft.Ajax.Utilities;
 
 namespace Subdivisionary.Models.Collections
 {
+    public interface ICollectionAdd
+    {
+        void AddObject(object o);
+        void AddObjectUntilIndex(int index, object value, object blankItem);
+    }
     /// <summary>
     /// Entity Framework does not allow lists of any kind in databases, but sometimes
     /// we need an array alternative. Csv List uses strings to serialize 
     /// an array of objects as a Comma-seperated-value list.
     /// </summary>
     [ComplexType]
-    public abstract class SerializableList<T> : ICollection<T>
+    public abstract class SerializableList<T> : ICollection<T>, ICollectionAdd
     {
         /// <summary>
         /// DO NOT alter value of the seperator. Lists are forever comma seperated. Character conflicts are
@@ -129,13 +134,24 @@ namespace Subdivisionary.Models.Collections
         /// <returns>Serialized Object</returns>
         protected abstract string[] SerializeObject(T serialize);
 
+        #region Useful Iterface Implementation
+        public void AddObject(object item)
+        {
+            this.Add((T)item);
+        }
+
+        public void AddObjectUntilIndex(int index, object item, object blankItem)
+        {
+            this.AddUntilIndex(index, (T)item, (T)blankItem);
+        }
+        #endregion
+
         #region Boring ICollection Stuff
 
         public int IndexOf(T item)
         {
             return data.IndexOf(item);
         }
-
         public void Add(T item)
         {
             data.Add(item);

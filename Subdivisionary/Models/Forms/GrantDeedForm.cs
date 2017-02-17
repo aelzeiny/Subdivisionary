@@ -12,81 +12,40 @@ using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class GrantDeedForm : Form, IUploadableFileForm, ICollectionForm
+    public class GrantDeedForm : UploadableFileForm, ICollectionForm
     {
         public override string DisplayName => "Grant Deeds";
-
-        [FileUploadRequired]
-        public FileUploadList GrantPiqFile { get; set; }
-        [FileUploadRequired]
-        public FileUploadList GrantAdjoinerFiles { get; set; }
+        
+        public override ICollection<FileUploadInfo> FileUploads { get; set; }
 
         public ApnList ApnList { get; set; }
 
-        private static readonly string GRANT_PIQ_KEY = "grantPIQId";
-        private static readonly string GRANT_ADJOINER_KEY = "grantAdjoinerId";
-        private static readonly string GRANT_DIRECTORY = "Grant Deed";
+        public static readonly string GRANT_PIQ_KEY = "grantPIQId";
+        public static readonly string GRANT_ADJOINER_KEY = "grantAdjoinerId";
+        public static readonly string GRANT_DIRECTORY = "Grant Deed";
+
+        public static readonly string APN_KEY = "apnInfoId";
+        public string[] Keys => new[] { APN_KEY };
 
         public GrantDeedForm()
         {
-            GrantPiqFile = new FileUploadList();
-            GrantAdjoinerFiles = new FileUploadList();
             ApnList = new ApnList();
         }
-
-        #region IUploadableFileForm Implementation
-        public FileUploadProperty[] FileUploadProperties()
+        
+        public override FileUploadProperty[] FileUploadProperties => new []
         {
-            FileUploadProperty[] property = new FileUploadProperty[2]
-            {
-                new FileUploadProperty(this.Id, GRANT_PIQ_KEY, GRANT_DIRECTORY, "Deed PIQ"),
-                new FileUploadProperty(this.Id, GRANT_ADJOINER_KEY, GRANT_DIRECTORY, "Deed Adjoiner", false)
-            };
-            return property;
+            new FileUploadProperty(this.Id, GRANT_PIQ_KEY, GRANT_DIRECTORY, "Deed PIQ", false),
+            new FileUploadProperty(this.Id, GRANT_ADJOINER_KEY, GRANT_DIRECTORY, "Deed Adjoiner", false)
+        };
+
+        public ICollectionAdd GetListCollection(string key)
+        {
+            return ApnList;
         }
 
-        public FileUploadList GetFileUploadList(string key)
-        {
-            if (key == GRANT_PIQ_KEY)
-            {
-                return GrantPiqFile;
-            }
-            else if (key == GRANT_ADJOINER_KEY)
-            {
-                return GrantAdjoinerFiles;
-            }
-            return null;
-        }
-
-        public void SyncFile(string key, FileUploadInfo file)
-        {
-            if (key == GRANT_PIQ_KEY)
-            {
-                GrantPiqFile.Clear();
-                GrantPiqFile.Add(file);
-            }
-            else if(key == GRANT_ADJOINER_KEY)
-            {
-                GrantAdjoinerFiles.Add(file);
-            }
-        }
-        #endregion
-
-        #region IListForm Implementation
-        public ICollection GetListCollection()
-        {
-            return ApnList.ToList();
-        }
-
-        public object GetEmptyItem()
+        public object GetEmptyItem(string key)
         {
             return new ApnInfo();
         }
-
-        public void ModifyCollection(int index, object newValue)
-        {
-            ApnList.AddUntilIndex(index, newValue as ApnInfo, GetEmptyItem() as ApnInfo);
-        }
-        #endregion
     }
 }

@@ -1,0 +1,28 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model NeighborhoodNotificationForm
+
+@{
+    var vms = new FileUploadViewModelCollection(Model);
+    var vmList = vms.GetViewModel(NeighborhoodNotificationForm.NEIGHBORHOOD_NOTICE_LIST_KEY, Model.Is300FootNotice ? "Contact List for Radius Map" : "Contact List for building owners & tenants");
+    var vmMap = vms.GetViewModel(NeighborhoodNotificationForm.NEIGHBORHOOD_NOTICE_300_FOOT_RADIUS_KEY, "300 Foot Radius Map");
+}
+<p>
+    <strong>Information: </strong> Please note that Expedited Condominium Conversion Projects with more than four units, Lot-Line Adjustments,
+    and New Construction Condominiums all require a 300 foot radius map.
+</p>
+@Html.Partial("_FileUploadPropsEditor", vmList)
+
+@if (vmMap != null)
+{
+    <p>
+        <strong>Note: </strong> This project requires that a neighborhood notification letter to be distributed to all addresses within a 300 foot radius for a chance to appeal the subdivision upon tentative map approval.
+    </p>
+    @Html.Partial("_FileUploadPropsEditor", vmMap)
+}
+else
+{
+    <p>
+        <strong>Note: </strong> This project requires that a neighborhood notification letter to be distributed to all building owners and tenants for a chance to appeal the subdivision upon tentative map approval.
+    </p>
+}

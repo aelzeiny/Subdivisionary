@@ -1,0 +1,9 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model ClosureCalcsForm
+    
+@{
+    FileUploadViewModelCollection vmc = new FileUploadViewModelCollection(Model);
+}
+    
+@Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(ClosureCalcsForm.CLOSURE_CALCS_KEY,"Select Closure Calculations"))

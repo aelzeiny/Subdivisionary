@@ -1,0 +1,22 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model TentativeMapForm
+
+<h4>Tentative Map Type</h4>
+<div class="col-xs-12">
+    @Html.LabelFor(m => m.IsFinalMap, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.IsFinalMap, new { @class = "big-checkbox center-div", style = "text-align: center; vertical-align: middle; float:right;", disabled = "disabled" })
+    @Html.ValidationMessageFor(m => m.IsFinalMap)
+</div>
+<div class="col-xs-12">
+    @Html.LabelFor(m => m.IsVestingMap, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.IsVestingMap, new { @class = "big-checkbox center-div", style = "text-align: center; vertical-align: middle; float:right;" })
+    @Html.ValidationMessageFor(m => m.IsVestingMap)
+</div>
+<h4>Tentative Map Upload</h4>
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Please upload a signed tentative map provided by a licensed surveyor",
+    UploadList = @Model.FileUploads,
+    UploadProperty = @Model.GetFileUploadInfo(TentativeMapForm.TENTATIVE_MAP_KEY)
+})

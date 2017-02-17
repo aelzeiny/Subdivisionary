@@ -1,0 +1,17 @@
+﻿@model ApplicationCheckForm
+@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+
+<h3 style="font-style: italic; font-weight: normal;">Can be replaced by a payment gateway</h3>
+
+@{
+    FileUploadViewModelCollection vmc = new FileUploadViewModelCollection(Model);
+}
+@Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(ApplicationCheckForm.CHECK_KEY, "Select Closure Calculations"))
+
+<div class="form-group">
+    <h3>Checks</h3>
+
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<CheckInfo>(ApplicationCheckForm.CHECKCOLL_KEY, Model.ChecksList, new CheckInfo()));
+</div>

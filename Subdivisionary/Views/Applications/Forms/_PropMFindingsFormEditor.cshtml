@@ -1,0 +1,72 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.PropMFindingsForm
+
+<h3>EIGHT PRIORITY GENERAL PLAN POLICIES</h3>
+
+<p>
+    As a result of the passage of Proposition M (Section 101.1 of the San Francisco Planning Code), findings that demonstrate consistency with the eight priority policies of Section 101.1 must be presented to the Department of City Planning as part of your project application review for general conformity with San Francisco’s General Plan.
+</p>
+<p>
+    Photographs of the subject property are required for priority policy review and must be submitted as part of the application.
+</p>
+<p>
+    <strong>INSTRUCTIONS TO APPLICANTS:</strong>  Please present information in detail about how your application relates to each of the eight priority policies listed below. The application will be found to be incomplete if the responses are not thorough.
+</p>
+
+<div class="form-group col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.CityPlanningCaseNo, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.CityPlanningCaseNo, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.CityPlanningCaseNo)
+</div>
+<div class="form-group col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.PropMDate, new { @class = "control-label" })
+    @Html.EditorFor(m => m.PropMDate, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.PropMDate)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion1, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion1, new { @class = "form-control", placeholder = "Please answer question #1 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion1)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion2, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion2, new { @class = "form-control", placeholder = "Please answer question #2 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion2)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion3, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion3, new { @class = "form-control", placeholder = "Please answer question #3 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion3)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion4, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion4, new { @class = "form-control", placeholder = "Please answer question #4 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion4)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion5, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion5, new { @class = "form-control", placeholder = "Please answer question #5 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion5)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion6, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion6, new { @class = "form-control", placeholder = "Please answer question #6 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion6)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion7, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion7, new { @class = "form-control", placeholder = "Please answer question #7 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion7)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.PropMQuestion8, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.PropMQuestion8, new { @class = "form-control", placeholder = "Please answer question #8 in detail." })
+    @Html.ValidationMessageFor(m => m.PropMQuestion8)
+</div>
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel()
+{
+    FormId = Model.Id,
+    Infos = Model.Signatures,
+    Properties = Model.SignatureUploadProperties
+})

@@ -1,0 +1,13 @@
+﻿@model Subdivisionary.Models.Forms.OwnerForm
+@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+
+<h2>All Legal Owners</h2>
+<p>
+    <strong>Note:</strong> Please enter all legal owners of record for the stated parcel. For simplification, married couples can be
+    entered as one owner (must be supported via Grant Deeds or Preliminary Title Report).
+</p>
+
+@Html.Partial("CollectionEditors/_CollectionEditor",
+    new ListEditorViewModel<OwnerInfo>(OwnerForm.OWNERS_KEY, Model.Owners, new OwnerInfo(), false))

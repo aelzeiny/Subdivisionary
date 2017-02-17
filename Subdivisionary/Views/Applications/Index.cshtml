@@ -58,7 +58,7 @@ else
     {
         var appType = inputSelects[i];
         rawInputOptions.Append("{");
-        rawInputOptions.Append(string.Format("text:\"{0}\",value:\"{1}\"", appType.Text.ToString(), appType.Value.ToString()));
+        rawInputOptions.Append($"text:\"{appType.Text.ToString()}\",value:\"{appType.Value.ToString()}\"");
         rawInputOptions.Append("}");
         if (i != inputSelects.Count - 1)
         {

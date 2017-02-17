@@ -17,15 +17,21 @@ namespace Subdivisionary.Helpers
         private static readonly string CONNECTION_KEY = CloudConfigurationManager.GetSetting("StorageAccountKey");
 
         /// <summary>
-        /// Container Names for Azure Blob cannot defy the naming conventions.
+        /// Container Owners for Azure Blob cannot defy the naming conventions.
         /// (alphanumeric, all lowercase, & dashes only)
         /// </summary>
         /// <param name="application"></param>
         /// <returns></returns>
         public static string GetContainerName(Application application)
         {
-            return Regex.Replace($"{application.Id}-{application.DisplayName}", @"[^A-Za-z0-9-]+", "").ToLower();
+            return ContainerRuleConvention($"{application.Id}-{application.DisplayName}");
         }
+
+        public static string ContainerRuleConvention(string desiredName)
+        {
+            return Regex.Replace(desiredName, @"[^A-Za-z0-9-]+", "").ToLower();
+        }
+
         public static CloudStorageAccount GetConnectionString()
         {
             string connectionString =

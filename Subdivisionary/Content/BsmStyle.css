@@ -212,7 +212,22 @@ button.j-removeBtn {
     margin-top: -5px;
 }
 
-.bsmSignature {
+/** Signatures **/
+
+/* Remove all Click Events from Canvas when JSignature is Disabled */
+.bsmSignature.disabled {
+    pointer-events: none;
     background-color: #EEF1F7;
+}
+
+.bsmSignature {
+    background: aliceblue;
     color: #456CAA;
+    margin-bottom: 30px;
+}
+
+.datestamp {
+    text-align: right;
+    font-style: italic;
+    color: #16455F;
 }

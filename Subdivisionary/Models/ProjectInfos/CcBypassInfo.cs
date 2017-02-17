@@ -19,5 +19,12 @@ namespace Subdivisionary.Models.ProjectInfos
         {
             NumberOfUnits = 2;
         }
+
+
+
+        public bool IsFinalMap()
+        {
+            return this.NumberOfUnits > Applications.Application.MAX_PARCEL_MAP_UNITS;
+        }
     }
 }

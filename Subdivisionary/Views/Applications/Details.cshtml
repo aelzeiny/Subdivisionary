@@ -15,7 +15,7 @@
 
 @{
     var forms = Model.Application.GetOrderedForms();
-    IForm activeForm = null;
+    IForm activeForm = Model.Form;
     var allSubmitted = Model.Application.AllFormsSubmitted();
 }
 <div class="row">
@@ -29,7 +29,10 @@
                 if (i == Model.EditId)
                 {
                     liClass = "active";
-                    activeForm = form;
+                    if (activeForm == null)
+                    {
+                        activeForm = form;
+                    }
                 }
                 var icon = form.IsAssigned ? "fa fa-check" : (form.IsRequired ? "fa fa-times" : "fa fa-minus");
                 <li role="presentation" class="@liClass">
@@ -85,59 +88,18 @@
 
 
 @section Scripts {
-    @if (activeForm is IUploadableFileForm)
+    @if (activeForm is UploadableFileForm)
     {
-
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $(".file-loading").each(function () {
-                    var up = $(this);
-                    console.log(up.data("files"));
-                    var files = up.data("files").split(",");
-                    var sizes = up.data("sizes").split(",");
-                    var types = up.data("types").split(",");
-                    var urls = up.data("urls").split(",");
-                    var initialConfigs = new Array();
-                    if (files[0]) {
-                        for (var i = 0; i < files.length; i++) {
-                            initialConfigs.push({
-                                type: types[i],
-                                size: sizes[i],
-                                caption: up.data("captions"),
-                                url: urls[i]
-                            });
-                        }
-                    } else {
-                        files.length = 0;
-                    }
-                    console.log(initialConfigs);
-                    up.fileinput({
-                        theme: "fa",
-                        showUpload: true,
-                        uploadAsync: true,
-                        overwriteInitial: false,
-                        uploadUrl: up.data("callback"),
-                        maxFileSize: up.data("maxFileSize"),
-                        maxFileCount: up.data("maxFileCount"),
-                        allowedFileExtensions: up.data("extensions").split(","),
-                        initialPreview: files,
-                        initialPreviewAsData: true,
-                        initialPreviewFileType: 'image',
-                        initialPreviewConfig: initialConfigs
-                    });
-                });
-            });
-        </script>
-        @*<script type="text/javascript">
-            $(document)
-                .ready(function() {
-                    @Html.RenderUploadableFileJavascript((IUploadableFileForm) activeForm, Server)
-
-                });
-        </script>*@
+        <script src="/Scripts/site-fileinput.js"></script>
+    }
+    @if (activeForm is ISignatureForm)
+    {
+        <script src="/Scripts/site-jsignature.js"></script>
     }
     @if (activeForm is ICollectionForm)
     {
-        @Html.Partial("CollectionEditors/_CollectionFormJavascript", (ICollectionForm) activeForm)
+        //@Html.Partial("CollectionEditors/_CollectionFormJavascript", (ICollectionForm) activeForm)
+        <script src="/Scripts//site-icollection.js"></script>
     }
+    @Html.Partial("_FormJavascript", activeForm)
 }

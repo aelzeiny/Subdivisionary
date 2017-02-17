@@ -9,7 +9,10 @@ namespace Subdivisionary.Models.Forms
 {
     public class OwnerForm : Form, ICollectionForm
     {
-        public override string DisplayName => "Legal Owners";
+        public override string DisplayName => "Property Owners";
+
+        public string[] Keys => new[] { OWNERS_KEY };
+        public static readonly string OWNERS_KEY = "ownersId";
 
         public OwnerList Owners { get; set; }
 
@@ -18,19 +21,14 @@ namespace Subdivisionary.Models.Forms
             Owners = new OwnerList();
         }
         
-        public ICollection GetListCollection()
+        public ICollectionAdd GetListCollection(string key)
         {
-            return Owners.ToList();
+            return Owners;
         }
 
-        public object GetEmptyItem()
+        public object GetEmptyItem(string key)
         {
             return new OwnerInfo();
-        }
-
-        public void ModifyCollection(int index, object newValue)
-        {
-            Owners.AddUntilIndex(index, (OwnerInfo) newValue, new OwnerInfo());
         }
     }
 }

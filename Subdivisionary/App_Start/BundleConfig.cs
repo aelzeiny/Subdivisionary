@@ -22,19 +22,21 @@ namespace Subdivisionary
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/moment.js",
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootbox.js",
+                      "~/Scripts/respond.js",
                       "~/Scripts/jSignature.min.js",
-                      //"~/Scripts/signature_pad.js",
                       "~/Scripts/fileinput.js",
                       "~/Content/bootstrap-fileinput/themes/fa/theme.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/toastr.js"
+            ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-cerulean.css",
                       "~/Content/datatables/css/datatables.bootstrap.css",
                       "~/Content/font-awesome.css",
-                      //"~/Content/signature-pad.css",
+                      "~/Content/toastr.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-fileinput/css/fileinput.css",
                       "~/Content/BsmStyle.css"));
