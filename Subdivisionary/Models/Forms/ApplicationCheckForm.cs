@@ -12,10 +12,9 @@ using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class ApplicationCheckForm : Form, IUploadableFileForm, ICollectionForm
+    public class ApplicationCheckForm : UploadableFileForm, ICollectionForm
     {
-        [FileUploadRequired]
-        public FileUploadList ChecksUploadList { get; set; }
+        public override ICollection<FileUploadInfo> FileUploads { get; set; }
 
         public CheckList ChecksList { get; set; }
 
@@ -23,46 +22,30 @@ namespace Subdivisionary.Models.Forms
 
         public static readonly string CHECK_DIRECTORY = "App Fees";
         public static readonly string CHECK_KEY = "appFeesId";
+        public static readonly string CHECKCOLL_KEY = "checkCollFeesId";
+
+        public string[] Keys => new[] { CHECKCOLL_KEY };
 
 
         public ApplicationCheckForm()
         {
-            ChecksUploadList = new FileUploadList();
             ChecksList = new CheckList();
         }
 
-        public FileUploadProperty[] FileUploadProperties()
+        public override FileUploadProperty[] FileUploadProperties => new[]
         {
-            FileUploadProperty[] property = 
-            {
-                new FileUploadProperty(this.Id, CHECK_KEY, CHECK_DIRECTORY, "Check") { IsSingleUpload = false}
-            };
-            return property;
+            new FileUploadProperty(this.Id, CHECK_KEY, CHECK_DIRECTORY, "Check") {IsSingleUpload = false}
+        };
+
+        /***** ICollectionForm Implementation *****/
+        public ICollectionAdd GetListCollection(string key)
+        {
+            return ChecksList;
         }
 
-        public FileUploadList GetFileUploadList(string key)
-        {
-            return (key == CHECK_KEY) ? ChecksUploadList : null;
-        }
-
-        public void SyncFile(string key, FileUploadInfo file)
-        {
-            this.ChecksUploadList.Add(file);
-        }
-
-        public ICollection GetListCollection()
-        {
-            return ChecksList.ToList();
-        }
-
-        public object GetEmptyItem()
+        public object GetEmptyItem(string key)
         {
             return new CheckInfo();
-        }
-
-        public void ModifyCollection(int index, object newValue)
-        {
-            ChecksList.AddUntilIndex(index, newValue as CheckInfo, GetEmptyItem() as CheckInfo);
         }
     }
 }

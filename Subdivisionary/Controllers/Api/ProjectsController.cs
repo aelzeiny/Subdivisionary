@@ -7,6 +7,7 @@ using System.Web.Http;
 using AutoMapper;
 using Subdivisionary.DAL;
 using Subdivisionary.Dtos;
+using Subdivisionary.Models;
 using Subdivisionary.Models.ProjectInfos;
 
 namespace Subdivisionary.Controllers.Api

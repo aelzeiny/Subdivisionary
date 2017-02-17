@@ -20,6 +20,8 @@ namespace Subdivisionary.Models.ProjectInfos
     /// </summary>
     public class BasicProjectInfo : IForm, ICollectionForm
     {
+        public static readonly string APN_INFO_KEY = "apnInfoId";
+
         public int Id { get; set; }
         public int ApplicationId { get; set; }
         public Application Application { get; set; }
@@ -34,6 +36,8 @@ namespace Subdivisionary.Models.ProjectInfos
 
         public virtual string DisplayName => "Project Information";
 
+        public string[] Keys => new[] { APN_INFO_KEY };
+
         public BasicProjectInfo()
         {
             PrimaryContactInfo = new ContactInfo();
@@ -41,30 +45,25 @@ namespace Subdivisionary.Models.ProjectInfos
             AddressList = new AddressList();
         }
 
-        public void CopyValues(IForm other)
+        public void CopyValues(IForm other, bool reverse)
         {
             var type = this.GetType();
             foreach (var props in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
-                if (props.CanWrite && props.Name != nameof(Id) && props.Name != nameof(ApplicationId) && props.Name != nameof(Application))
+                if (props.CanWrite && (reverse ^ (props.Name != nameof(Id) && props.Name != nameof(ApplicationId) && props.Name != nameof(Application))))
                     props.SetValue(this, props.GetValue(other));
             }
             IsAssigned = true;
         }
 
-        public ICollection GetListCollection()
+        public ICollectionAdd GetListCollection(string name)
         {
-            return AddressList.ToList();
+            return AddressList;
         }
 
-        public object GetEmptyItem()
+        public object GetEmptyItem(string name)
         {
             return new ParcelInfo();
-        }
-
-        public void ModifyCollection(int index, object newValue)
-        {
-            AddressList.AddUntilIndex(index, (ParcelInfo)newValue, (ParcelInfo)GetEmptyItem());
         }
 
         public override string ToString()

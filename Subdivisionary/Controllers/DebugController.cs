@@ -18,6 +18,7 @@ using Subdivisionary.Helpers;
 using Subdivisionary.Models;
 using Subdivisionary.Models.Applications;
 using Subdivisionary.Models.Forms;
+using Subdivisionary.ViewModels;
 
 namespace Subdivisionary.Controllers
 {
@@ -41,6 +42,11 @@ namespace Subdivisionary.Controllers
             return View();
         }
 
+        public ActionResult Signatures()
+        {
+            return View();
+        } 
+
         public Applicant GetCurrentApplicant()
         {
             var user = GetCurrentUser();
@@ -54,5 +60,45 @@ namespace Subdivisionary.Controllers
                 .FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
         }
 
+        public ActionResult RenderPdfAsHtml()
+        {
+            return View();
+        }
+
+        public ActionResult SeedApplication()
+        {
+            DebugApplication application = Application.FactoryCreate<DebugApplication>();
+            application.ProjectInfo.PrimaryContactInfo = new ContactInfo()
+            {
+                AddressLine1 = "test",
+                AddressLine2 = "test",
+                City = "test",
+                Email = "test",
+                Name = "John Doe",
+                State = "CA",
+                Zip = "00000"
+            };
+            application.ProjectInfo.OwnerContactInfo = new ContactInfo()
+            {
+                AddressLine1 = "test",
+                AddressLine2 = "test",
+                City = "test",
+                Email = "test",
+                Name = "John Doe",
+                State = "CA",
+                Zip = "00000"
+            };
+            GetCurrentApplicant().Applications.Add(application);
+            _context.Applications.Add(application);
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Applications", new {id = application.Id});
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Sign(SignatureViewModel signature)
+        {
+            System.Threading.Thread.Sleep(3000);
+            return Content("hello world");
+        }
     }
 }

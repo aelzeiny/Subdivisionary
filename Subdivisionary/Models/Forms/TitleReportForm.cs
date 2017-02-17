@@ -11,14 +11,12 @@ using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class TitleReportForm : Form, IUploadableFileForm, ICollectionForm
+    public class TitleReportForm : UploadableFileForm, ICollectionForm
     {
         public TitleCompany TitleCompany { get; set; }
         
         public override string DisplayName => "Preliminary Title Report";
-
-        [FileUploadRequired]
-        public FileUploadList PtrFile { get; set; }
+        
         public PtrContactList PtrContactList { get; set; }
 
         [Required]
@@ -29,48 +27,30 @@ namespace Subdivisionary.Models.Forms
         [DisplayName("Other Title Company (if applicable)")]
         public string OtherTitleCompany { get; set; }
 
-        private static readonly string PTR_KEY = "ptrId";
-        private static readonly string PTR_DIRECTORY = "PTR";
+        public static readonly string PTR_KEY = "ptrId";
+        public static readonly string PTR_DIRECTORY = "PTR";
+
+        public static readonly string CONTACT_KEY = "ptrCollectionId";
+        public string[] Keys => new[] { CONTACT_KEY };
 
         public TitleReportForm()
         {
-            PtrFile = new FileUploadList();
             PtrContactList = new PtrContactList();
-            //TitleCompany = TitleCompany.Other;
         }
 
-        public FileUploadProperty[] FileUploadProperties()
+        public override FileUploadProperty[] FileUploadProperties => new []
         {
-            return new FileUploadProperty[]
-            {
-                new FileUploadProperty(this.Id, PTR_KEY, PTR_DIRECTORY, "PTR"), 
-            };
-        }
+            new FileUploadProperty(this.Id, PTR_KEY, PTR_DIRECTORY, "PTR"), 
+        };
 
-        public FileUploadList GetFileUploadList(string key)
+        public ICollectionAdd GetListCollection(string key)
         {
-            return PtrFile;
+            return PtrContactList;
         }
 
-        public void SyncFile(string key, FileUploadInfo file)
-        {
-            PtrFile.Clear();
-            PtrFile.Add(file);
-        }
-
-        public ICollection GetListCollection()
-        {
-            return PtrContactList.ToList();
-        }
-
-        public object GetEmptyItem()
+        public object GetEmptyItem(string key)
         {
             return new PtrContactInfo();
-        }
-
-        public void ModifyCollection(int index, object newValue)
-        {
-            PtrContactList.AddUntilIndex(index, (PtrContactInfo)newValue, (PtrContactInfo)GetEmptyItem());
         }
     }
     

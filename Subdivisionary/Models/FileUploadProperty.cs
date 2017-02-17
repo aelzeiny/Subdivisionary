@@ -9,34 +9,28 @@ namespace Subdivisionary.Models
 {
     public struct FileUploadProperty
     {
-        public static int DEFAULT_MAX_COUNT = 10;
-        public static int DEFAULT_MAX_SIZE = 10000;
-        public static string[] DEFAULT_EXTENSIONS = new string[] {
-                            "pdf", "gif", "png", "jpg", "jpeg", "doc", "docx", "xls", "xlsx", "PNG", "GIF", "JPG", "JPEG"};
-
-        [NotMapped]
+        public static readonly int DEFAULT_MAX_COUNT = 10;
+        public static readonly int DEFAULT_MAX_SIZE = 10000;
+        public static readonly string[] DEFAULT_EXTENSIONS = {"pdf", "gif", "png", "jpg", "jpeg", "doc", "docx", "xls", "xlsx", "PNG", "GIF", "JPG", "JPEG"};
+        
         public bool IsSingleUpload { get; set; }
-        [NotMapped]
+        public bool IsRequiredUpload { get; set; }
         public string StandardName { get; set; }
-        [NotMapped]
         public string UniqueKey { get; set; }
-        [NotMapped]
         public string FolderPath { get; set; }
-        [NotMapped]
         public int FormId { get; set; }
-        [NotMapped]
         public int MaxFileSize { get; set; }
-        [NotMapped]
         public int MaxFileCount { get;  set; }
-        [NotMapped]
         public List<string> Extensions { get; set; }
 
-        public FileUploadProperty(int formId, string uniqueKey, string folderPath, string standardName, bool isSingleUpload=true)
+        public FileUploadProperty(int formId, string uniqueKey, string folderPath, string standardName,
+            bool isSingleUpload=true, bool isRequiredUpload = true)
         {
             FormId = formId;
             UniqueKey = uniqueKey;
             StandardName = standardName;
             IsSingleUpload = isSingleUpload;
+            IsRequiredUpload = isRequiredUpload;
             FolderPath = folderPath;
             
             MaxFileSize = DEFAULT_MAX_SIZE;

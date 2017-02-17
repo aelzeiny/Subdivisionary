@@ -1,0 +1,15 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model CoverLetterForm
+<h4>
+    <a href="@CoverLetterForm.SAMPLE_COVER_LETTER_URL">
+        Click here to download a sample cover letter <i class="fa fa-file-pdf-o"></i>
+    </a>
+</h4>
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage =  "Please upload the project's cover letter",
+    UploadList = @Model.FileUploads,
+    UploadProperty = @Model.GetFileUploadInfo(CoverLetterForm.COVER_LETTER_KEY)
+})

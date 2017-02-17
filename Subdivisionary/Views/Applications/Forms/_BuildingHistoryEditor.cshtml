@@ -1,0 +1,13 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model BuildingHistory
+  
+<div class="form-group">
+    @Html.LabelFor(m => m.StatementOfRepairsAndImprovements, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.StatementOfRepairsAndImprovements, new { @class = "form-control", placeholder = "Please answer question #1 in detail." })
+    @Html.ValidationMessageFor(m => m.StatementOfRepairsAndImprovements)
+</div>
+
+@Html.Partial("CollectionEditors/_CollectionEditor",
+    new ListEditorViewModel<PermitInfo>(OwnerForm.OWNERS_KEY, Model.PermitList, new PermitInfo())))

@@ -1,9 +1,0 @@
-﻿@using Subdivisionary.ViewModels
-@model Subdivisionary.Models.Forms.ClosureCalcsForm
-    
-@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
-{
-    LabelMessage = "Select Closure Calculations",
-    UploadProperty = Model.FileUploadProperties()[0],
-    UploadList = Model.GetFileUploadList("")
-})

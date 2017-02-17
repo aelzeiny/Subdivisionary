@@ -1,0 +1,9 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.OwnersAffidavitOfTentantEvictions
+        
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel()
+{
+    FormId = Model.Id,
+    Infos = Model.Signatures,
+    Properties = Model.SignatureUploadProperties
+})

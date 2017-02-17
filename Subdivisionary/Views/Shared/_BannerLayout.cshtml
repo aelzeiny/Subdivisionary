@@ -1,31 +1,42 @@
 ﻿<!DOCTYPE html>
 <html lang="en-us">
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>@ViewBag.Title - Subdivisionary</title>
-	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>@ViewBag.Title - Subdivisionary</title>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
 	
-	<!--[if lt IE 9]>
-	    <script type="text/javascript" src="Scripts/flashcanvas.js"></script>
-	<![endif]-->
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="Scripts/flashcanvas.js"></script>
+		<![endif]-->
 
-	@Styles.Render("~/Content/css")
-	@Scripts.Render("~/bundles/modernizr")
-	<meta name="description" content="The description of my page" />
-</head>
-<body>
-	<h1 class="banner">@ViewBag.Banner</h1>
-	@Html.Partial("_NavBar")
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<p>&copy; @DateTime.Now.Year - Subdivisionary</p>
-		</footer>
-	</div>
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/bootstrap")
-	@RenderSection("scripts", required: false)
-</body>
+		@Styles.Render("~/Content/css")
+		@Scripts.Render("~/bundles/modernizr")
+		<meta name="description" content="The description of my page" />
+	</head>
+	<body>
+		<h1 class="banner">@ViewBag.Banner</h1>
+		@Html.Partial("_NavBar")
+		<div class="container body-content">
+			@RenderBody()
+			<hr />
+			<footer>
+				<p>&copy; @DateTime.Now.Year - Subdivisionary</p>
+			</footer>
+		</div>
+		@Scripts.Render("~/bundles/jquery")
+		@Scripts.Render("~/bundles/bootstrap")
+	<script type="text/javascript">
+		toastr.options = {
+			"debug": false,
+			"positionClass": "toast-bottom-full-width",
+			"onclick": null,
+			"fadeIn": 300,
+			"fadeOut": 1000,
+			"timeOut": 5000,
+			"extendedTimeOut": 1000
+		}
+	</script>
+		@RenderSection("scripts", required: false)
+	</body>
 </html>

@@ -1,0 +1,14 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model RecordedMapsOnBlock
+
+@{
+    var vm = new FileUploadViewModelCollection(Model); 
+}
+
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(RecordedMapsOnBlock.RECORDED_ALPHA_KEY, "Alpha Maps"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(RecordedMapsOnBlock.RECORDED_ASSESSOR_KEY, "Alpha Block Maps"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(RecordedMapsOnBlock.RECORDED_KEYMAPS_KEY, "Dedication, Grade, and Monument Maps"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(RecordedMapsOnBlock.RECORDED_HISTORIC_KEY, "Historic Block Diagrams"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(RecordedMapsOnBlock.RECORDED_RECORDEDMAPS_KEY, "Recorded Maps"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(RecordedMapsOnBlock.RECORDED_OTHER_MAPS_KEY, "Other Maps (such as Corner Records, A-Maps, Q-Maps, and Field Notes)"))

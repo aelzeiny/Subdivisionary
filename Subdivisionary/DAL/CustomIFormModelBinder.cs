@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace Subdivisionary.DAL
 {
     public class CustomIFormModelBinder : DefaultModelBinder
     {
-        public static readonly string ENTRY_CLASS_KEY = "Form.Entries[]";
+        public static readonly string ENTRY_CLASS_KEY = "Entries[].";
         public static readonly string ENTRY_ID_KEY = ENTRY_CLASS_KEY.Replace('.','_').Replace('[','_').Replace(']','_');
 
         /// <summary>
@@ -123,44 +124,20 @@ namespace Subdivisionary.DAL
         {
             var form = controllerContext.HttpContext.Request.Form;
             NameValueCollection collection = FilterPropertyCollection(form, ENTRY_CLASS_KEY);
-            for (int i = 0; true; i++)
+            foreach (var nameKey in answer.Keys)
             {
-                string key = ENTRY_CLASS_KEY + i;
-                NameValueCollection entryCollection = FilterPropertyCollection(collection, key);
-                if (!entryCollection.HasKeys())
-                    break;
-                var obj = ParseObject(bindingContext, key, entryCollection, answer.GetEmptyItem().GetType());
-                answer.ModifyCollection(i, obj);
+                var entryType = answer.GetEmptyItem(nameKey).GetType();
+                var mCollection = answer.GetListCollection(nameKey);
+                for (int i = 0; true; i++)
+                {
+                    string key = ENTRY_CLASS_KEY + nameKey + i;
+                    NameValueCollection entryCollection = FilterPropertyCollection(collection, key);
+                    if (!entryCollection.HasKeys())
+                        break;
+                    var obj = ParseObject(bindingContext, key, entryCollection, entryType);
+                    mCollection.AddObjectUntilIndex(i, obj, null);
+                }
             }
-        }
-
-        /// <summary>
-        /// Sync Uplaoded Files to Form. Note that we need server access to do this, so a good majority of this shouldn't be inside the model binder.
-        /// </summary>
-        protected void SyncFileForm(ControllerContext controllerContext, ModelBindingContext bindingContext, IUploadableFileForm fileForm)
-        {
-            /*FileUploadProperty[] fileUploadProperty = fileForm.FileUploadProperties();
-            HttpFileCollectionBase requestFiles = controllerContext.RequestContext.HttpContext.Request.Files;
-            for (int i = 0; i < requestFiles.Count; i++)
-            {
-                var file = requestFiles[i];
-                if (file == null || file.ContentLength <= 0)
-                    continue;
-                string key = requestFiles.AllKeys[i];
-                FileUploadProperty uploadProperty = fileUploadProperty.FirstOrDefault(x => x.UniqueKey == key);
-                if (uploadProperty.UniqueKey != key) // if no key found
-                    continue; // continue to next file
-
-                // Now upload all files
-                string directory = Path.Combine("", uploadProperty.FolderPath);
-                DirectoryHelper.EnsureDirectoryExists(directory);
-                FileUploadList savedBasicFiles = fileForm.GetFileUploadList(uploadProperty.UniqueKey);
-                if (uploadProperty.IsSingleUpload && savedBasicFiles.Count > 0)
-                    new FileInfo(Server.MapPath(savedBasicFiles.First())).Delete();
-                string fileName = DirectoryHelper.FindUntakenFilename(directory, uploadProperty.StandardName, Path.GetExtension(file.FileName));
-                file.SaveAs(fileName);
-                fileForm.SyncFile(uploadProperty.UniqueKey, Server.UnmapPath(fileName));
-            }*/
         }
 
         /// <summary>

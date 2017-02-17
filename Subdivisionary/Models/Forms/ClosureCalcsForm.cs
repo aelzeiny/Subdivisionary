@@ -9,38 +9,16 @@ using Subdivisionary.Models.Validation;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class ClosureCalcsForm : Form, IUploadableFileForm
+    public class ClosureCalcsForm : UploadableFileForm
     {
         public override string DisplayName => "Electronic Closure Calculations";
 
-        [FileUploadRequired]
-        public FileUploadList ClosureCalcsFiles { get; set; }
+        public static readonly string CLOSURE_CALCS_KEY = "closureCalcsId";
+        public static readonly string CLOSURE_CALCS_DIRECTORY = "Closure Calcs";
 
-        [Required]
-        public string DanielSampleString { get; set; }
-
-        public ClosureCalcsForm()
+        public override FileUploadProperty[] FileUploadProperties => new[]
         {
-            ClosureCalcsFiles = new FileUploadList();
-        }
-
-        public FileUploadProperty[] FileUploadProperties()
-        {
-            return new[]
-            {
-                new FileUploadProperty(this.Id, "closureCalcsId", "Closure Calcs", "Closure Calculations", false)
-            };
-        }
-
-        public FileUploadList GetFileUploadList(string key)
-        {
-            return ClosureCalcsFiles;
-        }
-
-        void IUploadableFileForm.SyncFile(string key, FileUploadInfo file)
-        {
-            //ClosureCalcsFiles.Clear();
-            ClosureCalcsFiles.Add(file);
-        }
+            new FileUploadProperty(this.Id, CLOSURE_CALCS_KEY, CLOSURE_CALCS_DIRECTORY, "Closure Calculations")
+        };
     }
 }

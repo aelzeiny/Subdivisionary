@@ -92,13 +92,13 @@ namespace Subdivisionary.Models.Applications
         /// has changed. 
         /// </summary>
         /// <param name="modified"></param>
-        public virtual void FormUpdated(IForm before, IForm after)
+        public virtual void FormUpdated(ApplicationDbContext context, IForm before, IForm after)
         {
             foreach (var form in Forms)
             {
-                var observer = form as IObservableForm;
+                var observer = form as IObserverForm;
                 if (observer != null)
-                    observer.UpdateForm(before, after);
+                    observer.ObserveFormUpdate(context, before, after);
             }
         }
 
@@ -109,14 +109,18 @@ namespace Subdivisionary.Models.Applications
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Application FactoryCreate<T>() where T : Application
+        public static T FactoryCreate<T>() where T : Application
         {
-            Application application = (Application) Activator.CreateInstance(typeof(T));
+            T application = (T) Activator.CreateInstance(typeof(T));
             application.Init();
             var forms = application.GetDefaultApplicationForms();
             application.Forms = new List<Form>(forms.Length);
             foreach (var form in forms)
+            {
+                if(form is IObserverForm)
+                    ((IObserverForm)form).ObserveFormUpdate(null, application.ProjectInfo, application.ProjectInfo);
                 application.Forms.Add(form);
+            }
             return application;
         }
         

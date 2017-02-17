@@ -1,39 +1,53 @@
 ﻿@using Subdivisionary.DAL
+@using Subdivisionary.Helpers
 @using Subdivisionary.ViewModels
 @model Subdivisionary.ViewModels.ListEditorViewModel
 
-<div id="uploadDataEntries">
-    @{
-        int k = 0;
-        var itemVm = new ListItemEditorViewModel()
-        {
-            Data = null,
-            AddRemoveButton = false
-        };
-        var list = Model.GetList();
-    }
+<div id="@Model.Key">
 
     @if (Model.Count() == 0)
     {
-        ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY + "0";
+        ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY + Model.Key + "0";
         @Html.Partial("CollectionEditors/_CollectionItemEditor", new ListItemEditorViewModel()
         {
             Data = Model.EmptyDataDefault,
-            AddRemoveButton = false
+            AddRemoveButton = false,
+            Key = Model.Key
         })
     }
     else
     {
-        foreach (var obj in list)
+        int k = 0;
+        foreach (var obj in Model.GetList())
         {
-            ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY + k;
+            ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY + Model.Key + k;
             @Html.Partial("CollectionEditors/_CollectionItemEditor", new ListItemEditorViewModel()
             {
                 Data = obj,
-                AddRemoveButton = k != 0
+                AddRemoveButton = k != 0,
+                Key = Model.Key
             })
             k++;
         }
     }
 </div>
-<button class="btn btn-primary center-block add-entry" type="button" id="addEntryData" style="margin-bottom: 60px;"><i class="fa fa-plus" aria-hidden="true"></i> Add Additional Entry</button>
+@{
+
+    // This renders the partial view of a container object that will be added into the class in HTML
+    // It is passed into the "ADD ENTRY" button's data attribute so that when the button is pressed, 
+    // a partial view will be added into the container.
+    var vmAdd = new ListItemEditorViewModel()
+    {
+        Data = Model.EmptyDataDefault,
+        AddRemoveButton = true,
+        Key = Model.Key
+    };
+    var oldHtmlPrefix = ViewData.TemplateInfo.HtmlFieldPrefix;
+    ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY;
+    string container = @Html.Partial("CollectionEditors//_CollectionItemEditor", vmAdd).ToString();
+    ViewData.TemplateInfo.HtmlFieldPrefix = oldHtmlPrefix;
+}
+
+<button class="btn btn-primary center-block add-entry" type="button" style="margin-bottom: 60px;" data-for="@Model.Key" data-replacename="@CustomIFormModelBinder.ENTRY_ID_KEY" data-replaceclass="@CustomIFormModelBinder.ENTRY_CLASS_KEY" data-entry="@container">
+    <i class="fa fa-plus" aria-hidden="true"></i> Add Additional Entry
+</button>

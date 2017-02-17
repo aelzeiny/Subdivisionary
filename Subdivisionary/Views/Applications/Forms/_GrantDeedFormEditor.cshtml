@@ -1,0 +1,19 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model GrantDeedForm
+
+@{
+    var vmc = new FileUploadViewModelCollection(Model);
+}
+
+<div class="form-group">
+    <h3>Grant Deed Files</h3>
+    @Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(GrantDeedForm.GRANT_PIQ_KEY, "Select Deeds for the Subject Parcel"))
+    @Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(GrantDeedForm.GRANT_ADJOINER_KEY, "Select Deeds for the Adjoiner Lots"))
+</div>
+
+<div class="form-group">
+    <h3>Enter Adjoiner Lots</h3>
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<ApnInfo>(GrantDeedForm.APN_KEY, Model.ApnList, new ApnInfo()))
+</div>

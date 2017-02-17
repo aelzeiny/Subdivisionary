@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +10,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.UI;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.WindowsAzure.Storage;
@@ -23,7 +23,6 @@ using Subdivisionary.Models.Applications;
 using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
-using Subdivisionary.Models.Validation;
 using Subdivisionary.ViewModels;
 
 namespace Subdivisionary.Controllers
@@ -143,6 +142,7 @@ namespace Subdivisionary.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(IForm editApp, int applicationId, int editId)
         {
             // ensure that application belongs to user
@@ -153,13 +153,25 @@ namespace Subdivisionary.Controllers
             var allforms = application.GetOrderedForms();
             IForm form = allforms[editId];
 
-            // Ensure Model Validation
-            if (!ModelStateIsValid(ModelState))
+            // Ensure all files have been updated
+            if (form is UploadableFileForm)
             {
+                var errorProperty = ((UploadableFileForm) form).FindEmptyFileProperty();
+                if(errorProperty.HasValue)
+                    ModelState.AddModelError(errorProperty.Value.UniqueKey, "Please upload a " + errorProperty.Value.StandardName + " file");
+            }
+
+            // Ensure Model Validation
+            if (!ModelState.IsValid)
+            {
+                // Copy Values of form into the model binded application.
+                // This copies in "reverse" flow, meaning that everything that is not mdoel binded by default should be copied
+                editApp.CopyValues(form, true);
                 EditApplicationViewModel toEdit = new EditApplicationViewModel()
                 {
                     EditId = editId,
-                    Application = application
+                    Application = application,
+                    Form = editApp // Specify a form so that the Application form at the designated EditId isn't edited
                 };
                 return View("Details", toEdit);
             }
@@ -169,51 +181,12 @@ namespace Subdivisionary.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             // Notify all Observing forms within the application that a single form has been updated
-            application.FormUpdated(form, editApp);
+            application.FormUpdated(_context, form, editApp);
 
             form.CopyValues(editApp);
 
-            // Sync File Uploads from server
-            /*IUploadableFileForm fileForm = form as IUploadableFileForm;
-            if (fileForm != null)
-            {
-                var requestFiles = HttpContext.Request.Files;
-                FileUploadProperty[] fileUploadProperty = fileForm.FileUploadProperties();
-                for (int i = 0; i < requestFiles.Count; i++)
-                {
-                    var file = requestFiles[i];
-                    if (file == null || file.ContentLength <= 0)
-                        continue;
-                    string key = requestFiles.AllKeys[i];
-                    FileUploadProperty uploadProperty = fileUploadProperty.FirstOrDefault(x => x.UniqueKey == key);
-                    if (uploadProperty.UniqueKey != key) // if no key found
-                        continue; // continue to next file
-
-                    // Now upload all files
-                    string directory = Path.Combine(Server.GetApplicationDirectory(application),
-                        uploadProperty.FolderPath);
-                    DirectoryHelper.EnsureDirectoryExists(directory);
-                    FileUploadList savedBasicFiles = fileForm.GetFileUploadList(uploadProperty.UniqueKey);
-                    if (uploadProperty.IsSingleUpload && savedBasicFiles.Count > 0)
-                        new FileInfo(Server.MapPath(savedBasicFiles.First().Url)).Delete();
-                    string fileName = DirectoryHelper.FindUntakenFilename(directory, uploadProperty.StandardName,
-                        Path.GetExtension(file.FileName));
-                    file.SaveAs(fileName);
-                    fileForm.SyncFile(uploadProperty.UniqueKey, Server.UnmapPath(fileName));
-                }
-            }*/
             _context.SaveChanges();
             return RedirectToAction("Details", "Applications", new {id = application.Id, editId = editId});
-        }
-
-        /// <summary>
-        /// Checks if model state is valid, taking into consideration BackgroundValidations.
-        /// </summary>
-        /// <param name="modelStateDictionary"></param>
-        /// <returns></returns>
-        private bool ModelStateIsValid(ModelStateDictionary modelStateDictionary)
-        {
-            return modelStateDictionary.IsValid;
         }
 
         #endregion
@@ -302,7 +275,7 @@ namespace Subdivisionary.Controllers
                 application.Applicants.Remove(removableApplicant);
             }
             _context.SaveChanges();
-            return RedirectToAction("Review", "Applications", new {id = applicationId});
+            return RedirectToAction("Share", "Applications", new {id = applicationId});
         }
 
         public ActionResult AcceptInvitation(int id)
@@ -392,7 +365,7 @@ namespace Subdivisionary.Controllers
         public async Task<ActionResult> UploadFiles(int id)
         {
             Form mForm = await _context.Forms.FindAsync(id);
-            IUploadableFileForm form = mForm as IUploadableFileForm;
+            UploadableFileForm form = mForm as UploadableFileForm;
             try
             {
                 if (form == null)
@@ -425,22 +398,41 @@ namespace Subdivisionary.Controllers
                     if (file == null || file.ContentLength <= 0)
                         continue;
                     var now = DateTime.Now;
-                    var fileProps = form.FileUploadProperties().First(x => x.UniqueKey == requestFiles.AllKeys[i]);
-                    string fileName =
-                        $"{fileProps.FolderPath}\\{appId}_{fileProps.StandardName}_{now:yyyyMMdd}_{now.Ticks}{Path.GetExtension(file.FileName)}";
-                    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
-                    cloudBlockBlob.Properties.ContentType = file.ContentType;
-                    //await cloudBlockBlob.UploadFromStreamAsync(file.InputStream);
-                    form.SyncFile(requestFiles.AllKeys[i], new FileUploadInfo()
+
+                    var fileProps = form.GetFileUploadInfo(requestFiles.AllKeys[i]);
+
+                    if (form.MaximumFileUploadsExceeded(fileProps))
+                        throw new Exception("Maximum File Limit Exceeded");
+
+                    var upload = new FileUploadInfo
                     {
-                        Size = cloudBlockBlob.Properties.Length,
-                        Type = cloudBlockBlob.Properties.ContentType,
-                        Url = cloudBlockBlob.Uri.AbsolutePath
-                    });
+                        FileKey = fileProps.UniqueKey,
+                        Form = form,
+                        FormId = form.Id
+                    };
+                    form.FileUploads.Add(upload);
                     await _context.SaveChangesAsync();
-                    vm.AddFile(Url, cloudBlockBlob.Uri.AbsoluteUri, cloudBlockBlob.Properties, fileProps);
+
+                    // Use FileProps & Upload ID to create unique name for naming convention
+                    string fileName =
+                        $"{fileProps.FolderPath}\\{appId}_{fileProps.StandardName}_{now:yyyyMMdd}_{upload.Id}{Path.GetExtension(file.FileName)}";
+                    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
+
+                    // Upload File to Azure Blob
+                    cloudBlockBlob.Properties.ContentType = file.ContentType;
+                    await cloudBlockBlob.UploadFromStreamAsync(file.InputStream);
+
+                    // Set the remaining upload properties with generated information. Save one last time.
+                    upload.Size = cloudBlockBlob.Properties.Length;
+                    upload.Type = cloudBlockBlob.Properties.ContentType;
+                    upload.Url = cloudBlockBlob.Uri.AbsoluteUri;
+                    await _context.SaveChangesAsync();
+
+                    vm.AddFile(Url, upload.Id, form.Id, cloudBlockBlob.Uri.AbsoluteUri, upload.Type, upload.Size,
+                        fileProps.StandardName);
                 }
-                return Content(JsonConvert.SerializeObject(vm), "application/json");
+                var jsn = JsonConvert.SerializeObject(vm);
+                return Content(jsn, "application/json");
             }
             catch (Exception ex)
             {
@@ -452,9 +444,68 @@ namespace Subdivisionary.Controllers
             }
         }
 
-        public async Task<ActionResult> DeleteFile(int formId, string uniqueKey, string fileUrl)
+        [System.Web.Mvc.HttpPost]
+        public async Task<ActionResult> DeleteFile(int id, int formId)
         {
-            throw new NotImplementedException("Not yet");
+            Form mForm = await _context.Forms.FindAsync(formId);
+            UploadableFileForm form = mForm as UploadableFileForm;
+            if(form == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var file = form.FileUploads.FirstOrDefault(x => x.Id == id);
+            if (file == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            _context.FileUploads.Remove(file);
+            if (form.IsAssigned && form.FindEmptyFileProperty().HasValue)
+                form.IsAssigned = false;
+            await _context.SaveChangesAsync();
+            string json = JsonConvert.SerializeObject("");
+            return Content(json, "application/json");
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Sign(int id, SignatureViewModel signature)
+        {
+            var mform = _context.Forms.Find(id);
+            var applicant = GetCurrentApplicant();
+            if (applicant.Applications.FirstOrDefault(x=>x.Id == mform.ApplicationId) == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var form = mform as ISignatureForm;
+            if(form == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var sig = new SignatureUploadInfo()
+            {
+                Data = signature.SignatureData,
+                DataFormat = signature.SerializationType,
+                DateStamp = DateTime.Now,
+                SignerName = signature.SignerName,
+                UserStamp = applicant.User.Name,
+                Form = mform,
+                FormId = id
+            };
+            form.Signatures.Add(sig);
+            _context.SaveChanges();
+            signature.DateStamp = sig.DateStamp;
+            signature.UserStamp = sig.UserStamp;
+            signature.SignatureData = sig.Data;
+            signature.SerializationType = sig.DataFormat;
+            return Content(CustomHtmlHelper.EncodeJson(signature), "application/json");
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Unsign(int id, SignatureViewModel signature)
+        {
+            var mform = _context.Forms.Find(id);
+            var applicant = GetCurrentApplicant();
+            if (applicant.Applications.FirstOrDefault(x => x.Id == mform.ApplicationId) == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var form = mform as ISignatureForm;
+            if (form == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var toremove = form.Signatures.First(x => x.SignerName == signature.SignerName);
+            _context.SignatureInfo.Remove(toremove);
+            _context.SaveChanges();
+            return Content("success");
         }
     }
 }
+ 

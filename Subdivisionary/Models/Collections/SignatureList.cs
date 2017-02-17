@@ -9,37 +9,23 @@ namespace Subdivisionary.Models.Collections
     /// <summary>
     /// 
     /// </summary>
-    public class SignatureList : SerializableList<SignatureInfo>
+    public class SignatureList : SerializableList<SignatureUploadProperty>
     {
-        protected override int ParamCount => 4;
-        protected override SignatureInfo ParseObject(string[] param)
+        protected override int ParamCount => 1;
+        protected override SignatureUploadProperty ParseObject(string[] param)
         {
-            return new SignatureInfo()
+            return new SignatureUploadProperty()
             {
-                SignerName = param[0],
-                SignDate = DateTime.Parse(param[1]),
-                Formatting = param[2],
-                Data = param[3]
+                SignerName = param[0]
             };
         }
 
-        protected override string[] SerializeObject(SignatureInfo serialize)
+        protected override string[] SerializeObject(SignatureUploadProperty serialize)
         {
-            return new string[]
+            return new []
             {
-                serialize.SignerName,
-                serialize.SignDate.ToString(),
-                serialize.Formatting,
-                serialize.Data
+                serialize.SignerName
             };
         }
-    }
-
-    public class SignatureInfo
-    {
-        public string SignerName { get; set; }
-        public DateTime SignDate { get; set; }
-        public string Formatting { get; set; }
-        public string Data { get; set; }
     }
 }

@@ -12,6 +12,7 @@
 <div class="col-sm-3 col-xs-0">
     @Html.Partial("_BsmSidebar")
 </div>
+
 <div class="col-sm-9 col-xs-12">
     <h2>Pending Application Invites</h2>
     <h4>@Model.ProjectInfoDisplay</h4>
@@ -39,7 +40,7 @@
                 }
             </ul>
 
-            <button class="btn btn-danger center-block" type="submit"><i class="fa fa-user-times"></i> Save Editors</button>
+            <button class="btn btn-danger center-block disabled" type="submit" disabled="disabled" id="saveEditorsBtn"><i class="fa fa-user-times"></i> Save Editors</button>
         }
     </div>
 
@@ -77,7 +78,9 @@
     <script type="text/javascript">
         $('#applicantsContainer').on("click", ".js-removeApplicant", function (e) {
             var btn = $(this);
-            console.log(btn.data('applicant'));
+            var save = $("#saveEditorsBtn");
+            save.removeClass("disabled");
+            save.removeProp("disabled");
             $('#formDeleteUsers').append(' <input type="hidden" name="@ApplicantionApplicantModelBinder.APPLICANT_KEY" value="' + btn.data('applicant') + '">');
             btn.parent('.list-group-item').remove();
         });
