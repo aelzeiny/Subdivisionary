@@ -21,4 +21,20 @@ namespace Subdivisionary.Models.ProjectInfos
         [Display(Name = "Number of Commercial units")]
         public int CommercialUnits { get; set; }
     }
+
+    /// <summary>
+    /// Ensures that Total Units = Residential Units + Commercial Units for ECP Infos & all subtypes
+    /// </summary>
+    public class UnitsAddUpToTotalValidation : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var obj = validationContext.ObjectInstance as CcEcpInfo;
+            if (obj != null && obj.CommercialUnits + obj.ResidentialUnits != obj.NumberOfUnits)
+                return new ValidationResult("Residential and Commercial units do not add up to total units");
+            if (obj.NumberOfUnits > 6)
+                return new ValidationResult("Residential and Commercial units should not add up to be more than a maximum of 6 units");
+            return ValidationResult.Success;
+        }
+    }
 }

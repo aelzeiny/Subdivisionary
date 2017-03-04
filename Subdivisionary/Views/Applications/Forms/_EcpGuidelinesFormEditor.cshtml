@@ -1,0 +1,7 @@
+﻿@model Subdivisionary.Models.Forms.EcpGuidelinesForm
+
+@Html.Partial("_EcpApplicationGuidelines")
+
+@Html.LabelFor(m => m.UserAgreesToEcpGuidelines, new { @class = "control-label" })
+@Html.CheckBoxFor(m => m.UserAgreesToEcpGuidelines, new { @class = "big-checkbox center-div" })
+@Html.ValidationMessageFor(m => m.UserAgreesToEcpGuidelines)

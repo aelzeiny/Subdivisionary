@@ -1,0 +1,31 @@
+﻿@model Subdivisionary.ViewModels.EmailInviteViewModel
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<div style="width: 100%; background-color: #456CAA; height: 50px;">
+    <img src="http://sfpublicworks.org/sites/default/files/pwlogo_0.png" style="width: 50px; height: 50px; background-color: white; float: left" alt="DPW" />
+    <h1 style="text-align: center; line-height: 50px; color: white;">SF Public Works ~ Invite</h1>
+</div>
+
+<p>
+    Dear @Model.ToName,
+</p>
+
+<p>
+    You've been invited to edit the @Model.ApplicationDisplayName Project, on the property located at @Model.Address.
+</p>
+
+<p>
+    Please log-in and click the first link below. If you do not yet have an account, then please register this email with the second link provided below to accept the invitation.
+    Blah, Blah, Blah. I am a robot. I'll add more text to this invite some other time.
+</p>
+
+<ul>
+    <li>
+        <a href="@Model.ApplicationUrl">ACCEPT INVITE</a>
+    </li>
+    <li>
+        <a href="@Model.RegisterUrl">REGISTER</a>
+    </li>
+</ul>

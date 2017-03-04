@@ -1,0 +1,11 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.AcknowledgmentOfFees
+    
+<p>Please read the statements below and provide your signature at the bottom of the page.</p>
+<ol>
+    <li>I understand that the Subdivision and Mapping application fees are due at the time of application submittal</li>
+    <li>I understand that the Expedited Conversion Program fee will be in addition to the current Subdivision and Mapping application fees</li>
+    <li>Within three (3) days after deeming my application submittable, San Francisco Public Works will notify me regarding the fees due under the Expedited Conversion Program.  All fees are due and payable at that time.</li>
+</ol>
+
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

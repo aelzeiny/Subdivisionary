@@ -1,0 +1,10 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.SubdividersStatementToExistingTenants
+<h4>Subdivider's Statement and Commitment Regarding Notice to Existing Tenants</h4>
+<h6>[Sec. 1381(a) (6)(A) & Sec. 1381(a) (6)(C)]</h6>
+<p>
+    The undersigned subdividers hereby certify that he/she has given notices required by the San Francisco Subdivision Code Section
+    1381(a)(6) to all current lessees or tenants and will give such notices to those who occupy after submission of the application packet
+    for conversion.
+</p>
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

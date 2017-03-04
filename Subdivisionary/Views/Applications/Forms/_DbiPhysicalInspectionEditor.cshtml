@@ -1,0 +1,19 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.DbiPhysicalInspection
+
+@{
+    var vm = new FileUploadViewModelCollection(Model);
+}
+
+<p>
+    <strong>Note: </strong>Please file an application with the Department of Building Inspection, and upload a copy of the receipt to us.
+    A Certificate of Final Completion will be required prior to the final recordation of the subdivision map.
+</p>
+
+<a href="@DbiPhysicalInspection.SAMPLE_RECEIPT_URL" target="_blank"><h6>View Sample Receipt <i class="fa fa-file-pdf-o"></i></h6></a>
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(DbiPhysicalInspection.RECEIPT_KEY, "DBI - Receipt for Inspection"))
+<a href="@DbiPhysicalInspection.SAMPLE_INSPECTION_URL" target="_blank"><h6>View Sample Inspection Report <i class="fa fa-file-pdf-o"></i></h6></a>
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(DbiPhysicalInspection.INSPECTION_KEY, "Inspection Report (optional)"))
+<a href="@DbiPhysicalInspection.SAMPLE_CFC_URL" target="_blank"><h6>View Sample Certificate of Final Completion (CFC) <i class="fa fa-file-pdf-o"></i></h6></a>
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(DbiPhysicalInspection.CFC_KEY, "Certificate of Final Completion and Occupancy (optional)"))

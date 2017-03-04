@@ -212,6 +212,19 @@ button.j-removeBtn {
     margin-top: -5px;
 }
 
+div.boxed {
+    border-width: 1px;
+    border-color: #a0ddff;
+    border-style: double;
+    padding: 5px 10px 5px 10px;
+    margin: 5px;
+}
+
+div.boxed > h5, div.boxed > h6 {
+    text-align: center;
+}
+
+
 /** Signatures **/
 
 /* Remove all Click Events from Canvas when JSignature is Disabled */

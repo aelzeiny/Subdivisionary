@@ -1,0 +1,18 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+
+<a href="@RequestForCoc.SAMPLE_REQUEST_COC_URL">
+    <h4>Click here to download Request for Certificate of Compliance <i class="fa fa-file-pdf-o" target="_blank"></i></h4>
+</a>
+<p>
+    <strong>Be Advised: </strong>
+    We cannot process digital applications without the hard copies of all notarized forms. Please note that all items required for this application must be mailed in
+    <strong>ONE SUBMITTAL</strong>. Applications that fail to abide by these standards will be deemed incomplete and fined.
+</p>
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Upload Request for Certificate of Compliance. This scanned copy must be both signed and notarized.",
+    UploadList = Model.FileUploads,
+    UploadProperty = Model.GetFileUploadInfo(RequestForCoc.REQUEST_COC_KEY)
+})

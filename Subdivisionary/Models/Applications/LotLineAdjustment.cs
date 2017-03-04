@@ -18,6 +18,15 @@ namespace Subdivisionary.Models.Applications
         {
             return new Form[]
             {
+                new ApplicationCheckForm(), 
+                new RequestForLlaAndOwnershipAffidavit(),
+                new ExhibitsABForm(), 
+                new TitleReportForm(),
+                new PhotographForm(), 
+                new GrantDeedForm(),
+                new ClosureCalcsForm() { IsRequired = false},
+                new PropMFindingsForm(), 
+                new DbiInspectionRequirementsForm() {IsRequired = false},  
             };
         }
 

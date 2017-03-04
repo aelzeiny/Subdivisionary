@@ -1,0 +1,21 @@
+﻿
+@model Subdivisionary.Models.Collections.TenantInfo
+<div class="form-group col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.TenantName, new { @class = "col-form-label" })
+    @Html.TextBoxFor(m => m.TenantName, new { @class = "form-control", placeholder = "[Tenant's Legal Name]" })
+    @Html.ValidationMessageFor(m => m.TenantName)
+</div>
+<div class="form-group col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.Unit, new { @class = "col-form-label" })
+    @Html.TextBoxFor(m => m.Unit, new { @class = "form-control", placeholder = "[Tenant's Unit #]" })
+    @Html.ValidationMessageFor(m => m.Unit)
+</div>
+<div class="form-group">
+    <div class="col-xs-11">
+        @Html.LabelFor(m => m.TenantIntentToPurchase, new { @class = "col-form-label" })
+        @Html.ValidationMessageFor(m => m.TenantIntentToPurchase)</div>
+    <div class="col-xs-1">
+        @Html.CheckBoxFor(m => m.TenantIntentToPurchase, new { @class = "big-checkbox center-div" })
+    </div>
+</div>
+

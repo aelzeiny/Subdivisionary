@@ -10,8 +10,8 @@ namespace Subdivisionary.Models
     {
         public int Id { get; set; }
 
-        public Form Form { get; set; }
-        public int FormId { get; set; }
+        public SignatureForm SignatureForm { get; set; }
+        public int SignatureFormId { get; set; }
 
         public DateTime DateStamp { get; set; }
         public string UserStamp { get; set; }

@@ -12,42 +12,22 @@ namespace Subdivisionary.Models.Collections
     [ComplexType]
     public class CheckList : SerializableList<CheckInfo>
     {
-        protected override int ParamCount => 4;
-
-        protected override CheckInfo ParseObject(string[] param)
-        {
-            return new CheckInfo()
-            {
-                Amount = float.Parse(param[0]),
-                CheckNumber = param[1],
-                RoutingNumber = param[2],
-                AccountNumber = param[3]
-            };
-        }
-
-        protected override string[] SerializeObject(CheckInfo serial)
-        {
-            CheckInfo serialize = (CheckInfo) serial;
-            return new string[]
-            {
-                serialize.Amount.ToString(),
-                serialize.CheckNumber,
-                serialize.RoutingNumber,
-                serialize.AccountNumber
-            };
-        }
     }
     
     public class CheckInfo
     {
         [Required]
-        public float Amount { get; set; }
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
+        public decimal Amount { get; set; }
+
         [DisplayName("Check Number")]
         [Required]
         public string CheckNumber { get; set; }
+
         [DisplayName("Routing Number")]
         [Required]
         public string RoutingNumber { get; set; }
+
         [DisplayName("Account Number")]
         [Required]
         public string AccountNumber { get; set; }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 
 namespace Subdivisionary.Models.Collections
 {
@@ -23,15 +24,11 @@ namespace Subdivisionary.Models.Collections
     [ComplexType]
     public abstract class SerializableList<T> : ICollection<T>, ICollectionAdd
     {
-        /// <summary>
-        /// DO NOT alter value of the seperator. Lists are forever comma seperated. Character conflicts are
-        /// resolved through Regular Expressions.
-        /// </summary>
-        protected static readonly string[] SEPERATOR = {"|"};
 
         /// <summary>
         /// Stores list of objects once loaded from database
         /// </summary>
+        [NotMapped]
         protected List<T> data;
 
         /// <summary>
@@ -57,8 +54,7 @@ namespace Subdivisionary.Models.Collections
         {
             get
             {
-                string serializedValue = string.Join(SEPERATOR[0],
-                    data.Select(x => SerializeObjectList(SerializeObject(x))));
+                string serializedValue = JsonConvert.SerializeObject(data);
                 return serializedValue;
             }
             set
@@ -66,44 +62,10 @@ namespace Subdivisionary.Models.Collections
                 data.Clear();
                 if (value.IsNullOrWhiteSpace())
                     return;
-                var collection = value.Split(SEPERATOR, StringSplitOptions.None);
-                for (int i = 0; i < collection.Length; i+=ParamCount)
-                {
-                    string[] toParse = new string[ParamCount];
-                    for (int j = 0; j < ParamCount; j++)
-                        toParse[j] = collection[i + j];
-                    data.Add(ParseObject(toParse));
-                }
+                data = JsonConvert.DeserializeObject<List<T>>(value);
             }
         }
-
-        /// <summary>
-        /// The string array is representative of multiple parameters of a single object
-        /// This converts the multiple parameters into one cohesive string by resolving
-        /// conflicts with seperator characters
-        /// </summary>
-        /// <param name="serializeParams">symbolic multiple parameters</param>
-        /// <returns></returns>
-        private string SerializeObjectList(string[] serializeParams)
-        {
-            if (serializeParams.Length != ParamCount)
-                throw new IndexOutOfRangeException("Classes must serialze correctly");
-            StringBuilder builder = new StringBuilder(serializeParams.Length);
-            for (int i = 0; i < serializeParams.Length; i++)
-            {
-                string param = serializeParams[i];
-                // Check for conflicts with seperator characters
-                if (param != null)
-                    foreach (string seperator in SEPERATOR)
-                        param = param.Replace(seperator, "");
-                builder.Append(param);
-                // Deliniate seperate parameters with the seperator character
-                if (i != serializeParams.Length - 1)
-                    builder.Append(SEPERATOR[0]);
-            }
-            return builder.ToString();
-        }
-
+        
         public void AddUntilIndex(int index, T item, T blankItem)
         {
             if (index >= data.Count)
@@ -111,28 +73,6 @@ namespace Subdivisionary.Models.Collections
                     data.Add(blankItem);
             data[index] = item;
         }
-
-        /// <summary>
-        /// The number of parameters in each object.
-        /// This ensures that subclasses do not have to deal with data parsing
-        /// </summary>
-        protected abstract int ParamCount { get; }
-
-        /// <summary>
-        /// Convert multiple parameters of string into a single object. Serialization order is 
-        /// important, and is defined by subclass
-        /// </summary>
-        /// <param name="param">Parameters that need parsing to create the object</param>
-        /// <returns>Parsed Object</returns>
-        protected abstract T ParseObject(string[] param);
-
-        /// <summary>
-        /// Converts one object into an array of strings that represent parameters.
-        /// Note that order of serialized parameters are defined here.
-        /// </summary>
-        /// <param name="serialize"></param>
-        /// <returns>Serialized Object</returns>
-        protected abstract string[] SerializeObject(T serialize);
 
         #region Useful Iterface Implementation
         public void AddObject(object item)

@@ -1,0 +1,15 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.TenantRightOfRefusal
+    
+<h3>Subdivider’s Commitment Regarding Notice of the Tenant’s Right of First Refusal to Purchase</h3>
+<h6>[Sec. 1387]</h6>
+<p>
+    The undersigned Subdividers hereby certify that the present tenant or tenants at the date of filing of the application for a Tentative
+    Map of any unit to be converted or, in the event of a voluntary vacation, or eviction for cause, the tenant or tenants in occupancy at
+    the date of recording of the Parcel Map (or in the case of 5-6 unit buildings, at the date of issuance of the State Department of Real
+    Estate’s Final Subdivision Public Report) shall be given a nontransferable contract right to purchase the unit occupied at a price no
+    greater than the price offered to the general public, as required by San Francisco Subdivision Code Section 1387. 
+</p>
+
+
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

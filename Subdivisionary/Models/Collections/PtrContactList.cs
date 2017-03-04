@@ -11,25 +11,6 @@ namespace Subdivisionary.Models.Collections
     [ComplexType]
     public class PtrContactList : SerializableList<PtrContactInfo>
     {
-        protected override int ParamCount => 2;
-
-        protected override PtrContactInfo ParseObject(string[] param)
-        {
-            return new PtrContactInfo()
-            {
-                ContactType = (PtrContactInfo.PtrContactType) int.Parse(param[0]),
-                Email = param[1]
-            };
-        }
-
-        protected override string[] SerializeObject(PtrContactInfo serialize)
-        {
-            return new string[]
-            {
-                ((int)(serialize.ContactType)).ToString(),
-                serialize.Email
-            };
-        }
     }
 
     public class PtrContactInfo
@@ -42,7 +23,7 @@ namespace Subdivisionary.Models.Collections
 
         public enum PtrContactType
         {
-            [Display(Name = "Escro Officer")]
+            [Display(Name = "Escrow Officer")]
             EscrowOfficer,
             [Display(Name = "Title Officer")]
             TitleOfficer

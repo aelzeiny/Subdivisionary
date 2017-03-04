@@ -7,29 +7,21 @@ using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class OwnersAffidavitOfTentantEvictions: Form, ISignatureForm
+    public class OwnersAffidavitOfTentantEvictions: UploadableFileForm
     {
-        public override string DisplayName => "Owner Affidavit of Tenant Evictions";
+        public override string DisplayName => "Owner Affidavit of Evictions";
+
+        public static readonly string AFFIDAVIT_TENANT_EV_KEY = "affidavitTenantEvId";
+        public static readonly string AFFIDAVIT_PROTECTED_EV_KEY = "affidavitProtectedEvId";
+        public static readonly string AFFIDAVIT_EV_DIRECTORY = "Owners Affidavit of Tenant Evictions";
+
+        public static readonly string SAMPLE_TENANT_EV_URL = "https://subdivisionaryblob.blob.core.windows.net:443/templates/Affidavit%20Tenant%20Evictions%20Template.pdf";
+        public static readonly string SAMPLE_PROTECTED_EV_URL = "https://subdivisionaryblob.blob.core.windows.net:443/templates/Affidavit%20Protected%20Tenants%20Evictions%20Template.pdf";
         
-        public virtual ICollection<SignatureUploadInfo> Signatures { get; set; }
-        public SignatureList SignatureUploadProperties { get; set; }
-
-        public OwnersAffidavitOfTentantEvictions()
+        public override FileUploadProperty[] FileUploadProperties => new[]
         {
-            SignatureUploadProperties = new SignatureList();
-            Signatures = new List<SignatureUploadInfo>();
-        }
-
-        public void ObserveFormUpdate(ApplicationDbContext context, IForm before, IForm after)
-        {
-            var a = after as OwnerForm;
-            if (a == null)
-                return;
-            foreach (var sig in Signatures)
-                if (!(a.Owners.Any(x => x.OwnerName == sig.SignerName)))
-                    context.SignatureInfo.Remove(sig);
-            SignatureUploadProperties.Clear();
-            SignatureUploadProperties.AddRange(a.Owners.Select(x=>new SignatureUploadProperty(x.OwnerName)));
-        }
+            new FileUploadProperty(this.Id, AFFIDAVIT_TENANT_EV_KEY, AFFIDAVIT_EV_DIRECTORY, "Affidavit Tenant Evictions"), 
+            new FileUploadProperty(this.Id, AFFIDAVIT_PROTECTED_EV_KEY, AFFIDAVIT_EV_DIRECTORY, "Affidavit Protected Class Tenant Evictions") 
+        };
     }
 }

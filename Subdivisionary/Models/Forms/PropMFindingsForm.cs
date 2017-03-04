@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Subdivisionary.Models.Collections;
 
 namespace Subdivisionary.Models.Forms
 {
-    public class PropMFindingsForm : Form, ISignatureForm
+    public class PropMFindingsForm : SignatureForm
     {
         public override string DisplayName => "Proposition M";
 
@@ -52,27 +53,11 @@ namespace Subdivisionary.Models.Forms
         [Required]
         [Display(Name = "8.	That our parks and open space and their access to sunlight and vistas be protected from development.")]
         public string PropMQuestion8 { get; set; }
-
-        public virtual ICollection<SignatureUploadInfo> Signatures { get; set; }
-        public SignatureList SignatureUploadProperties { get; set; }
-
+        
         public PropMFindingsForm()
         {
             SignatureUploadProperties = new SignatureList();
             PropMDate = DateTime.Now;
-        }
-
-
-        public void ObserveFormUpdate(ApplicationDbContext context, IForm before, IForm after)
-        {
-            var a = after as OwnerForm;
-            if (a == null)
-                return;
-            foreach (var sig in Signatures)
-                if (!(a.Owners.Any(x => x.OwnerName == sig.SignerName)))
-                    context.SignatureInfo.Remove(sig);
-            SignatureUploadProperties.Clear();
-            SignatureUploadProperties.AddRange(a.Owners.Select(x => new SignatureUploadProperty(x.OwnerName)));
         }
     }
 }

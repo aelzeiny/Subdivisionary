@@ -25,6 +25,8 @@ namespace Subdivisionary.Models.Applications
             };
         }
 
+        public override EFeeSchedule PaymentSchedule => EFeeSchedule.RecordOfSurvey;
+
         public override string DisplayName => "Record of Survey";
     }
 }

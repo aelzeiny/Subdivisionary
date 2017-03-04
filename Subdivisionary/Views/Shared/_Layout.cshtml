@@ -16,12 +16,17 @@
             @RenderBody()
             <hr />
             <footer>
-                <p>&copy; @DateTime.Now.Year - Subdivisionary</p>
+                <p>Public Works, Street-Use & Mapping</p>
+                <p>
+                    <i class="fa fa-copyright"></i>
+                    @DateTime.Now.Year - Subdivisionary 
+                </p>
             </footer>
         </div>
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/site")
 
         @RenderSection("scripts", required: false)
     </body>

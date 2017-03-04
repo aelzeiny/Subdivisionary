@@ -3,6 +3,22 @@
 @model TentativeMapForm
 
 <h4>Tentative Map Type</h4>
+
+<p>
+    A licensed land Surveyor or a pre-1982 registered civil engineer shall prepare the tentative map of the condominium
+    including delineation of the boundaries of the building or buildings and other significant site improvements.  Be sure to
+    read through the requirements listed in the Subdivision Regulations. Submit a signed pdf copy of the map.
+</p>
+
+@if (Model.IsFinalMap)
+{
+    <p>
+        <strong>Note: </strong>Please note that a "Final Map" does not mean the final rendition of the subdivision map. Final maps are
+        a special category of map defined in the Subdivision Map Act. Your licensed land surveyor and/or civil engineer will likely be
+        able to assist you in getting a preliminary copy of the map.
+    </p>
+}
+
 <div class="col-xs-12">
     @Html.LabelFor(m => m.IsFinalMap, new { @class = "control-label" })
     @Html.CheckBoxFor(m => m.IsFinalMap, new { @class = "big-checkbox center-div", style = "text-align: center; vertical-align: middle; float:right;", disabled = "disabled" })
@@ -16,7 +32,8 @@
 <h4>Tentative Map Upload</h4>
 @Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
 {
-    LabelMessage = "Please upload a signed tentative map provided by a licensed surveyor",
+    LabelMessage = "Please upload a signed tentative map provided by a qualified professional",
     UploadList = @Model.FileUploads,
     UploadProperty = @Model.GetFileUploadInfo(TentativeMapForm.TENTATIVE_MAP_KEY)
 })
+

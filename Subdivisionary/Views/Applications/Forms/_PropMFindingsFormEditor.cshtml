@@ -64,9 +64,4 @@
     @Html.TextAreaFor(m => m.PropMQuestion8, new { @class = "form-control", placeholder = "Please answer question #8 in detail." })
     @Html.ValidationMessageFor(m => m.PropMQuestion8)
 </div>
-@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel()
-{
-    FormId = Model.Id,
-    Infos = Model.Signatures,
-    Properties = Model.SignatureUploadProperties
-})
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

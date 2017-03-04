@@ -1,0 +1,11 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.OwnersReleaseOfInterestInCommonAreas
+<h4>in Common Areas</h4>
+<p>
+    In accordance with section 1323(a)(6) of the San Francisco Subdivision Code, this is my statement that neither I nor any of my agents shall retain any right,
+    title or interest in any common area or areas or facilities except those common areas in which I might retain any individual interest by virtue of ownership
+    of one or more of the individual units.
+</p>
+
+
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

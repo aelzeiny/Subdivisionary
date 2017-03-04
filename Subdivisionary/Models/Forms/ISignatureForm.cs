@@ -9,7 +9,6 @@ namespace Subdivisionary.Models.Forms
 {
     public interface ISignatureForm : IObserverForm
     {
-        int Id { get; set; }
         ICollection<SignatureUploadInfo> Signatures { get; set; }
         SignatureList SignatureUploadProperties { get; set; }
     }

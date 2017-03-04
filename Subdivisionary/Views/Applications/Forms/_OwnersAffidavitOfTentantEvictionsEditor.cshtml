@@ -1,9 +1,33 @@
-﻿@using Subdivisionary.ViewModels
-@model Subdivisionary.Models.Forms.OwnersAffidavitOfTentantEvictions
-        
-@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel()
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model OwnersAffidavitOfTentantEvictions
+
+<p>
+    <strong>Note: </strong> Please fill out the following affidavit for <strong>ALL OWNERS</strong>. These forms must be notarized by an official notary public,
+    and then scanned to be uploaded below. We also require that the original copies be sent to our office at 1155 Market St, San Francisco, CA.
+</p>
+<a href="@OwnersAffidavitOfTentantEvictions.SAMPLE_TENANT_EV_URL" style="margin-bottom: 20px;">
+    <h4>Click here to download Owner's Affidavit for Eviction of Tenants <i class="fa fa-file-pdf-o" target="_blank"></i></h4>
+</a>
+<p>
+    <strong>Be Advised: </strong>
+    We cannot process digital applications without the hard copies of all notarized forms. Please note that all items required for this application must be mailed in <strong>ONE SUBMITTAL</strong>.
+    Applications that fail to abide by these standards will be deemed incomplete and fined.
+</p>
+<a href="@OwnersAffidavitOfTentantEvictions.SAMPLE_PROTECTED_EV_URL">
+    <h4>Click here to download Owner's Affidavit for Eviction of Eviction of Senior, Disabled, or Catastrophically Ill Tenants <i class="fa fa-file-pdf-o" target="_blank"></i></h4>
+</a>
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
 {
-    FormId = Model.Id,
-    Infos = Model.Signatures,
-    Properties = Model.SignatureUploadProperties
+    LabelMessage = "Upload  Owner's Affidavit for Eviction of Tenant; one for each owner-occupant. All forms must be both signed and notarized.",
+    UploadList = Model.FileUploads,
+    UploadProperty = Model.GetFileUploadInfo(OwnersAffidavitOfTentantEvictions.AFFIDAVIT_TENANT_EV_KEY)
+})
+
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Upload Owner's Affidavit for Eviction of Senior, Disabled, or Catastrophically Ill Tenants; one for each owner. All forms must be both signed and notarized.",
+    UploadList = Model.FileUploads,
+    UploadProperty = Model.GetFileUploadInfo(OwnersAffidavitOfTentantEvictions.AFFIDAVIT_PROTECTED_EV_KEY)
 })

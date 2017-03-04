@@ -1,0 +1,13 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.TenantForm
+
+<p>
+    <strong>Note:</strong> Please enter all tenants currently occupying this building. While this form may be marked as optional,
+    please note that disclosing all tenants currently residing within your building is not. This application will be circulated to the 
+    San Francisco Human Rights Commission and San Francisco Rent Board for verification.
+</p>
+
+@Html.Partial("CollectionEditors/_CollectionEditor",
+    new ListEditorViewModel<TenantInfo>(TenantForm.TENANT_KEY, Model.TenantsList, new TenantInfo(), false))

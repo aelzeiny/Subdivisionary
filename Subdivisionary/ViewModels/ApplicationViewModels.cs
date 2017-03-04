@@ -28,6 +28,7 @@ namespace Subdivisionary.ViewModels
     {
         public int EditId { get; set; }
         public Application Application { get; set; }
+        public IList<IForm> Forms { get; set; }
         public IForm Form { get; set; }
     }
 
@@ -119,6 +120,14 @@ namespace Subdivisionary.ViewModels
         }
     }
 
+    public class EmailInviteViewModel
+    {
+        public string ToName { get; set; }
+        public string ApplicationDisplayName { get; set; }
+        public string ApplicationUrl { get; set; }
+        public string RegisterUrl { get; set; }
+        public string Address { get; set; }
+    }
     public class NewApplicationViewModel
     {
         public BasicProjectInfo ProjectInfo { get; set; }
@@ -259,6 +268,13 @@ namespace Subdivisionary.ViewModels
         public int FormId { get; set; }
         public SignatureList Properties { get; set; }
         public ICollection<SignatureUploadInfo> Infos { get; set; }
+
+        public SignatureCollectionViewModel(int formId, SignatureList props, ICollection<SignatureUploadInfo> infos)
+        {
+            this.FormId = formId;
+            this.Properties = props;
+            this.Infos = infos;
+        }
 
         public SignatureViewModel[] GenerateSignatureViewModels()
         {

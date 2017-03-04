@@ -1,0 +1,27 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model ProofOfOwnerOccupancy
+
+<p>
+    <strong>Note: </strong> Please fill out the following affidavit for each individual owner occupant. These forms must be notarized by an official notary public, and then scanned to be uploaded below.
+    We also require that the original copies be sent to our office at 1155 Market St, San Francisco, CA.
+</p>
+<a href="@ProofOfOwnerOccupancy.AFFIDAVIT_URL"><h4>Click here to download Affidavit for Ownership/Occupancy <i class="fa fa-file-pdf-o" target="_blank"></i></h4></a>
+<p>
+    We cannot process digital applications without the hard copies of all notarized forms. Please note that all items required for this application must be mailed in <strong>ONE SUBMITTAL</strong>.
+    Applications that fail to abide by these standards will be deemed incomplete and fined.
+</p>
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Upload the scanned copies of all Owner Affidavit(s); one for each owner-occupant. All forms must be both signed and notarized.",
+    UploadList = Model.FileUploads,
+    UploadProperty = Model.GetFileUploadInfo(ProofOfOwnerOccupancy.AFFIDAVIT_KEY)
+})
+
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Upload Homeowner’s Property Tax Exemption for all owner-occupants",
+    UploadList = Model.FileUploads,
+    UploadProperty = Model.GetFileUploadInfo(ProofOfOwnerOccupancy.HO_EXEMPTION_KEY)
+})

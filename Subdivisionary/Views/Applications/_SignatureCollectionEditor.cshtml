@@ -7,12 +7,18 @@
     var sigs = Model.GenerateSignatureViewModels();
     int k = 0;
 }
-
+@if (sigs.Length == 0)
+{
+    <p>
+        <strong>Note: </strong>Please list all property owners and/or tenants in the Property Owners/Property Tenants Form
+        in order to generate signature boxes.
+    </p>
+}
 @foreach (var sig in sigs)
 {
     var idName = "signatureAt" + k;
 
-    <div class="signatureForm" >
+    <div class="signatureForm">
         <h4>
             Signature for @sig.SignerName
             <button id="@idName-clear" class="btn btn-circle btn-danger js-clear" type="button" style="float: right;" data-for="#@idName">

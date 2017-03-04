@@ -1,10 +1,12 @@
-﻿@using System.Reflection
+﻿@using System.Data.Entity.Core.Objects
+@using System.Reflection
 @using AutoMapper.Internal
 @using Subdivisionary.DAL
 @using Subdivisionary.Helpers
 @using Subdivisionary.Models
 @using Subdivisionary.Models.Applications
 @using Subdivisionary.Models.Forms
+@using Subdivisionary.Models.ProjectInfos
 @using Subdivisionary.ViewModels
 @model Subdivisionary.ViewModels.EditApplicationViewModel
 @{
@@ -14,17 +16,19 @@
 }
 
 @{
-    var forms = Model.Application.GetOrderedForms();
     IForm activeForm = Model.Form;
     var allSubmitted = Model.Application.AllFormsSubmitted();
+    var iconSubmitted = "fa fa-check";
+    var iconPending = "fa fa-circle-o";
+    var iconOptional = "fa fa-circle";
 }
 <div class="row">
     <div class="sidebar col-xs-0 col-md-3">
         <h2>Directory</h2>
         <ul class="nav nav-pills nav-stacked">
-            @for (int i = 0; i < forms.Count; i++)
+            @for (int i = 0; i < Model.Forms.Count; i++)
             {
-                var form = forms[i];
+                var form = Model.Forms[i];
                 string liClass = null;
                 if (i == Model.EditId)
                 {
@@ -34,7 +38,7 @@
                         activeForm = form;
                     }
                 }
-                var icon = form.IsAssigned ? "fa fa-check" : (form.IsRequired ? "fa fa-times" : "fa fa-minus");
+                var icon = form.IsAssigned ? iconSubmitted : (form.IsRequired ? iconPending : iconOptional);
                 <li role="presentation" class="@liClass">
                     <a href="@Url.Action( "Details", "Applications", new {id = Model.Application.Id, editId = i}, null)" class="list-group-item">
                         @form.DisplayName
@@ -71,9 +75,24 @@
             <i class="fa fa-share-alt"></i>
             Invite
         </a>
+        <h4>Legend:</h4>
+        <table class="table table-condensed table-hover">
+            <tr>
+                <th>Submitted and Saved</th>
+                <td><i class="@iconSubmitted"></i></td>
+            </tr>
+            <tr>
+                <th>Pending, but Optional</th>
+                <td><i class="@iconOptional"></i></td>
+            </tr>
+            <tr>
+                <th>Pending and Required</th>
+                <td><i class="@iconPending"></i></td>
+            </tr>
+        </table>
     </div>
     <div class="partialbar col-xs-12 col-md-9">
-        <h2>@forms[Model.EditId].DisplayName</h2>
+        <h2>@Model.Forms[Model.EditId].DisplayName</h2>
         @{
             var formEditor = new EditFormViewModel()
             {
@@ -90,16 +109,25 @@
 @section Scripts {
     @if (activeForm is UploadableFileForm)
     {
-        <script src="/Scripts/site-fileinput.js"></script>
+        @Scripts.Render("~/Scripts/site-js/site-fileinput.js")
     }
     @if (activeForm is ISignatureForm)
     {
-        <script src="/Scripts/site-jsignature.js"></script>
+        @Scripts.Render("~/Scripts/site-js/site-jsignature.js")
     }
     @if (activeForm is ICollectionForm)
     {
-        //@Html.Partial("CollectionEditors/_CollectionFormJavascript", (ICollectionForm) activeForm)
-        <script src="/Scripts//site-icollection.js"></script>
+        @Scripts.Render("~/Scripts/site-js/site-icollection.js")
     }
-    @Html.Partial("_FormJavascript", activeForm)
+    @if (activeForm is BasicProjectInfo)
+    {
+        @Scripts.Render("~/Scripts/site-js/FormScripts/BasicProjectInfo.js")
+    }
+
+    @{
+        var mt = ObjectContext.GetObjectType(activeForm.GetType());
+        var src = "~/Scripts/site-js/FormScripts/" + mt.Name + ".js";
+
+    }
+    @Scripts.Render(src)
 }

@@ -21,6 +21,8 @@ namespace Subdivisionary.Models.Applications
             };
         }
 
+        public override EFeeSchedule PaymentSchedule => EFeeSchedule.NewConstruction;
+
         public override string DisplayName => "New Construction";
     }
 }

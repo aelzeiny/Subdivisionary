@@ -1,4 +1,5 @@
 ﻿@model NewApplicationViewModel
+@using System.Data.Entity.Core.Objects
 @using Microsoft.Ajax.Utilities
 @using Subdivisionary.DAL
 @using Subdivisionary.Helpers
@@ -11,7 +12,7 @@
     ViewBag.Banner = "Create a New Application";
 }
 
-@using (Html.BeginForm("Create", "Applications", new { appTypeId = (int)Model.ApplicationType }))
+@using (Html.BeginForm("Create", "Applications", new { appTypeId = (int)Model.ApplicationType }, FormMethod.Post, new  {id= "formPartialViewEditor"}))
 {
     @Html.Hidden(FormModelBinder.TYPE_KEY, Model.ProjectInfo.GetType().FullName)
     // Render Project Info
@@ -27,7 +28,7 @@
 
 
         </div>
-        @Html.PartialFor(m => m.ProjectInfo, "Forms/_ProjectInfoEditor")
+        @Html.Partial("Forms/_ProjectInfoEditor", Model.ProjectInfo)
         <button class="btn btn-primary" type="submit" style="width: 100%;">Create!</button>
     </div>
 }
@@ -42,6 +43,12 @@
             window.location = url.replace('__id__', value);
         }
     </script>
-
-    @Html.Partial("CollectionEditors/_CollectionFormJavascript", Model.ProjectInfo)
+    @{
+        var mt = ObjectContext.GetObjectType(Model.ProjectInfo.GetType());
+        // Get Javascript file from active form type
+        var src = "/Scripts/site-js/FormScripts/" + mt.Name + ".js";
+    }
+    @Scripts.Render("~/Scripts/site-js/site-icollection.js")
+    @Scripts.Render("~/Scripts/site-js/FormScripts/BasicProjectInfo.js")
+    <script type="text/javascript" src="@src"></script>
 }

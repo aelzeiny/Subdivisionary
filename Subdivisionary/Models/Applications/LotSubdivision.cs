@@ -21,6 +21,8 @@ namespace Subdivisionary.Models.Applications
             };
         }
 
+        public override EFeeSchedule PaymentSchedule => EFeeSchedule.LotSubdivisionOrMerger;
+
         public override string DisplayName => "Lot Subdivision";
     }
 }

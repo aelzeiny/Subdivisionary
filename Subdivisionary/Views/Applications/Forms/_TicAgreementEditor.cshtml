@@ -1,0 +1,41 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model TicAgreement
+    
+
+<h4>TIC Agreement Information</h4>
+<h6>[SEC. 1396.4 (9)]</h6>
+<a href="@TicAgreement.SAMPLE_TIC_URL" target="_blank"><h4>View Sample Tenancy-In-Common Agreement <i class="fa fa-file-pdf-o"></i></h4></a>
+<p>
+    There is no prescribed form for a Tenancy in Common Agreement approved by the City. a copy of the entire TIC
+    Agreement is preferred, but if the document is large, the cover page, index and signature pages must be included at a
+    minimum. All pages should be numbered. 
+</p>
+
+<p>
+    <strong>Note: </strong> The Agreement must predate April 15, 2013 to qualify for the Expedited Conversion Program
+</p>
+
+<p>
+    <strong>Be Advised: </strong> THE FOLLOWING IS SHOWN FOR ILLUSTRATIVE PURPOSES ONLY AND DOES NOT REPRESENT AN
+    ENDORSEMENT BY THE CITY NOR A CERTIFICATION AS TO THE CORRECTNESS OR COMPLETENESS OF THIS AGREEMENT
+</p>
+
+<div class="form-group col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.TicAgreementDate, new { @class = "control-label" })
+    @Html.EditorFor(m => m.TicAgreementDate, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.TicAgreementDate)
+</div>
+<div class="form-group col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.TicPages, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.TicPages, new { @class = "form-control", placeholder = "1155 Market Street" })
+    @Html.ValidationMessageFor(m => m.TicPages)
+</div>
+
+<h4>TIC Agreement Upload</h4>
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Please upload the Tenancy-In-Common Agreement with sig",
+    UploadList = @Model.FileUploads,
+    UploadProperty = @Model.GetFileUploadInfo(TentativeMapForm.TENTATIVE_MAP_KEY)
+})

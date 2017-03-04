@@ -1,0 +1,11 @@
+﻿@model Subdivisionary.Models.Collections.OccupantNameInfo
+    
+
+
+<div class="form-group col-sm-8 col-xs-12">
+    @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+    @Html.DropDownListFor(m=>m.Name, new List<SelectListItem>(), new {@class="form-control js-nameoptions", defaultVal=Model.Name})
+    @Html.ValidationMessageFor(m => m.Name)
+</div>
+
+@Html.HiddenFor(m=> m.IsTenant, new {@class="isTenant"})

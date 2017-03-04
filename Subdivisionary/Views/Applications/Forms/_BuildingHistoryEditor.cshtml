@@ -3,11 +3,40 @@
 @using Subdivisionary.ViewModels
 @model BuildingHistory
   
+<h4>Statements</h4>
+
+<p>
+    <strong>Statement of Building History </strong>[Sec. 1381(a)(1)]: Use the space provided in the Building History Form to
+    describe the building history, including the date of construction and major uses since it was built, to the best of your
+    knowledge and available records.
+</p>
+<p>
+    <strong>Statement of Repairs and Improvements </strong>[Sec. 1381(a) (4)(B)]: Use the space provided in the Building History Form
+    to briefly describe major repairs and improvements that the Subdivider plans to make before conveyance of the units.
+</p>
+<div class="form-group">
+    @Html.LabelFor(m => m.StatementOfBuildingHistory, new { @class = "control-label" })
+    @Html.TextAreaFor(m => m.StatementOfBuildingHistory, new { @class = "form-control", placeholder = "Please list of all notable events for this building. Otherwise, write 'n/a' for 'not applicable'." })
+    @Html.ValidationMessageFor(m => m.StatementOfBuildingHistory)
+</div>
 <div class="form-group">
     @Html.LabelFor(m => m.StatementOfRepairsAndImprovements, new { @class = "control-label" })
-    @Html.TextAreaFor(m => m.StatementOfRepairsAndImprovements, new { @class = "form-control", placeholder = "Please answer question #1 in detail." })
+    @Html.TextAreaFor(m => m.StatementOfRepairsAndImprovements, new { @class = "form-control", placeholder = "Please list of all major repairs and improvements made to the property. Otherwise, write 'n/a' for 'not applicable'." })
     @Html.ValidationMessageFor(m => m.StatementOfRepairsAndImprovements)
 </div>
 
+<h4>Permits</h4>
+
+<p>
+    <strong>Permits:</strong> List the permit number(s) of the building permit application filed in connection with the proposed use
+    of this property that is not listed in the 3R Report. Use the space in the Building History Form to indicate only the building permit
+    application number. Do not provide copies of building permits unless asked to do so.
+</p>
 @Html.Partial("CollectionEditors/_CollectionEditor",
-    new ListEditorViewModel<PermitInfo>(OwnerForm.OWNERS_KEY, Model.PermitList, new PermitInfo())))
+    new ListEditorViewModel<PermitInfo>(OwnerForm.OWNERS_KEY, Model.PermitList, new PermitInfo()))
+
+
+<h4>Signatures</h4>
+<p>The following signatures verify that the information provided in this document and all subsequent "Unit History" documents is affirmed to be correct.</p>
+
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

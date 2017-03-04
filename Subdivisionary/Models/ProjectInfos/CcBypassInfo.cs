@@ -12,7 +12,7 @@ namespace Subdivisionary.Models.ProjectInfos
     /// </summary>
     public class CcBypassInfo : ExtendedProjectInfo
     {
-        [DisplayName("Number of Units")]
+        [DisplayName("Total Number of Units")]
         public int NumberOfUnits { get; set; }
 
         public CcBypassInfo()

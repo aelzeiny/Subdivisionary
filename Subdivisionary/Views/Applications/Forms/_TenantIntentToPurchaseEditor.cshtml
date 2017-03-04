@@ -1,0 +1,45 @@
+﻿@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.TenantIntentToPurchase
+
+<p>
+    <strong>Note: </strong> If @Model.IntentToPurchaseTenantName does not intend to purchase then please uncheck the checkbox next to their name in the
+    "Building Tenants" form.
+</p>
+<p>
+    <strong>Subdivision Code Section 1388. Tenant Intent to Purchase. </strong>
+    No application for conversion shall be approved unless there are substantial numbers of tenants who have indicated their intent to purchase
+    their rental unit. This intent shall be evidenced by the submittal in writing of the DPW Tenant Intent to Purchase Form by tenants representing
+    no less than forty percent (40%) of the units. For purposes of calculation, such Forms must be signed by one (1) tenant in a 2-unit building,
+    two (2) tenants residing in separate units in a 3-unit, 4-unit, or 5-unit building, or three (3) tenants residing in separate units in a 6-unit building.
+    In obtaining or soliciting tenant approval of the Intent to Purchase Forms, subdividers shall comply with any restrictions set forth in the
+    California Business and Professions Code and regulations of the State Real Estate Commissioner.  Further, in calculating the total number of
+    units necessary to satisfy Section 1388, there shall be included in the forty percent (40%) requirement any units in which the occupant qualified
+    for and has expressed an intent to obtain a renewable lifetime lease pursuant to Section 1391(c) (this lifetime lease is for a protected class
+    of tenants and is not the same as the lifetime lease required to be offered to all tenants under the Expedited Conversion Program).
+</p>
+
+<p>
+    Any Tenant Intent to Purchase Forms obtained by way of any inducement of the subdivider to provide benefits to that tenant beyond those
+    established by this Code shall be so identified and the specific representations of the subdivider shall be set forth in detail. All such Forms
+    shall be come a matter of public record and the subdivider shall be required to comply with his or her representations as conditions of approval.
+</p>
+
+<p>
+    The Intent to Purchase Forms, once signed by a tenant, shall be irrevocable by said tenant, for purposes of compliance with Section 1388,
+    provided, however, that the Director shall invalidate any such Form upon a determination that the subdivider has used coercion, fraud,
+    duress, misrepresentation or threat in connection with obtaining or soliciting tenant approval of such Form.
+</p>
+
+<h4>Tenant Intent To Purchase</h4>
+<div class="form-group">
+    <p>
+        I, @Html.TextBoxFor(m => m.IntentToPurchaseTenantName, new { disabled = "disabled", @class = "disabled bsm-form-control" }), as tenant of property at
+        @Html.TextBoxFor(m => m.IntentToPurchaseTenantAddress, new { @class = "bsm-form-control", style = "min-width:300px" })
+        at the time of the filing of the application for a condominium conversion subdivision of such property, do hereby certify my/our intent to purchase my/our occupied Unit No.
+        @Html.TextBoxFor(m => m.IntentToPurchaseTenantUnit, new { @class = "bsm-form-control" })
+        I have seen the list of proposed sales prices to tenants, to be filed by the subdivider with the City and County of San Francisco, and this list indicates the sales price for the subject unit to be
+        $@Html.TextBoxFor(m => m.IntentToPurchaseTenantSalePrice, new { @class = "bsm-form-control" }).
+    </p>
+</div>
+
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

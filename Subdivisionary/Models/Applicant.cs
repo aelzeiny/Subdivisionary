@@ -11,6 +11,7 @@ namespace Subdivisionary.Models
 {
     public class Applicant
     {
+        [Key]
         public int Id { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
 

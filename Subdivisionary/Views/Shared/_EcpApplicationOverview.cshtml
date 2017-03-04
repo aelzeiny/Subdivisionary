@@ -1,0 +1,160 @@
+﻿<h2 id="myEcpOverview">ECP Application Overview</h2>
+<p>
+    San Francisco Public Works (SFPW) <strong>cannot</strong> guarantee the date of Tentative Map approval, or Map Recordation for any project.
+    In many ways, the Expedited Conversion Program is like other subdivision applications within the City and County of San Francisco.
+    There are two key distinctions detailed below that applicants need to understand before starting the application process.
+    Tenant status, changes in tenancy, and tenant contacts are extremely important during the application and up until the maps are
+    finally approved and recorded.  Of similar importance in the fees required to convert units under the Expedited Conversion Program.
+    Some of these fees are due at the time of application while others are due after the application has been approved or conditionally
+    approved.  The amount of these fees can be substantial and applicants are advised to read and understand the following overview of
+    the applicable Subdivision Codes.
+</p>
+
+<h4 id="myEcpOverviewOwnership">CHANGES IN OWNERSHIP AFTER APPLICATION SUBMITTAL</h4>
+If there are change(s) in ownership after an application is submitted, the San Francisco Public Works will require the following items
+by the new owner to recognize the lifetime lease requirements:
+<ul>
+    <li><p>Conformed copy of the recorded Grant Deed, identifying the new owner(s)</p></li>
+    <li><p>Conformed copy of the recorded Notice of Special Restrictions that is signed by all owners of the building</p></li>
+</ul>
+
+<p>
+    Pursuant to Subdivision Code Section 1396.4(C)(4) (a), any contract or option to sell shall include written notice that the unit
+    shall be subject to the lifetime lease requirements of Subdivision Code Section 1396.4(g), (b) prior to final execution of any
+    such contract or option, the owner(s) shall record a notice of restrictions against the property that specifically identifies the
+    unit potentially subject to the lifetime lease requirements and specifies the requirements of the lifetime lease as set forth in
+    Section 1396.4(g), and (c) the recorded notice of restrictions shall be included as a note on the final subdivision map or parcel
+    map.  Prior to approval of a final subdivision map or parcel map, the applicant(s) shall certify under penalty of perjury to the
+    Department that he, she, or they have complied with the terms of this Subsection as it applies to a building.  Failure to provide
+    this certification from every current owner of a building shall result in disapproval of the map.  The content of the notices and
+    certifications required by this Subsection shall comply with the instructions and procedures developed by the Department.
+</p>
+
+<h4 id="myEcpOverviewTenants">IF THERE ARE TENANTS</h4>
+<ul>
+    <li>
+        All non-purchasing tenants in the building shall be given a written offer to enter into a lifetime lease in the form and
+        with the provisions published and prescribed by the San Francisco Public Works in consultation with the Rent Board.
+    </li>
+    <li>
+        The form and provisions are available on our website under Condominium Conversion, “ECP - Instruction & Forms for
+        Buildings with Tenants,” at:
+        <a href="http://sfpublicworks.org/services/subdivisions-and-mapping">http://sfpublicworks.org/services/subdivisions-and-mapping</a>
+    </li>
+    <li>
+        If a building has no tenants at the time of application, but the tenant status changes before the map records,
+        the applicant must immediately notify SFPW of the change in status and comply with the tenant notice requirements of the
+        Subdivision Code and as detailed in the bullet above.
+    </li>
+</ul>
+
+<h4 id="myEcpOverviewFees">FEES - OVERVIEW</h4>
+<p><strong>Note: </strong>Incomplete submittals will be charged an additional $250 application processing fee. Fees are non-refundable.</p>
+<p>Your application for the Expedited Conversion Program requires two (2) fees:</p>
+<ol>
+    <li>
+        San Francisco Public Works – Subdivision and Mapping Application Fee due at time of submittal (Fee Schedule)
+        <ul>
+            <li>
+                Submit two (2) separate checks, as shown in the Fee Schedule, payable to San Francisco Public Works. The checks
+                should be dated no more than 15 days prior to the date of application submittal.
+            </li>
+            <li>
+                Once the application is submitted there are no refunds of mapping fees.
+            </li>
+        </ul>
+    </li>
+    <li>
+        Expedited Conversion Program Fee
+        <ul>
+            <li>
+                Below is an estimate of fees related to the Expedited Conversion Program, not to be paid until you have been
+                notified by our office of the exact dollar amount due.  Fees for Expedited Conversion program are due when requested
+                from SFPW.
+            </li>
+            <li>
+                Expedited Conversion Program fees must be paid in the form of a cashier’s check or certified check once requested.
+            </li>
+        </ul>
+    </li>
+</ol>
+
+<h4 id="myEcpOverviewEcpFees">EXPEDITED CONVERSION PROGRAM FEES (Fiscal Year 2016- 2017)</h4>
+<sup><strong>Note: </strong>Subject to change per fiscal Year</sup>
+@{
+    var feePerUnit = 21733.61f;
+    float[,] tables = new float[5,6];
+    for (int r = 0; r < tables.GetLength(0); r++)
+    {
+        for (int c = 0; c < tables.GetLength(1); c++)
+        {
+            tables[r, c] = (r + 2)*feePerUnit* (1f - Math.Max(.8f - .2f * c, 0));
+        }
+    }
+}
+<p>Base Fee = $@feePerUnit per unit</p>
+
+<div class="table-responsive">
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th># of Units</th>
+            <th>5-8 years <br/><span style="font-weight: normal;">(80% Reduction)</span></th>
+            <th>4 years <br/><span style="font-weight: normal;">(60% Reduction)</span></th>
+            <th>3 years <br/><span style="font-weight: normal;">(40% Reduction)</span></th>
+            <th>2 years <br/><span style="font-weight: normal;">(20% Reduction)</span></th>
+            <th>1 year <br/><span style="font-weight: normal;">(0% Reduction)</span></th>
+            <th>0 years <br/><span style="font-weight: normal;">(0% Reduction)</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>2</th>
+            <td>@tables[0, 0]</td>
+            <td>@tables[0, 1]</td>
+            <td>@tables[0, 2]</td>
+            <td>@tables[0, 3]</td>
+            <td>@tables[0, 4]</td>
+            <td>@tables[0, 5]</td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td>@tables[1, 0]</td>
+            <td>@tables[1, 1]</td>
+            <td>@tables[1, 2]</td>
+            <td>@tables[1, 3]</td>
+            <td>@tables[1, 4]</td>
+            <td>@tables[1, 5]</td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td>@tables[2, 0]</td>
+            <td>@tables[2, 1]</td>
+            <td>@tables[2, 2]</td>
+            <td>@tables[2, 3]</td>
+            <td>@tables[2, 4]</td>
+            <td>@tables[2, 5]</td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td>@tables[3, 0]</td>
+            <td>@tables[3, 1]</td>
+            <td>@tables[3, 2]</td>
+            <td>@tables[3, 3]</td>
+            <td>@tables[3, 4]</td>
+            <td>@tables[3, 5]</td>
+        </tr>
+        <tr>
+            <th>6</th>
+            <td>@tables[4, 0]</td>
+            <td>@tables[4, 1]</td>
+            <td>@tables[4, 2]</td>
+            <td>@tables[4, 3]</td>
+            <td>@tables[4, 4]</td>
+            <td>@tables[4, 5]</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><strong>Note: </strong>Do not submit the Expedited Conversion Program fees until requested by SF Public Works.</p>

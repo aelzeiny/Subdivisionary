@@ -2,7 +2,9 @@
 @using Subdivisionary.Helpers
 @using Subdivisionary.ViewModels
 @model Subdivisionary.ViewModels.ListEditorViewModel
-
+@{
+    var oldHtmlPrefix = ViewData.TemplateInfo.HtmlFieldPrefix;
+}
 <div id="@Model.Key">
 
     @if (Model.Count() == 0)
@@ -42,12 +44,14 @@
         AddRemoveButton = true,
         Key = Model.Key
     };
-    var oldHtmlPrefix = ViewData.TemplateInfo.HtmlFieldPrefix;
     ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY;
     string container = @Html.Partial("CollectionEditors//_CollectionItemEditor", vmAdd).ToString();
-    ViewData.TemplateInfo.HtmlFieldPrefix = oldHtmlPrefix;
 }
 
 <button class="btn btn-primary center-block add-entry" type="button" style="margin-bottom: 60px;" data-for="@Model.Key" data-replacename="@CustomIFormModelBinder.ENTRY_ID_KEY" data-replaceclass="@CustomIFormModelBinder.ENTRY_CLASS_KEY" data-entry="@container">
     <i class="fa fa-plus" aria-hidden="true"></i> Add Additional Entry
 </button>
+
+@{
+    ViewData.TemplateInfo.HtmlFieldPrefix = oldHtmlPrefix;
+}

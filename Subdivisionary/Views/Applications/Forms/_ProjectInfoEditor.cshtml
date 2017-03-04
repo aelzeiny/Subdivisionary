@@ -43,7 +43,6 @@
                                     </td>
                                 </tr>
                                 }
-
                             }
             @if (Model is CocAndLlaProjectInfo)
             {
@@ -71,17 +70,27 @@
                             {
                                 <div class="col-xs-12">
                                     @Html.LabelFor(m => (m as NewConstructionInfo).HasExistingBuilding, new { @class = "control-label" })
-                                    @Html.CheckBoxFor(m => (m as NewConstructionInfo).HasExistingBuilding, new { @class = "big-checkbox center-div", style = "float:right; text-align: center; vertical-align: middle;" })
+                                    @Html.CheckBoxFor(m => (m as NewConstructionInfo).HasExistingBuilding, new { @class = "big-checkbox center-div" })
                                     @Html.ValidationMessageFor(m => (m as NewConstructionInfo).HasExistingBuilding)
 
                                 </div>
                                 <div class="col-xs-12">
                                     @Html.LabelFor(m => (m as NewConstructionInfo).CreatesVerticalSubdivision, new { @class = "control-label" })
-                                    @Html.CheckBoxFor(m => (m as NewConstructionInfo).CreatesVerticalSubdivision, new { @class = "big-checkbox center-div", style = "float:right; text-align: center; vertical-align: middle;" })
+                                    @Html.CheckBoxFor(m => (m as NewConstructionInfo).CreatesVerticalSubdivision, new { @class = "big-checkbox center-div" })
                                     @Html.ValidationMessageFor(m => (m as NewConstructionInfo).CreatesVerticalSubdivision)
                                 </div>
                                 }
                             }
+
+<div class="form-group">
+    <h3>Property Address</h3>
+    <p>
+        <strong>Note:</strong> If you have more than one address range, block, or lot, then please click the <i class="fa fa-plus"></i>
+        button to add another field. DO NOT use commas to list blocks, lots, or address ranges.
+    </p>
+    @Html.Partial("CollectionEditors/_CollectionEditor",
+        new ListEditorViewModel<ParcelInfo>(BasicProjectInfo.APN_INFO_KEY, Model.AddressList, new ParcelInfo()))
+</div>
 
 <div class="form-group">
     <h3>Primary Contact Information</h3>
@@ -90,8 +99,14 @@
 </div>
 <div class="form-group">
     <h3>Owner Contact Information</h3>
-    <h6>(If Different than Primary Contact)</h6>
-    @Html.PartialFor(m => m.OwnerContactInfo, "_ContactEditor")
+    <h6>
+        (Is the same as Primary Contact)
+        @Html.CheckBoxFor(m => m.OwnerAndPrimaryContactAreSame, new { @class = "center-div" })
+    </h6>
+
+    <div>
+        @Html.PartialFor(m => m.OwnerContactInfo, "_ContactEditor")
+    </div>
     <div class="clearfix"></div>
 </div>
 
@@ -106,7 +121,10 @@
     if (Model is CocAndLlaProjectInfo)
     {
         <h3>Land Developer Contact Information</h3>
-        <h6>(If Different than Owner/Primary Contact)</h6>
+        <h6>
+            (Is the same as Primary Contact)
+            @Html.CheckBoxFor(m => ((CocAndLlaProjectInfo)m).OwnerAndLandDevContactAreSame, new { @class = "center-div" })
+        </h6>
         <div class="form-group">
             @Html.PartialFor(m => (m as CocAndLlaProjectInfo).DeveloperContactInfo, "_ContactEditor")
         </div>
@@ -114,9 +132,3 @@
     }
     <div class="clearfix"></div>
 }
-<div class="form-group">
-    <h3>Address</h3>
-
-    @Html.Partial("CollectionEditors/_CollectionEditor",
-    new ListEditorViewModel<ParcelInfo>(BasicProjectInfo.APN_INFO_KEY, Model.AddressList, new ParcelInfo()))
-</div>

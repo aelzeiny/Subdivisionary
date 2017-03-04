@@ -48,23 +48,10 @@
         <h3>Pending Invites</h3>
 
         @using (Html.BeginForm("UpdateApplicationInvites", "Applications", new { applicationId = Model.ApplicationId },
-                FormMethod.Post, new { method = "post", id = "formDeleteUsers" }))
+                    FormMethod.Post, new { method = "post", id = "formPartialViewEditor" }))
         {
             var list = Model.ShareRequests;
-
-            <div id="uploadDataEntries">
-                @for (int k = 0; k < list.Count || k == 0; k++)
-                {
-                    ViewData.TemplateInfo.HtmlFieldPrefix = CustomIFormModelBinder.ENTRY_CLASS_KEY + k;
-                    @Html.Partial("CollectionEditors/_CollectionItemEditor", new ListItemEditorViewModel()
-                    {
-                        Data = k < list.Count ? list[k] : new EmailInfo(), AddRemoveButton = true
-                    })
-                }
-            </div>
-            <button class="btn btn-primary add-entry col-xs-12 col-sm-6" type="button" id="addEntryData">
-                Add Additional Invite <i class="fa fa-user-plus" aria-hidden="true"></i>
-            </button>
+            @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<EmailInfo>("emailKey", list, new EmailInfo(), true))
             <button class="btn btn-info col-xs-12 col-sm-6" style="margin-bottom: 60px;" type="submit">
                 Save or Send Invites <i class="fa fa-envelope"></i>
             </button>
@@ -73,14 +60,21 @@
 </div>
 
 @section scripts{
-    @Html.Partial("CollectionEditors/_CollectionFormJavascript", Model)
+    <script src="/Scripts/site-js/site-icollection.js"></script>
 
     <script type="text/javascript">
+        $(".add-entry").each(function () {
+            var me = $(this);
+            me.html("Add Additional Invite <i class='fa fa-user-plus' aria-hidden='true'></i>");
+            me.attr("style", "");
+            me.addClass("col-xs-12 col-sm-6");
+            console.log("WE");
+        });
         $('#applicantsContainer').on("click", ".js-removeApplicant", function (e) {
             var btn = $(this);
             var save = $("#saveEditorsBtn");
             save.removeClass("disabled");
-            save.removeProp("disabled");
+            save.removeAttr("disabled");
             $('#formDeleteUsers').append(' <input type="hidden" name="@ApplicantionApplicantModelBinder.APPLICANT_KEY" value="' + btn.data('applicant') + '">');
             btn.parent('.list-group-item').remove();
         });

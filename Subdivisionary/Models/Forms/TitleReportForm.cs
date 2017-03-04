@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Validation;
 
@@ -13,6 +15,8 @@ namespace Subdivisionary.Models.Forms
 {
     public class TitleReportForm : UploadableFileForm, ICollectionForm
     {
+        [Required]
+        [TitleContactOfficerValidation]
         public TitleCompany TitleCompany { get; set; }
         
         public override string DisplayName => "Preliminary Title Report";
@@ -53,7 +57,32 @@ namespace Subdivisionary.Models.Forms
             return new PtrContactInfo();
         }
     }
-    
+
+
+    public class TitleCompanyOtherValidation : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var form = ((TitleReportForm)validationContext.ObjectInstance);
+            if (form.TitleCompany == TitleCompany.Other && ((string)value).IsNullOrWhiteSpace())
+                return new ValidationResult("Please specify the Title Company");
+            return ValidationResult.Success;
+        }
+    }
+
+    public class TitleContactOfficerValidationAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var val = ((TitleReportForm)validationContext.ObjectInstance).PtrContactList;
+            if(val == null)
+                return new ValidationResult("Please specify at least one title officer contact.");
+            if(val.All(x=>x.ContactType != PtrContactInfo.PtrContactType.TitleOfficer))
+                return new ValidationResult("Please specify a Title Officer");
+            return ValidationResult.Success;
+        }
+    }
+
     public enum TitleCompany
     {
         [Display(Name = "Chicago")]

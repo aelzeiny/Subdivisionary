@@ -1,7 +1,84 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+@Styles.Render("~/Content/bs-sidebar.css")
+
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="150">
+<div class="col-xs-3">
+    <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix" id="myScrollspy" >
+        <ul class="nav bs-docs-sidenav">
+            <li><a href="#myApplicationCreation">Electronic Submittal for Newly Created Applications</a></li>
+            <li><a href="#myApplicationSubmittal">After Submitting an application to SFDPW</a></li>
+            <li><a href="#myTenantiveMapDecision">Tentative Map Decision (approval or conditional approval)</a></li>
+            <li><a href="#myCheckprint">Checkprint and Subdivision Map Review Process</a></li>
+            <li>
+                <a href="#myEcpOverview">ECP Overview</a>
+                <ul class="nav">
+                    <li>
+                        <a href="#myEcpOverviewOwnership">Changes in Ownership After Application Submittal</a>
+                    </li>
+                    <li>
+                        <a href="#myEcpOverviewTenants">If There are Tenants</a>
+                    </li>
+                    <li>
+                        <a href="#myEcpOverviewFees">Fees Overview</a>
+                    </li>
+                    <li>
+                        <a href="#myEcpOverviewEcpFees">ECP Conversion Program Fees</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#myEcpGuidelines">ECP Application Guidelines</a>
+                <ul class="nav">
+                    <li><a href="#myEcpGuidelinesPrerequisits">Before Filling Out Application</a></li>
+                    <li><a href="#myEcpGuidelinesCoverLetter">Cover Letter</a></li>
+                    <li><a href="#myEcpGuidelinesProjectInfo">Project Information</a></li>
+                    <li><a href="#myEcpGuidelinesTM">Tentative Parcel Map (2-4 Units) or Tenative Final Map (5-6 Units)</a></li>
+                    <li><a href="#myEcpGuidelinesAppFees">Application Fees</a></li>
+                    <li><a href="#myEcpGuidelinesPTR">Preliminary Title Report</a></li>
+                    <li><a href="#myEcpGuidelinesDeeds">Subject and Adjoiner Deeds</a></li>
+                    <li><a href="#myEcpGuidelinesResearch">Other Recorded Maps or Block Research</a></li>
+                    <li><a href="#myEcpGuidelinesBuildingHist">Building History</a></li>
+                    <li><a href="#myEcpGuidelinesUnitHist">Unit History</a></li>
+                    <li><a href="#myEcpGuidelinesPhysicalInspection">DBI Physical Inspection Report</a></li>
+                    <li><a href="#myEcpGuidelines3R">3R Report</a></li>
+                    <li><a href="#myEcpGuidelinesOccupancy">Affidavit for Ownership/Occupancy & Homeowner's Tax Exemption</a></li>
+                    <li><a href="#myEcpGuidelinesTenantIntent">Tentant Intent - Purchase & Tenant Intent - ECP Lifetime Lease</a></li>
+                    <li><a href="#myEcpGuidelinesAckFees">Acknowledgment of Fees</a></li>
+                    <li><a href="#myEcpGuidelinesReleaseOfCommonAreas">Owner's Affidavit - Release in Common Areas</a></li>
+                    <li><a href="#myEcpGuidelinesNNNotice">Owner and Tenant Notification of Tentative Map Decision</a></li>
+                    <li><a href="#myEcpGuidelinesTenantNoticeOfConversion">Tenants Notice of Conversion</a></li>
+                    <li><a href="#myEcpGuidelinesTenantContacts">Tenant Contacts</a></li>
+                    <li><a href="#myEcpGuidelinesExistingTenantNotice">Subdivider's Notice to Existing Tenants</a></li>
+                    <li><a href="#myEcpGuidelinesNewTenantNotice">Subdivider's Notice to New Tenants</a></li>
+                    <li><a href="#myEcpGuidelinesRightOfRefusal">Tenant Right of Refusal</a></li>
+                    <li><a href="#myEcpGuidelinesPhotos">Photographs of Subject Property</a></li>
+                    <li><a href="#myEcpGuidelinesPropM">Proposition M Findings</a></li>
+                    <li><a href="#myEcpGuidelinesOwnerAff">Affidavit Owner’s</a></li>
+                    <li><a href="#myEcpGuidelinesEvAff">Affidavit Evictions</a></li>
+                    <li><a href="#myEcpGuidelinesTIC">TIC Agreement</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="col-sm-9">
+    <h1>About Subdivision Applications</h1>
+    @Html.Partial("_ApplicationCreationGuideline")
+    @Html.Partial("_EcpApplicationOverview")
+    @Html.Partial("_EcpApplicationGuidelines")
+</div>
+</body>
+@section scripts {
+    <script type="text/javascript">
+        var offset = 80;
+
+        $('.bs-docs-sidebar li a').click(function (event) {
+            event.preventDefault();
+            $($(this).attr('href'))[0].scrollIntoView();
+            scrollBy(0, -offset);
+        });
+    </script>
+}

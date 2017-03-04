@@ -34,6 +34,8 @@ namespace Subdivisionary.Models.ProjectInfos
 
         public ContactInfo OwnerContactInfo { get; set; }
 
+        public bool OwnerAndPrimaryContactAreSame { get; set; }
+
         public virtual string DisplayName => "Project Information";
 
         public string[] Keys => new[] { APN_INFO_KEY };
@@ -43,6 +45,7 @@ namespace Subdivisionary.Models.ProjectInfos
             PrimaryContactInfo = new ContactInfo();
             OwnerContactInfo = new ContactInfo();
             AddressList = new AddressList();
+            OwnerAndPrimaryContactAreSame = false;
         }
 
         public void CopyValues(IForm other, bool reverse)

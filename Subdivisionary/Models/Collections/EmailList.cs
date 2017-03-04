@@ -8,17 +8,6 @@ namespace Subdivisionary.Models.Collections
 {
     public class EmailList : SerializableList<EmailInfo>
     {
-        protected override int ParamCount => 1;
-
-        protected override EmailInfo ParseObject(string[] param)
-        {
-            return new EmailInfo() {EmailAddress = param[0]};
-        }
-
-        protected override string[] SerializeObject(EmailInfo serialize)
-        {
-            return new[] { serialize.EmailAddress };
-        }
     }
 
     public class EmailInfo

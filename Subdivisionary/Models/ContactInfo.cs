@@ -43,5 +43,10 @@ namespace Subdivisionary.Models
         [Required]
         [StringLength(255)]
         public string Zip { get; set; }
+
+        public ContactInfo()
+        {
+            Name = Email = AddressLine1 = AddressLine2 = City = State = Zip = "";
+        }
     }
 }

@@ -19,9 +19,12 @@ namespace Subdivisionary.Models.ProjectInfos
         [Display(Name = "Number of Existing Lots")]
         public int NumOfExisitingLots { get; set; }
 
+        public bool OwnerAndLandDevContactAreSame { get; set; }
+
         public CocAndLlaProjectInfo()
         {
             DeveloperContactInfo = new ContactInfo();
+            OwnerAndLandDevContactAreSame = false;
         }
     }
 }

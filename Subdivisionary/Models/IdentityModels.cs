@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Subdivisionary.Models.Applications;
+using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
 
@@ -47,6 +48,7 @@ namespace Subdivisionary.Models
         public DbSet<Form> Forms { get; set; }
         public DbSet<FileUploadInfo> FileUploads { get; set; }
         public DbSet<SignatureUploadInfo> SignatureInfo { get; set; }
+        public DbSet<FeeScheuleItem> FeeSchedule { get; set; }
 
         public bool ProxyEnabled {
             get
@@ -102,11 +104,17 @@ namespace Subdivisionary.Models
                 .HasRequired(user => user.Data)
                 .WithRequiredPrincipal(data => data.User);
 
-            // Map one FileUpload to many UploadableFileForms
+            // Map one UploadableFileForms to many FileUploads
             modelBuilder.Entity<UploadableFileForm>()
                 .HasMany(form => form.FileUploads)
                 .WithRequired(form => form.Form);
-            
+
+            // Map one SignatureForm to many Signatures
+            modelBuilder.Entity<SignatureForm>()
+                .HasMany(form => form.Signatures)
+                .WithRequired(form => form.SignatureForm)
+                .WillCascadeOnDelete(true);
+
             // Uploadable Files has a key called Id, and this key should generate when the property is added
             modelBuilder.Entity<FileUploadInfo>()
                 .HasKey(p => p.Id)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -89,11 +90,6 @@ namespace Subdivisionary.Controllers
             return RedirectToAction("Details", "Applications", new {id = application.Id});
         }
 
-        public ActionResult SpeedTest()
-        {
-            return View(new OwnerForm());
-        }
-
         private Application CreateApplication(ApplicationTypeViewModel appType)
         {
             Application answer = null;
@@ -127,15 +123,17 @@ namespace Subdivisionary.Controllers
         public ActionResult Details(int id, int? editId)
         {
             var applicant = GetCurrentApplicant();
-            var application = (applicant.Applications.FirstOrDefault(x => x.Id == id));
+            var application = _context.Applications.Where(x => x.Id == id)
+                .Include(x => x.Forms).FirstOrDefault();
 
-            if (application == null)
+            if (application == null || applicant.Applications.All(x => x.Id != application.Id))
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             EditApplicationViewModel toEdit = new EditApplicationViewModel()
             {
                 EditId = editId.HasValue ? editId.Value : 0,
-                Application = application
+                Application = application,
+                Forms = application.GetOrderedForms()
             };
 
             return View(toEdit);
@@ -145,9 +143,11 @@ namespace Subdivisionary.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(IForm editApp, int applicationId, int editId)
         {
-            // ensure that application belongs to user
-            Application application = this.GetCurrentApplicant().Applications.FirstOrDefault(x => x.Id == applicationId);
-            if (application == null)
+            var applicant = GetCurrentApplicant();
+            var application = _context.Applications.Where(x => x.Id == applicationId)
+                .Include(x => x.Forms).FirstOrDefault();
+
+            if (application == null || applicant.Applications.All(x => x.Id != application.Id))
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             // Get current form
             var allforms = application.GetOrderedForms();
@@ -171,6 +171,7 @@ namespace Subdivisionary.Controllers
                 {
                     EditId = editId,
                     Application = application,
+                    Forms = application.GetOrderedForms(),
                     Form = editApp // Specify a form so that the Application form at the designated EditId isn't edited
                 };
                 return View("Details", toEdit);
@@ -190,13 +191,7 @@ namespace Subdivisionary.Controllers
         }
 
         #endregion
-
-        [System.Web.Mvc.AllowAnonymous]
-        public ActionResult Debug()
-        {
-            return View();
-        }
-
+        
         public ActionResult Review(int id)
         {
             var applicant = GetCurrentApplicant();
@@ -222,7 +217,9 @@ namespace Subdivisionary.Controllers
         public Applicant GetCurrentApplicant()
         {
             var user = GetCurrentUser();
-            return _context.Applicants.FirstOrDefault(app => app.Id == user.DataId);
+            return _context.Applicants.Where(app => app.Id == user.DataId)
+                .Include(appl => appl.Applications)
+                .FirstOrDefault();
         }
 
         public ApplicationUser GetCurrentUser()
@@ -313,41 +310,66 @@ namespace Subdivisionary.Controllers
                 return View("Share", vm);
             }
 
+            List<MailMessage> messages = new List<MailMessage>();
             foreach (var toshare in emailList)
             {
-                List<MailMessage> messages = new List<MailMessage>();
                 if (!application.SharedRequests.Contains(toshare))
                 {
-                    MailMessage message = new MailMessage("ahmed.elzeiny2@sfdpw.org", toshare.EmailAddress);
-                    message.Subject =
-                        $"[Application ID #{applicationId}] {applicant.User.Email} invites you to work a {application.DisplayName}";
-                    message.Body =
-                        $"<p>Dear {toshare.EmailAddress},</p><p>You are invited to edit the following project </p><strong>{application.ProjectInfo}</strong>" +
-                        $"<p>Blah Blah Blah. Test. Test. Test. Can Office 365 server send emails on my behalf? That would be cool. If this works, please disregard. </p>";
+                    MailMessage message = new MailMessage("ahmed.elzeiny2@sfdpw.org", toshare.EmailAddress)
+                    {
+                        Subject =
+                            $"[Application ID #{applicationId}] {applicant.User.Name} invites you to work on a {application.DisplayName} Project"
+                    };
+                    EmailInviteViewModel invite = new EmailInviteViewModel()
+                    {
+                        Address = application.ProjectInfo.ToString(),
+                        ToName = toshare.EmailAddress,
+                        ApplicationDisplayName = application.DisplayName,
+                    };
+                    if (Request.Url != null)
+                    {
+                        invite.RegisterUrl = this.Url.Action("Register", "Account", new object(),  Request.Url.Scheme);
+                        invite.ApplicationUrl = Url.Action("Share", "Applications", new {id = application.Id}, Request.Url.Scheme);
+                    }
+                    message.Body = RenderRazorViewToString("InviteEmail", invite);
+
                     message.IsBodyHtml = true;
                     // Send invite via email
                     messages.Add(message);
                 }
-                await Contact(messages);
             }
+            await Contact(messages);
             application.SharedRequests.Clear();
             application.SharedRequests.AddRange(emailList);
             _context.SaveChanges();
             return RedirectToAction("Share", "Applications", new {id = applicationId});
         }
+        private string RenderRazorViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
+                                                                         viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,
+                                             ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
 
         [System.Web.Mvc.HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Contact(List<MailMessage> messages)
         {
             if (messages.Count != 0)
             {
                 using (var smtp = new SmtpClient())
                 {
-                    var credential = new NetworkCredential("ahmed.elzeiny2@sfdpw.org", "$Allah1999");
+                    var credential = new NetworkCredential(ConfigurationManager.AppSettings["EmailAccountName"], ConfigurationManager.AppSettings["EmailAccountPass"]);
                     smtp.Credentials = credential;
-                    smtp.Host = "smtp.office365.com";
-                    smtp.Port = 587;
+                    smtp.Host = ConfigurationManager.AppSettings["EmailHost"];
+                    smtp.Port = int.Parse(ConfigurationManager.AppSettings["EmailPort"]);
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.EnableSsl = true;
                     foreach (var msg in messages)
@@ -469,9 +491,9 @@ namespace Subdivisionary.Controllers
             var applicant = GetCurrentApplicant();
             if (applicant.Applications.FirstOrDefault(x=>x.Id == mform.ApplicationId) == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
-            var form = mform as ISignatureForm;
+            var form = mform as SignatureForm;
             if(form == null)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                throw new HttpResponseException(HttpStatusCode.BadRequest );
             var sig = new SignatureUploadInfo()
             {
                 Data = signature.SignatureData,
@@ -479,8 +501,8 @@ namespace Subdivisionary.Controllers
                 DateStamp = DateTime.Now,
                 SignerName = signature.SignerName,
                 UserStamp = applicant.User.Name,
-                Form = mform,
-                FormId = id
+                SignatureForm = form,
+                SignatureFormId = id
             };
             form.Signatures.Add(sig);
             _context.SaveChanges();
@@ -503,6 +525,7 @@ namespace Subdivisionary.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             var toremove = form.Signatures.First(x => x.SignerName == signature.SignerName);
             _context.SignatureInfo.Remove(toremove);
+            mform.IsAssigned = false;
             _context.SaveChanges();
             return Content("success");
         }

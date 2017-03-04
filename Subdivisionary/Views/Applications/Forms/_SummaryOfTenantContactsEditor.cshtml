@@ -1,0 +1,20 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.SummaryOfTenantContacts
+
+
+
+<p>
+    Article 9 Section 1381(a) (4)(D) of the San Francisco Subdivision Code requires subdividers to submit with condominium conversion
+    application a summary of tenant contacts including all meetings held with tenants and all information provided to them about the
+    project and their own options.
+</p>
+
+@Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<TenantContactInfo>(SummaryOfTenantContacts.TENANT_CONTACTS_KEY, Model.TenantContactsList, new TenantContactInfo()))
+
+<p>
+    The undersigned hereby certifies that he/she has recorded all tenant interactions as required by the San Francisco Subdivision Code.
+</p>
+
+@Html.Partial("_SignatureCollectionEditor", new SignatureCollectionViewModel(Model.Id, Model.SignatureUploadProperties, Model.Signatures))

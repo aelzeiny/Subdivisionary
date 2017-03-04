@@ -1,0 +1,36 @@
+﻿@model Subdivisionary.Models.Collections.OccupancyRangeInfo
+    
+
+<div class="form-surround">
+    <label class="form-group form-surround col-xs-1">(</label>
+    <div class="form-group col-xs-4">
+        @Html.LabelFor(m => m.StartDate, new { @class = "control-label" })
+        @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.StartDate)
+    </div>
+    <label class="form-group form-surround col-xs-2" style="margin-top: 30px;font-size: 20px;">-</label>
+    <div class="form-group col-xs-4">
+        @Html.LabelFor(m => m.EndDate, new { @class = "control-label" })
+        @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.EndDate)
+    </div>
+    <label class="form-group form-surround col-xs-1">)</label>
+</div>
+<div class="form-group col-xs-12 col-sm-4">
+    @Html.LabelFor(m => m.Occupants, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.Occupants, new { @class = "form-control", placeholder = "Me, Myself, and I" })
+    @Html.ValidationMessageFor(m => m.Occupants)
+</div>
+<div class="form-group col-xs-12 col-sm-4">
+        @Html.LabelFor(m => m.Rent, new { @class = "control-label" })
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            @Html.TextBoxFor(m => m.Rent, new { @class = "form-control", placeholder = "Enter $0 if unit is vacant or owner-occupied" })
+        </div>
+    @Html.ValidationMessageFor(m => m.Rent)
+</div>
+<div class="form-group col-xs-12 col-sm-4">
+    @Html.LabelFor(m => m.ReasonForTermination, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.ReasonForTermination, new { @class = "form-control", placeholder = "[Enter primary reason for tenant eviction]" })
+    @Html.ValidationMessageFor(m => m.ReasonForTermination)
+</div>

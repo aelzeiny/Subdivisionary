@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 using Subdivisionary.Models.Collections;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Subdivisionary.Models.Forms
 {
@@ -13,7 +14,7 @@ namespace Subdivisionary.Models.Forms
 
         public string[] Keys => new[] { OWNERS_KEY };
         public static readonly string OWNERS_KEY = "ownersId";
-
+        
         public OwnerList Owners { get; set; }
 
         public OwnerForm()

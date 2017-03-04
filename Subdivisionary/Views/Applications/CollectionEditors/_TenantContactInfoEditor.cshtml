@@ -1,0 +1,14 @@
+﻿@using Subdivisionary.Models.Collections
+@model TenantContactInfo
+
+
+<div class="col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.DateOfContact, new { @class = "control-label" })
+    @Html.EditorFor(m => m.DateOfContact, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.DateOfContact)
+</div>
+<div class="col-xs-12 col-sm-6">
+    @Html.LabelFor(m => m.DateOfContact, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.InteractionWithTenants, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.InteractionWithTenants)
+</div>

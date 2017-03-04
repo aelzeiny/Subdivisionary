@@ -1,0 +1,27 @@
+﻿@using Subdivisionary.Models.Forms
+@model Subdivisionary.Models.Forms.NoticeToTenants
+
+<p>
+    Notice to tenants is a legal requirement under state law and local ordinance. There is no prescribed form
+    approved by the City and applicants should contact their attorney for instructions for proper notice.
+</p>
+<a href="@NoticeToTenants.SAMPLE_NOTICE_URL" target="_blank">
+    <h4>
+        Sample Notice of Proposed Condominium Conversion <i class="fa fa-file-pdf-o"></i>
+    </h4>
+</a>
+<p>
+    <strong>BE ADVISED: </strong>
+    THE HYPERLINK ABOVE IS SHOWN FOR ILLUSTRATIVE PURPOSES ONLY AND DOES NOT REPRESENT AN
+    ENDORSEMENT BY THE CITY NOR A CERTIFICATION AS TO THE CORRECTNESS OR
+    COMPLETENESS OF THIS NOTICE.
+</p>
+
+
+<div class="col-xs-11">
+    @Html.LabelFor(m => m.AffirmedNoticeToAllTenants, new { @class = "control-label" })
+    @Html.ValidationMessageFor(m => m.AffirmedNoticeToAllTenants)
+</div>
+<div class="col-xs-1">
+    @Html.CheckBoxFor(m => m.AffirmedNoticeToAllTenants, new { @class = "big-checkbox center-div" })
+</div>

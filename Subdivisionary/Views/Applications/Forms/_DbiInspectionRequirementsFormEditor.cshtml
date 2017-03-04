@@ -1,0 +1,70 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model DbiInspectionRequirementsForm
+
+@{
+    var vm = new FileUploadViewModelCollection(Model);
+}
+
+
+<h5>
+    Submit a separate check payable to Department of Building Inspection.
+</h5>
+<p>
+    This Form will be forwarded to DBI; it
+    is IMPORTANT this form be complete. Photos and Architectural floor plans are recommended and will
+    expedite the review process. DBI reviews for building code compliance and fire rating and will require the
+    following information:
+</p>
+<p>
+    <strong>ATTENTION: </strong>Submit this Form if an existing building occupies the property:
+    It’s NOT required if Lot Line Adjustment is only for merging adjoined lots.
+</p>
+
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(DbiInspectionRequirementsForm.DBI_INSPECTION_PHOTOS_KEY, "Pictures detailing buildings located near the proposed lot line"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(DbiInspectionRequirementsForm.DBI_INSPECTION_FLOORPLANS_KEY, "Architectural floor plans: If available, should detail and construction type and show use(i.e.bedroom, kitchen, etc.) of rooms adjacent to lot lines."))
+
+<div class="form-group">
+    <label class="control-label col-xs-12 col-sm-7">Building Inspection Fees</label>
+    <div class="col-sm-5">
+        <input class="form-control disabled col-xs-12 col-sm-5" type="text" disabled="disabled" value="@DbiInspectionRequirementsForm.DBI_INSPECTION_FEE" />
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-12 col-sm-7">
+        @Html.LabelFor(m => m.AreaOfWalls, new { @class = "control-label" })
+        (Length x Height of wall next to property line) NOTE: If architectural floor plans are available, this can be omitted
+        @Html.ValidationMessageFor(m => m.AreaOfWalls)
+    </div>
+    <div class="col-xs-12 col-sm-5">
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.AreaOfWalls, new { @class = "form-control", placeholder = "####" })
+            <span class="input-group-addon">ft<sup>2</sup></span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-12 col-sm-7">
+        @Html.LabelFor(m => m.AreaOfOpenings, new { @class = "control-label" })
+        (Doors, Windows, etc.)
+        NOTE: If architectural floor plans are available, this can be omitted
+        @Html.ValidationMessageFor(m => m.AreaOfOpenings)
+    </div>
+    <div class="col-xs-12 col-sm-5">
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.AreaOfOpenings, new { @class = "form-control", placeholder = "####" })
+            <span class="input-group-addon">ft<sup>2</sup></span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-12 col-sm-7">
+        @Html.LabelFor(m => m.ConstructionMaterial, new { @class = "control-label" })
+        (of what is/are the wall(s) made?) NOTE: If architectural floor plans are available, this can be omitted
+        @Html.ValidationMessageFor(m => m.ConstructionMaterial)
+    </div>
+    <div class="col-xs-12 col-sm-5">
+        @Html.TextAreaFor(m => m.ConstructionMaterial, new { @class = "form-control", placeholder = "[Enter list of construction materials]" })
+    </div>
+
+</div>

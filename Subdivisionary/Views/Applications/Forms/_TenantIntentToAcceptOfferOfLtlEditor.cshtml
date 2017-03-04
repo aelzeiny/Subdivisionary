@@ -1,0 +1,43 @@
+﻿@model Subdivisionary.Models.Forms.TenantIntentToAcceptOfferOfLtl
+
+<p>
+    <strong>
+        For tenants who do not wish to purchase their units but who wish to avail themselves of the Expedited Conversion Program (ECP) lifetime lease, when
+        offered, an intent to accept the lifetime lease will serve in lieu of Subdivision Code Section 1388. Tenant Intent to Purchase.
+    </strong>
+</p>
+<p>
+    All applicable provisions of the Tenant Intent to Purchase form shall apply to the Tenant Intent to Accept Expedited Conversion Program Lifetime Lease
+    including: No application for conversion shall be approved unless there are substantial numbers of tenants who have indicated their intent to purchase
+    or accept the lifetime lease of their rental unit. This intent shall be evidenced by the submittal in writing of the DPW Form No. 2A or 2B by tenants
+    representing no less than forty percent (40%) of the units. For purposes of calculation, such Forms must be signed by one (1) tenant in a 2-unit building,
+    two (2) tenants residing in separate units in a 3-, 4-, or 5- unit building, or three (3) tenants residing in separate units in a 6-unit building. In
+    obtaining or soliciting tenant approval of Forms 2A or 2B, subdividers shall comply with any restrictions set forth in the California Business and
+    Professions Code and regulations of the State Real Estate Commissioner.  Further, in calculating the total number of units necessary to satisfy Section
+    1388, there shall be included in the forty percent (40%) requirement any units in which the occupant qualified for and has expressed an intent to obtain
+    a renewable lifetime lease pursuant to Section 1391(c) (this lifetime lease is for a protected class of tenants and is not the same as the lifetime lease
+    required to be offered to all tenants under the ECP program).
+</p>
+<p>
+    Any Forms No. 2A or 2B obtained by way of any inducement of the subdivider to provide benefits to that tenant beyond those established by this Code
+    shall be so identified and the specific representations of the subdivider shall be set forth in detail and in writing. All such writings shall be come
+    a matter of public record and the subdivider shall be required to comply with his or her representations as conditions of approval.
+</p>
+<p>
+    Forms No. 2A or 2B, once signed by a tenant, shall be irrevocable by said tenant, for purposes of compliance with Section 1388, provided, however,
+    that the Director shall invalidate any such Form upon a determination that the subdivider has used coercion, fraud, duress, misrepresentation or threat
+    in connection with obtaining or soliciting tenant approval of such Form.
+</p>
+<h4>TENANT INTENT TO ACCEPT EXPEDITED CONVERSION PROGRAM LIFETIME LEASE</h4>
+<p>
+    I,
+    @Html.TextBoxFor(x=>x.IntentToAcceptOfferName, new {@class="disabled bsm-form-control", disabled="disabled"})
+    as tenant(s) of property at
+    @Html.TextBoxFor(x=>x.IntentToAcceptAddress, new { @class = "bsm-form-control", style = "min-width:300px" })
+    at the time of the filing of the application for a condominium conversion subdivision of such property, do hereby certify my/our intent
+    to accept the ECP lifetime lease when it is offered for my/our occupied Unit No.
+    @Html.TextBoxFor(m => m.IntentToAcceptTenantUnit, new { @class = "bsm-form-control" })
+    at said property. I/We understand that the offer will be made after the subdivider has applied for condominium conversion under the
+    Expedited Conversion Program and that said offer must be in the approved form authorized by City and County of San Francisco and made available to the
+    public on the DPW website.
+</p>

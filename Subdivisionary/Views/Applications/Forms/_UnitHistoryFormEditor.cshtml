@@ -1,0 +1,87 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models.Applications
+@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.Forms.UnitHistoryForm
+    
+<h4>Basic Unit Information</h4>
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.OccupancyType, new { @class = "control-label" })
+    @Html.EnumDropDownListFor(m => m.OccupancyType, "[Select Occupancy Status]", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.OccupancyType)
+</div>
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.ApartmentNumber, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.ApartmentNumber, new { @class = "form-control", placeholder = "221B" })
+    @Html.ValidationMessageFor(m => m.ApartmentNumber)
+</div>
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.NumberOfBedrooms, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.NumberOfBedrooms, new { @class = "form-control", placeholder = "[# of Bedrooms]" })
+    @Html.ValidationMessageFor(m => m.NumberOfBedrooms)
+</div>
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.SquareFeet, new { @class = "control-label" })
+    <div class="input-group">
+        @Html.TextBoxFor(m => m.SquareFeet, new { @class = "form-control", placeholder = "####" })
+        <span class="input-group-addon">ft<sup>2</sup></span>
+    </div>
+    @Html.ValidationMessageFor(m => m.SquareFeet)
+</div>
+
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.ProposedSalesPrice, new { @class = "control-label" })
+    <div class="input-group">
+        <span class="input-group-addon">$</span>
+        @Html.TextBoxFor(m => m.ProposedSalesPrice, new { @class = "form-control", placeholder = "$$$$" })
+    </div>
+    @Html.ValidationMessageFor(m => m.ProposedSalesPrice)
+</div>
+
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.CurrentRentalRate, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.CurrentRentalRate, new { @class = "form-control", placeholder = "1155 Market Street" })
+    @Html.ValidationMessageFor(m => m.CurrentRentalRate)
+</div>
+<div class="clearfix"></div>
+@{
+    var ecpOccupants = Model.Application.OwnersAndTenants;
+}
+<div id="usablenames" class="data" data-nameslist="@CustomHtmlHelper.EncodeJson(ecpOccupants)">
+    <div class="col-xs-12 col-sm-6">
+        <h4>Listed Owners</h4>
+        <ul class="list-group">
+            @foreach (var item in ecpOccupants)
+            {
+                if (!item.IsTenant)
+                {
+                    <li class="list-group-item">@item.Name</li>
+                }
+            }
+        </ul>
+        <p>
+            <strong>Note:</strong> To add additional owners, please visit the "Property Owners" Form
+        </p>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <h4>Listed Tenants</h4>
+        <ul class="list-group">
+            @foreach (var item in ecpOccupants)
+            {
+                if (item.IsTenant)
+                {
+                    <li class="list-group-item">@item.Name</li>
+                }
+            }
+        </ul>
+        <p>
+            <strong>Note:</strong> To add additional tenants, please visit the "Property Tentants" Form. If no such form is avalible, then please ensure that the "Building has tenants" checkbox is checked in the "Project Information" Form.
+        </p>
+    </div>
+</div>
+<div class="clearfix"></div>
+<h4>All Unit Occupants</h4>
+@Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<OccupantNameInfo>(UnitHistoryForm.OCCUPANTS_KEY, Model.OccupiedNamesList, new OccupantNameInfo()))
+<h4>Six Year Unit History</h4>
+@Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<OccupancyRangeInfo>(UnitHistoryForm.SIX_YEAR_HISTORY_KEY, Model.OccupancyRangeOccupationHistoryList, new OccupancyRangeInfo()))

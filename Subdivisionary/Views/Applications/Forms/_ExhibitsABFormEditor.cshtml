@@ -1,0 +1,12 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+
+@{
+    var vm = new FileUploadViewModelCollection(Model);
+}
+
+<h6><a href="@ExhibitsABForm.SAMPLE_EXHIBITS_A_URL" target="_blank">View Sample Exhibit A <i class="fa fa-file-pdf-o"></i></a></h6>
+<h6><a href="@ExhibitsABForm.SAMPLE_EXHIBITS_B_URL" target="_blank">View Sample Exhibit B <i class="fa fa-file-pdf-o"></i></a></h6>
+
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(ExhibitsABForm.EXHIBIT_A_KEY, "Upload Exhibit A"))
+@Html.Partial("_FileUploadPropsEditor", vm.GetViewModel(ExhibitsABForm.EXHIBIT_B_KEY, "Upload Exhibit B"))

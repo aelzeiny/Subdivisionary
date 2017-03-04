@@ -113,6 +113,8 @@ namespace Subdivisionary.DAL
         /// </summary>
         protected object ParsePrimitive(string primitive, Type propType)
         {
+            if (propType == typeof(Boolean) && primitive == "true,false")
+                return true;
             var converter = TypeDescriptor.GetConverter(propType);
             return converter.ConvertFrom(primitive);
         }

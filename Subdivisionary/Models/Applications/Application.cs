@@ -45,11 +45,21 @@ namespace Subdivisionary.Models.Applications
         public bool IsSubmitted { get; set; }
 
         public EmailList SharedRequests { get; set; }
+        public NamesList OwnersAndTenants { get; set; }
 
         /**
          * Display name of application
          */
         public abstract string DisplayName { get; }
+
+        /**
+         * Payment Schedule Type from Database
+         */
+        public abstract EFeeSchedule PaymentSchedule { get; }
+
+        /**
+         * Initial Fee of application
+         */
         public string DirectoryName => this.Id + "_" + this.DisplayName;
 
         protected abstract Form[] GetDefaultApplicationForms();
@@ -59,6 +69,7 @@ namespace Subdivisionary.Models.Applications
         protected Application()
         {
             SharedRequests = new EmailList();
+            OwnersAndTenants = new NamesList();
         }
 
         public virtual IList<IForm> GetOrderedForms()
@@ -94,6 +105,43 @@ namespace Subdivisionary.Models.Applications
         /// <param name="modified"></param>
         public virtual void FormUpdated(ApplicationDbContext context, IForm before, IForm after)
         {
+            // Maintain List of Tenants and Owners
+            if (after is TenantForm)
+            {
+                var a = (TenantForm)after;
+                // Ensure we have all the tenants added within the collection currently listed
+                foreach (var t in a.TenantsList)
+                {
+                    if (OwnersAndTenants.All(x => x.Name != t.TenantName))
+                        OwnersAndTenants.Add(new OccupantNameInfo() { IsTenant = true, Name = t.TenantName });
+                }
+                // Ensure we have no tenants in our collection that are no longer listed
+                for (int i = OwnersAndTenants.Count - 1; i >= 0; i--)
+                {
+                    var t = OwnersAndTenants[i];
+                    if (t.IsTenant && a.TenantsList.All(x => x.TenantName != t.Name))
+                        OwnersAndTenants.RemoveAt(i);
+                }
+            }
+            else if (after is OwnerForm)
+            {
+                var a = (OwnerForm)after;
+                // Ensure we have all the tenants added within the collection currently listed
+                foreach (var t in a.Owners)
+                {
+                    if (OwnersAndTenants.All(x => x.Name != t.OwnerName))
+                        OwnersAndTenants.Add(new OccupantNameInfo() { IsTenant = false, Name = t.OwnerName });
+                }
+                // Ensure we have no tenants in our collection that are no longer listed
+                for (int i = OwnersAndTenants.Count - 1; i >= 0; i--)
+                {
+                    var t = OwnersAndTenants[i];
+                    if (t.IsTenant && a.Owners.All(x => x.OwnerName != t.Name))
+                        OwnersAndTenants.RemoveAt(i);
+                }
+            }
+
+            // Call all IObserverForms to update
             foreach (var form in Forms)
             {
                 var observer = form as IObserverForm;
@@ -140,9 +188,14 @@ namespace Subdivisionary.Models.Applications
             return true;
         }
 
+        public virtual IList<ValidationResult> Review()
+        {
+            return new ValidationResult[0];
+        }
+
         public override string ToString()
         {
-            return string.Format("{0}_{1} {2}", this.Id, this.DisplayName, ProjectInfo.ToString());
+            return $"{this.Id}_{this.DisplayName} {ProjectInfo.ToString()}";
         }
     }
 }

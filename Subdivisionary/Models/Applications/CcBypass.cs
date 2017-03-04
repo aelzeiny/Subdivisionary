@@ -19,17 +19,24 @@ namespace Subdivisionary.Models.Applications
             return new Form[]
             {
                 new OwnerForm(),
+                new CoverLetterForm(),
                 new ApplicationCheckForm(),
                 new TentativeMapForm(),
                 new TitleReportForm(),
-                new GrantDeedForm()
-                //new OtherRecordedMapsOrBlockResearch(),
-                //new BuildingHistoryForm(),
-                //new CertificateOfFinalCompletionForm(),
-                //new Report3RForm(),
-                //new ProofOfOwnerOccupancyForm()
+                new GrantDeedForm(),
+                new BuildingHistory(),
+                new UnitHistoryForm(),
+                new UnitHistoryForm(),
+                new RecordedMapsOnBlock(),
+                new DbiPhysicalInspection(), 
+                new Report3R(),
+                new ProofOfOwnerOccupancy(), 
+                new OwnersReleaseOfInterestInCommonAreas(), 
+                new OwnersAffidavitOfTentantEvictions(),
             };
         }
+
+        public override EFeeSchedule PaymentSchedule => EFeeSchedule.Conversions;
 
         public override string DisplayName => "Two-Unit Bypass";
     }
