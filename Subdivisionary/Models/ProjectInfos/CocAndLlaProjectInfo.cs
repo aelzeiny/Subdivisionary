@@ -11,7 +11,7 @@ namespace Subdivisionary.Models.ProjectInfos
     /// <summary>
     /// For Coc & LLA Apps
     /// </summary>
-    public class CocAndLlaProjectInfo : ExtendedProjectInfo
+    public class CocAndLlaProjectInfo : ExtendedProjectInfo, IUnitCount
     {
         public ContactInfo DeveloperContactInfo { get; set; }
 
@@ -25,6 +25,13 @@ namespace Subdivisionary.Models.ProjectInfos
         {
             DeveloperContactInfo = new ContactInfo();
             OwnerAndLandDevContactAreSame = false;
+        }
+
+        public virtual int UnitCount { get { return NumOfExisitingLots; } }
+
+        public virtual bool IsFinalMap()
+        {
+            return NumOfExisitingLots > Applications.Application.MAX_PARCEL_MAP_UNITS;
         }
     }
 }

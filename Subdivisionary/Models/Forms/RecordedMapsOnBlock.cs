@@ -9,14 +9,7 @@ namespace Subdivisionary.Models.Forms
     public class RecordedMapsOnBlock : UploadableFileForm
     {
         public override string DisplayName => "Recorded Maps on Block";
-
-        /*public static readonly string RECORDED_ALPHA_KEY = "recordedMapsAlphaId";
-        public static readonly string RECORDED_ASSESSOR_KEY = "recordedMapsAssessorId";
-        public static readonly string RECORDED_KEYMAPS_KEY = "recordedMapsKeymapsId";
-        public static readonly string RECORDED_HISTORIC_KEY = "recordedMapsHistoricId";
-        public static readonly string RECORDED_RECORDEDMAPS_KEY = "recordedMapsRecordedId";
-        public static readonly string RECORDED_OTHER_MAPS_KEY = "recordedMapsOtherId";*/
-
+        
         public static readonly string MAPS_REFERENCED_KEY = "recordedMapsRefId";
         public static readonly string MAPS_FIELDNOTES_KEY = "recordedMapsFieldId";
 

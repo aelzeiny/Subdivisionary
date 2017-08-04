@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>App_Data\Subdivisionary.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,8 +49,8 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.1.0\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
@@ -82,6 +83,30 @@
     </Reference>
     <Reference Include="Glimpse.Mvc5, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis, Version=1.22.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.22.0\lib\net45\Google.Apis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.22.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.22.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.22.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.22.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.22.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.22.0\lib\net45\Google.Apis.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.22.0.803, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v3.1.22.0.803\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.22.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.22.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -145,6 +170,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="reCaptcha, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\reCaptcha.AspNet.Mvc.1.2.3.0\lib\net451\reCaptcha.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -152,6 +181,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Spatial, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Spatial.5.7.0\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
@@ -164,6 +194,10 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -218,6 +252,10 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Zlib.Portable, Version=1.11.0.0, Culture=neutral, PublicKeyToken=431cba815f6a8b5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">
@@ -268,19 +306,61 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
+    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\CollectionModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ComplexTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\DictionaryModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumValueDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\IModelDocumentationProvider.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\KeyValuePairModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescriptionGenerator.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameAttribute.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameHelper.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
+    <Compile Include="Areas\HelpPage\MultipleXmlDocumentationProvider.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
+    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Api\ProjectsController.cs" />
+    <Compile Include="Controllers\AContextController.cs" />
+    <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\FormsController.cs" />
+    <Compile Include="Controllers\Api\InvoiceController.cs" />
+    <Compile Include="Controllers\Api\ProjectInfoController.cs" />
+    <Compile Include="Controllers\Api\StatusController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
-    <Compile Include="Controllers\DebugController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Dtos\ApplicationStatusLogItemDto.cs" />
+    <Compile Include="ExternalApis\ExternalApi.cs" />
+    <Compile Include="ExternalApis\ExternalApiManager.cs" />
+    <Compile Include="ExternalApis\SiltExternalApi.cs" />
+    <Compile Include="FileUploaders\AzureUploader.cs" />
+    <Compile Include="FileUploaders\GoogleDriveUploader.cs" />
+    <Compile Include="FileUploaders\IFileUploader.cs" />
+    <Compile Include="FileUploaders\LocalDirectoryUploader.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\PaymentGatewaySoapHelper.cs" />
     <Compile Include="DAL\ApplicantionApplicantModelBinder.cs" />
     <Compile Include="DAL\ApplicationInvitesModelBinder.cs" />
     <Compile Include="DAL\CustomIFormModelBinder.cs" />
     <Compile Include="DAL\DebugModelBinder.cs" />
     <Compile Include="DAL\FormModelBinder.cs" />
-    <Compile Include="Dtos\AddressDto.cs" />
     <Compile Include="Dtos\ContactInfoDto.cs" />
     <Compile Include="Dtos\ProjectInfoDto.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -340,32 +420,135 @@
     <Compile Include="Migrations\201703041655425_SeedFeeSchedule.Designer.cs">
       <DependentUpon>201703041655425_SeedFeeSchedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703041823379_UpdateSignatureUploadInfoWithFinalization.cs" />
+    <Compile Include="Migrations\201703041823379_UpdateSignatureUploadInfoWithFinalization.Designer.cs">
+      <DependentUpon>201703041823379_UpdateSignatureUploadInfoWithFinalization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703050229399_AddApplicationStatusTable.cs" />
+    <Compile Include="Migrations\201703050229399_AddApplicationStatusTable.Designer.cs">
+      <DependentUpon>201703050229399_AddApplicationStatusTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703050245338_UpdateApplicationIsSubmitted.cs" />
+    <Compile Include="Migrations\201703050245338_UpdateApplicationIsSubmitted.Designer.cs">
+      <DependentUpon>201703050245338_UpdateApplicationIsSubmitted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703061859082_UpdateEApplicationStatus.cs" />
+    <Compile Include="Migrations\201703061859082_UpdateEApplicationStatus.Designer.cs">
+      <DependentUpon>201703061859082_UpdateEApplicationStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703070714434_AddInvoicesTable.cs" />
+    <Compile Include="Migrations\201703070714434_AddInvoicesTable.Designer.cs">
+      <DependentUpon>201703070714434_AddInvoicesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703070745407_UpdateInvoicesTable.cs" />
+    <Compile Include="Migrations\201703070745407_UpdateInvoicesTable.Designer.cs">
+      <DependentUpon>201703070745407_UpdateInvoicesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703070820286_UpdateInvoicesTable2.cs" />
+    <Compile Include="Migrations\201703070820286_UpdateInvoicesTable2.Designer.cs">
+      <DependentUpon>201703070820286_UpdateInvoicesTable2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703071756158_AddInvoiceType.cs" />
+    <Compile Include="Migrations\201703071756158_AddInvoiceType.Designer.cs">
+      <DependentUpon>201703071756158_AddInvoiceType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703072212350_UpdateApplicationWithEditBool.cs" />
+    <Compile Include="Migrations\201703072212350_UpdateApplicationWithEditBool.Designer.cs">
+      <DependentUpon>201703072212350_UpdateApplicationWithEditBool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703211814336_UpdateEInvoiceTypeToEInvoicePurpose.cs" />
+    <Compile Include="Migrations\201703211814336_UpdateEInvoiceTypeToEInvoicePurpose.Designer.cs">
+      <DependentUpon>201703211814336_UpdateEInvoiceTypeToEInvoicePurpose.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703220010556_AddNotificationsTable.cs" />
+    <Compile Include="Migrations\201703220010556_AddNotificationsTable.Designer.cs">
+      <DependentUpon>201703220010556_AddNotificationsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703230351100_AddSidewalkDcpAttachment.cs" />
+    <Compile Include="Migrations\201703230351100_AddSidewalkDcpAttachment.Designer.cs">
+      <DependentUpon>201703230351100_AddSidewalkDcpAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703230510345_AddSidewalkBsmAttachment.cs" />
+    <Compile Include="Migrations\201703230510345_AddSidewalkBsmAttachment.Designer.cs">
+      <DependentUpon>201703230510345_AddSidewalkBsmAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703230538474_AddSidewalkHydraulicAttachment.cs" />
+    <Compile Include="Migrations\201703230538474_AddSidewalkHydraulicAttachment.Designer.cs">
+      <DependentUpon>201703230538474_AddSidewalkHydraulicAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703230550323_UpdateSidewalkHydraulicAttachment.cs" />
+    <Compile Include="Migrations\201703230550323_UpdateSidewalkHydraulicAttachment.Designer.cs">
+      <DependentUpon>201703230550323_UpdateSidewalkHydraulicAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703230655316_AddSidewalkFireDepartmentAttachment.cs" />
+    <Compile Include="Migrations\201703230655316_AddSidewalkFireDepartmentAttachment.Designer.cs">
+      <DependentUpon>201703230655316_AddSidewalkFireDepartmentAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703230819580_AddSidewalkTransportationAttachment.cs" />
+    <Compile Include="Migrations\201703230819580_AddSidewalkTransportationAttachment.Designer.cs">
+      <DependentUpon>201703230819580_AddSidewalkTransportationAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703231124491_AddSidewalkAndPmFmGuidelines.cs" />
+    <Compile Include="Migrations\201703231124491_AddSidewalkAndPmFmGuidelines.Designer.cs">
+      <DependentUpon>201703231124491_AddSidewalkAndPmFmGuidelines.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703241100369_SignedDcpMotionForm.cs" />
+    <Compile Include="Migrations\201703241100369_SignedDcpMotionForm.Designer.cs">
+      <DependentUpon>201703241100369_SignedDcpMotionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703241747141_AddPid.cs" />
+    <Compile Include="Migrations\201703241747141_AddPid.Designer.cs">
+      <DependentUpon>201703241747141_AddPid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ApplicationStatusLogItem.cs" />
+    <Compile Include="Models\Applications\NewConstruction.cs" />
+    <Compile Include="Models\Applications\SidewalkLegislation.cs" />
+    <Compile Include="Models\Collections\DateNameList.cs" />
+    <Compile Include="Models\Collections\IntList.cs" />
+    <Compile Include="Models\Collections\LocationHeightList.cs" />
+    <Compile Include="Models\Collections\LocationWidthList.cs" />
+    <Compile Include="Models\Collections\MarketRateInfoList.cs" />
+    <Compile Include="Models\Collections\NameSectionDateList.cs" />
     <Compile Include="Models\Collections\NamesList.cs" />
     <Compile Include="Models\Collections\PermitList.cs" />
     <Compile Include="Models\Collections\OccupancyRangeList.cs" />
+    <Compile Include="Models\Collections\PermitNameList.cs" />
+    <Compile Include="Models\Collections\PressureLocationList.cs" />
     <Compile Include="Models\Collections\TenantContactsList.cs" />
     <Compile Include="Models\Collections\TenantsList.cs" />
     <Compile Include="Models\Collections\UnitHistoryList.cs" />
+    <Compile Include="Models\EApplicationStatus.cs" />
     <Compile Include="Models\EUserRoles.cs" />
     <Compile Include="Models\FeeScheuleItem.cs" />
     <Compile Include="Models\Forms\AcknowledgmentOfFees.cs" />
     <Compile Include="Models\Forms\BuildingHistory.cs" />
     <Compile Include="Models\Forms\CoverLetterForm.cs" />
+    <Compile Include="Models\Forms\CoverLetterSidewalkLegislationForm.cs" />
     <Compile Include="Models\Forms\DbiInspectionRequirementsForm.cs" />
     <Compile Include="Models\Forms\DbiPhysicalInspection.cs" />
     <Compile Include="Models\Forms\EcpGuidelinesForm.cs" />
     <Compile Include="Models\Forms\EcpOverviewForm.cs" />
+    <Compile Include="Models\Forms\ExhibitCForm.cs" />
     <Compile Include="Models\Forms\ExhibitsABForm.cs" />
     <Compile Include="Models\Forms\NoticeToTenants.cs" />
     <Compile Include="Models\Forms\OwnersAffidavitOfTentantEvictions.cs" />
     <Compile Include="Models\Forms\OwnersReleaseOfInterestInCommonAreas.cs" />
+    <Compile Include="Models\Forms\ParcelOrFinalMapGuidelines.cs" />
     <Compile Include="Models\Forms\ProofOfOwnerOccupancy.cs" />
     <Compile Include="Models\Forms\PropMFindingsForm.cs" />
     <Compile Include="Models\Forms\RecordedMapsOnBlock.cs" />
     <Compile Include="Models\Forms\Report3R.cs" />
     <Compile Include="Models\Forms\RequestForCoc.cs" />
     <Compile Include="Models\Forms\RequestForLlaAndOwnershipAffidavit.cs" />
+    <Compile Include="Models\Forms\SidewalkBsmAttachment.cs" />
+    <Compile Include="Models\Forms\SidewalkDcpAttachment.cs" />
+    <Compile Include="Models\Forms\SidewalkFireDepartmentAttachment.cs" />
+    <Compile Include="Models\Forms\SidewalkLegislationGuidelinesForm.cs" />
+    <Compile Include="Models\Forms\SidewalkMunicipalTransportionAttachment.cs" />
+    <Compile Include="Models\Forms\SidewalkPlanForm.cs" />
+    <Compile Include="Models\Forms\SidwalkDpwHydraulicAttachment.cs" />
     <Compile Include="Models\Forms\SignatureForm.cs" />
+    <Compile Include="Models\Forms\SignedDcpMotionForm.cs" />
     <Compile Include="Models\Forms\SubdividersStatementToExistingTenants.cs" />
     <Compile Include="Models\Forms\SubdividersStatementToNewTenants.cs" />
     <Compile Include="Models\Forms\SummaryOfTenantContacts.cs" />
@@ -463,9 +646,8 @@
     <Compile Include="Models\Applications\CcBypass.cs" />
     <Compile Include="Models\Applications\CcEcp.cs" />
     <Compile Include="Models\Applications\LotLineAdjustment.cs" />
-    <Compile Include="Models\Applications\LotMerger.cs" />
-    <Compile Include="Models\Applications\LotSubdivision.cs" />
-    <Compile Include="Models\Applications\NewConstruction.cs" />
+    <Compile Include="Models\Applications\ParcelFinalMap.cs" />
+    <Compile Include="Models\Applications\NewConstructionReference.cs" />
     <Compile Include="Models\Collections\AdditionalDocsList.cs" />
     <Compile Include="Models\Collections\AddressList.cs" />
     <Compile Include="Models\Collections\CheckList.cs" />
@@ -485,27 +667,52 @@
     <Compile Include="Models\Forms\OwnerForm.cs" />
     <Compile Include="Models\Forms\TentativeMapForm.cs" />
     <Compile Include="Models\Forms\UploadableFileForm.cs" />
+    <Compile Include="Models\InvoiceInfo.cs" />
     <Compile Include="Models\PaymentGatewayModel.cs" />
+    <Compile Include="Models\ProjectInfos\IUnitCount.cs" />
+    <Compile Include="Models\ProjectInfos\LlaProjectInfo.cs" />
     <Compile Include="Models\ProjectInfos\LotMergerAndSubdivisionInfo.cs" />
     <Compile Include="Models\ProjectInfos\NewConstructionInfo.cs" />
+    <Compile Include="Models\ShareApplicationNotification.cs" />
     <Compile Include="Models\SignatureUploadInfo.cs" />
     <Compile Include="Models\SignatureUploadProperty.cs" />
     <Compile Include="Models\Validation\RequiredTrueAttribute.cs" />
+    <Compile Include="Models\Validation\TitleCompanyOtherValidation.cs" />
+    <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\Applications\Application.cs" />
     <Compile Include="Models\Applications\CertificateOfCompliance.cs" />
     <Compile Include="Models\Applications\RecordOfSurvey.cs" />
-    <Compile Include="ViewModels\ApplicationViewModels.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Forms\AdditionalDocumentsForm.cs" />
-    <Compile Include="Models\Forms\ApplicationCheckForm.cs" />
+    <Compile Include="Models\Forms\PaymentForm.cs" />
     <Compile Include="Models\Forms\ClosureCalcsForm.cs" />
     <Compile Include="Models\Forms\GrantDeedForm.cs" />
     <Compile Include="Models\Forms\Form.cs" />
     <Compile Include="Models\Forms\PhotographForm.cs" />
     <Compile Include="Models\Forms\TitleReportForm.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\AddFormViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\ApplicationIndexSearchViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\ApplicationIndexViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\ApplicationSubmittedViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\EApplicationTypeViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\EditApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\EditFormViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\EmailInviteViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\FileUploadJsonViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\FileUploadViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\FileUploadViewModelCollection.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\ListEditorViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\ListItemEditorViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\NewApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\SearchViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\ShareApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\SignatureCollectionViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\SignatureViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\SwapFormsViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModels\VoidViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ProjectInfos\BasicProjectInfo.cs" />
     <Compile Include="Models\ProjectInfos\CcBypassInfo.cs" />
@@ -517,7 +724,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.html" />
+    <None Include="App_Data\Subdivisionary.XML">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Areas\HelpPage\Content\font-awesome.min.css" />
+    <Content Include="Areas\HelpPage\Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Areas\HelpPage\Content\HelpPageEx.css" />
+    <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-cerulean.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.min.css" />
@@ -752,6 +966,33 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Areas\HelpPage\Content\fonts\FontAwesome.otf" />
+    <Content Include="Areas\HelpPage\Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Areas\HelpPage\Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Areas\HelpPage\Content\fonts\fontawesome-webfont.eot" />
+    <None Include="App_Data\SAS-GoogleDrive-Key.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\PublishProfiles\bsmsubdivisions - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\bsmsubdivisions - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bsmsubdivisions - Web Deploy %282%29.pubxml" />
@@ -762,6 +1003,10 @@
     <None Include="Properties\PublishProfiles\subdivisionary - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\subdivisionary - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\subdivisionary - Web Deploy.pubxml" />
+    <Content Include="Samples\Affidavit Ownership with Tacking.pdf" />
+    <Content Include="Samples\Sidwalk Legislation Guidelines.pdf" />
+    <Content Include="Samples\Cover Letter Sidewalk Example.pdf" />
+    <Content Include="Samples\Parcel and Final Map Guidelines.pdf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -891,16 +1136,20 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\site-js\FormScripts\BasicProjectInfo.js" />
-    <Content Include="Scripts\site-js\FormScripts\CocAndLlaProjectInfo.js" />
+    <Content Include="Scripts\site-js\FormScripts\Form.js" />
+    <Content Include="Scripts\site-js\FormScripts\PaymentForm.js" />
+    <Content Include="Scripts\site-js\site-disableCheckboxes.js" />
     <Content Include="Scripts\site-js\FormScripts\UnitHistoryForm.js" />
+    <Content Include="Scripts\site-js\site-disableInputs.js" />
     <Content Include="Scripts\site-js\site-fileinput.js" />
     <Content Include="Scripts\site-js\site-icollection.js" />
     <Content Include="Scripts\site-js\site-jsignature.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -956,14 +1205,11 @@
     <Content Include="Views\Applications\CollectionEditors\_EmailInfoEditor.cshtml" />
     <Content Include="Views\Applications\AcceptShare.cshtml" />
     <Content Include="Views\Applications\CollectionEditors\_OwnerInfoEditor.cshtml" />
-    <Content Include="Views\Debug\UploadFileTest.cshtml" />
-    <Content Include="Views\Debug\Signatures.cshtml" />
     <Content Include="Views\Applications\Forms\_OwnersAffidavitOfTentantEvictionsEditor.cshtml" />
     <Content Include="Views\Applications\_SignatureCollectionEditor.cshtml" />
-    <Content Include="Views\Debug\RenderPdfAsHtml.cshtml" />
     <Content Include="Views\Applications\Forms\_NeighborhoodNotificationFormEditor.cshtml" />
     <Content Include="Views\Applications\Forms\_AdditionalDocumentsFormEditor.cshtml" />
-    <Content Include="Views\Applications\Forms\_ApplicationCheckFormEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_PaymentFormEditor.cshtml" />
     <Content Include="Views\Applications\Forms\_ClosureCalcsFormEditor.cshtml" />
     <Content Include="Views\Applications\Forms\_GrantDeedFormEditor.cshtml" />
     <Content Include="Views\Applications\Forms\_OwnerFormEditor.cshtml" />
@@ -1006,6 +1252,51 @@
     <Content Include="Views\Applications\Forms\_ExhibitsABFormEditor.cshtml" />
     <Content Include="Views\Applications\Forms\_RequestForLlaAndOwnershipAffidavitEditor.cshtml" />
     <Content Include="Views\Applications\Forms\_DbiInspectionRequirementsFormEditor.cshtml" />
+    <Content Include="Views\Applications\Submitted.cshtml" />
+    <Content Include="Views\Applications\IndexBsm.cshtml" />
+    <Content Include="Views\Applications\ReviewBsm.cshtml" />
+    <Content Include="Views\Applications\Tables\_StatusHistoryTableEditor.cshtml" />
+    <Content Include="Views\Applications\Invoices.cshtml" />
+    <Content Include="Views\Applications\InvoicesBsm.cshtml" />
+    <Content Include="Views\Applications\SubmittedBsm.cshtml" />
+    <Content Include="Views\Applications\Tables\_InvoicesTableEditor.cshtml" />
+    <Content Include="Samples\Affidavit Protected Tenants Evictions Template.pdf" />
+    <Content Include="Samples\Affidavit Tenant Evictions Template.pdf" />
+    <Content Include="Samples\Cover Letter Example.pdf" />
+    <Content Include="Samples\DBI 3R Report Example.pdf" />
+    <Content Include="Samples\DBI CFC Example.pdf" />
+    <Content Include="Samples\DBI Inspection Report Example.pdf" />
+    <Content Include="Samples\DBI Receipt for Inspection Example.pdf" />
+    <Content Include="Samples\Exhibit A Example.pdf" />
+    <Content Include="Samples\Exhibit B Example.pdf" />
+    <Content Include="Samples\Request for Certificate of Compliance Example.pdf" />
+    <Content Include="Samples\Request for LLA and Affidavit of Ownership Example.pdf" />
+    <Content Include="Samples\Tenant Notice of Conversion Example.pdf" />
+    <Content Include="Samples\TIC Agreement Example.pdf" />
+    <Content Include="Views\Applications\Forms\_CoverLetterSidewalkLegislationFormEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkPlanFormEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkDcpAttachmentEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkBsmAttachmentEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_PermitNameInfoEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_DateNameInfoEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkDpwHydraulicAttachmentEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_NameSectionDateInfoEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_PressureLocationInfoEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_LocationWidthInfoEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_LocationHeightInfoEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkFireDepartmentAttachmentEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkMunicipalTransportionAttachmentEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_SidewalkLegislationGuidelinesFormEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_ParcelOrFinalMapGuidelinesEditor.cshtml" />
+    <Content Include="Views\Applications\SwapForms.cshtml" />
+    <Content Include="Views\Applications\Forms\_SignedDcpMotionFormEditor.cshtml" />
+    <Content Include="Views\Applications\CollectionEditors\_MarketRateInfoEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_NoticeofSpecialRestrictionsEditor.cshtml" />
+    <Content Include="Views\Applications\Forms\_NewConstructionBuildingPermitsEditor.cshtml" />
+    <None Include="Views\Manage\ManageRole.cshtml" />
+    <Content Include="Views\Shared\_SidewalkLegislationGuidelines.cshtml" />
+    <Content Include="Views\Shared\_ParcelFinalMapGuidelines.cshtml" />
+    <Content Include="Views\Shared\_WideLayout.cshtml" />
     <None Include="Web.Testing.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1015,7 +1306,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="UploadedFiles\" />
+    <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701050117437_InitialModel.resx">
@@ -1116,6 +1408,66 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703041655425_SeedFeeSchedule.resx">
       <DependentUpon>201703041655425_SeedFeeSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703041823379_UpdateSignatureUploadInfoWithFinalization.resx">
+      <DependentUpon>201703041823379_UpdateSignatureUploadInfoWithFinalization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703050229399_AddApplicationStatusTable.resx">
+      <DependentUpon>201703050229399_AddApplicationStatusTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703050245338_UpdateApplicationIsSubmitted.resx">
+      <DependentUpon>201703050245338_UpdateApplicationIsSubmitted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703061859082_UpdateEApplicationStatus.resx">
+      <DependentUpon>201703061859082_UpdateEApplicationStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703070714434_AddInvoicesTable.resx">
+      <DependentUpon>201703070714434_AddInvoicesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703070745407_UpdateInvoicesTable.resx">
+      <DependentUpon>201703070745407_UpdateInvoicesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703070820286_UpdateInvoicesTable2.resx">
+      <DependentUpon>201703070820286_UpdateInvoicesTable2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703071756158_AddInvoiceType.resx">
+      <DependentUpon>201703071756158_AddInvoiceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703072212350_UpdateApplicationWithEditBool.resx">
+      <DependentUpon>201703072212350_UpdateApplicationWithEditBool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211814336_UpdateEInvoiceTypeToEInvoicePurpose.resx">
+      <DependentUpon>201703211814336_UpdateEInvoiceTypeToEInvoicePurpose.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703220010556_AddNotificationsTable.resx">
+      <DependentUpon>201703220010556_AddNotificationsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703230351100_AddSidewalkDcpAttachment.resx">
+      <DependentUpon>201703230351100_AddSidewalkDcpAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703230510345_AddSidewalkBsmAttachment.resx">
+      <DependentUpon>201703230510345_AddSidewalkBsmAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703230538474_AddSidewalkHydraulicAttachment.resx">
+      <DependentUpon>201703230538474_AddSidewalkHydraulicAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703230550323_UpdateSidewalkHydraulicAttachment.resx">
+      <DependentUpon>201703230550323_UpdateSidewalkHydraulicAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703230655316_AddSidewalkFireDepartmentAttachment.resx">
+      <DependentUpon>201703230655316_AddSidewalkFireDepartmentAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703230819580_AddSidewalkTransportationAttachment.resx">
+      <DependentUpon>201703230819580_AddSidewalkTransportationAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703231124491_AddSidewalkAndPmFmGuidelines.resx">
+      <DependentUpon>201703231124491_AddSidewalkAndPmFmGuidelines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703241100369_SignedDcpMotionForm.resx">
+      <DependentUpon>201703241100369_SignedDcpMotionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703241747141_AddPid.resx">
+      <DependentUpon>201703241747141_AddPid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -28,19 +28,23 @@ namespace Subdivisionary.Models
 
         public ApplicationUser()
         {
-            
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
+            return await GenerateUserIdentityAsync(manager, DefaultAuthenticationTypes.ApplicationCookie);
+        }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authType)
+        {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            var userIdentity = await manager.CreateIdentityAsync(this, authType);
             // Add custom user claims here
             return userIdentity;
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class  ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Application> Applications { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
@@ -49,6 +53,8 @@ namespace Subdivisionary.Models
         public DbSet<FileUploadInfo> FileUploads { get; set; }
         public DbSet<SignatureUploadInfo> SignatureInfo { get; set; }
         public DbSet<FeeScheuleItem> FeeSchedule { get; set; }
+        public DbSet<ApplicationStatusLogItem> StatusHistory { get; set; }
+        public DbSet<InvoiceInfo> Invoices { get; set; }
 
         public bool ProxyEnabled {
             get
@@ -65,10 +71,12 @@ namespace Subdivisionary.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        
-        /**
-         * Create a model with complex relationships & identification maps
-         */
+
+        /// <summary>
+        /// Create a model with complex relationships & identification maps
+        /// with Fluent API
+        /// </summary>
+        /// <param name="modelBuilder">Builds the Database Model</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // The plural convention causes a table to be named "Dbo.Applicant"
@@ -120,12 +128,23 @@ namespace Subdivisionary.Models
                 .HasKey(p => p.Id)
                 .Property(x => x.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            
+            modelBuilder.Entity<InvoiceInfo>()
+                .HasRequired(x=>x.PaymentForm)
+                .WithRequiredDependent(x=>x.Invoice)
+                .WillCascadeOnDelete(true);
+
+            // Add Notifications
+            modelBuilder.Entity<Notification>()
+                .HasRequired(sn => sn.Applicant)
+                .WithMany(aplcnt => aplcnt.Notifications)
+                .WillCascadeOnDelete(true);
 
             base.OnModelCreating(modelBuilder);
         }
 
         public static ApplicationDbContext Create()
-        {
+        { 
             return new ApplicationDbContext();
         }
 

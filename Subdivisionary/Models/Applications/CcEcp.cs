@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Subdivisionary.Models.Collections;
@@ -131,6 +132,35 @@ namespace Subdivisionary.Models.Applications
                     }
                 }
             }
+        }
+
+        public override IEnumerable<string> NextSteps()
+        {
+            return new[]
+            {
+                "The original copy of the 'Affidavit for Ownership/Occupancy' (Form 11)",
+                "Some other example of a notary goes here",
+                "I don't know. Lorem Ipsum. To be added & discussed later"
+            };
+        }
+
+
+        public override IList<ValidationException> Review()
+        {
+            IList<ValidationException> answer = new List<ValidationException>();
+            // Ensure 40% of applicants have signed the intent to purchase form
+            var projectInfo = (CcEcpInfo)ProjectInfo;
+            var requiredTenantAgreements = Math.Round(.4f * projectInfo.NumberOfUnits);
+            int numberofSignedTenants =
+                Forms.Count(x => (x is TenantIntentToPurchase || x is TenantIntentToAcceptOfferOfLtl) && x.IsAssigned);
+            if (numberofSignedTenants < requiredTenantAgreements)
+            {
+                answer.Add(new ValidationException($"Currently only {requiredTenantAgreements} have either signed their intent to purchase" +
+                                                " the unit or accept their offer of lifetime lease. " +
+                                                $"This application requires at least {requiredTenantAgreements}"));
+            }
+
+            return answer;
         }
 
 

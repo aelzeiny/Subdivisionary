@@ -1,9 +1,12 @@
 ﻿@using Subdivisionary.Models.Forms
 @using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
 @model ClosureCalcsForm
     
 @{
     FileUploadViewModelCollection vmc = new FileUploadViewModelCollection(Model);
 }
+
+<p><strong>Note: </strong>Provide if lot is not rectangular, or if otherwise requested.</p>
     
 @Html.Partial("_FileUploadPropsEditor", vmc.GetViewModel(ClosureCalcsForm.CLOSURE_CALCS_KEY,"Select Closure Calculations"))

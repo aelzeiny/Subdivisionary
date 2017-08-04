@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Subdivisionary.ViewModels
 {
+#pragma warning disable 1591
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -115,3 +116,4 @@ namespace Subdivisionary.ViewModels
         public string Email { get; set; }
     }
 }
+#pragma warning restore 1591

@@ -1,0 +1,83 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@model InvoiceInfo
+
+@{
+    ViewBag.Title = "InvoicesBsm";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+
+    var invoiceTypeDisplay = EnumHelper<EInvoicePurpose>.GetDisplayValue(Model.InvoicePurpose);
+}
+
+<div class="col-sm-3">
+    @if (!Model.Void)
+    {
+        <h2>Void Invoice</h2>
+        <div class="form-group">
+            <label class="control-label" for="usernameInput">Username</label>
+            <input type="text" id="usernameInput" class="form-control" placeholder="{Username}" />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="reasonInput">Reason: </label>
+            <textarea type="text" id="reasonInput" class="form-control" placeholder="{Reason}"></textarea>
+        </div>
+        <button id="voidBtn" class="btn btn-warning btn-lg" data-url="@Url.Action("VoidInvoice")" data-id="@Model.Id"><i class="fa fa-warning" id="spinVoidIcon"></i> Void Online Payment</button>
+    }
+</div>
+<div class="col-sm-9">
+    <h2>Invoice - @invoiceTypeDisplay</h2>
+    @Html.Partial("Forms/_PaymentFormEditor", Model.PaymentForm)
+</div>
+
+@section scripts {
+
+@Scripts.Render("~/Scripts/site-js/site-fileinput.js")
+@Scripts.Render("~/Scripts/site-js/FormScripts/PaymentForm.js")
+    <script type="text/javascript">
+        $("#voidBtn").click(function () {
+            var me = $(this);
+            $("#spinVoidIcon").addClass("fa-spin");
+            me.prop("disabled", true);
+            var url = me.data("url");
+            var id = me.data("id");
+            var vm = {
+                Reason: $("#reasonInput").val(),
+                UserName: $("#usernameInput").val(),
+                InvoiceId: id
+            };
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(vm),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (!data.success) {
+                        me.prop("disabled", false);
+                        toastr.error("Invoice could not be voided.");
+                    }
+                    else
+                        toastr.warning("This invoice has been voided: " + data.result);
+                    $("#spinVoidIcon").removeClass("fa-spin");
+                },
+                error: function () {
+                    $("#spinVoidIcon").removeClass("fa-spin");
+                    me.prop("disabled", false);
+                    toastr.error("Invoice could not be voided. Check Username.");
+                }
+            });
+        });
+
+        $("#PaidWithChecks").change(paidChecked);
+        $(document).ready(paidChecked);
+        function paidChecked() {
+            if (document.getElementById("PaidWithChecks").checked) {
+                $("#checkDivId").css("visibility", "visible");
+                $("#uncheckDivId").css("visibility", "visible");
+            } else {
+                $("#checkDivId").css("visibility", "visible");
+                $("#uncheckDivId").css("visibility", "visible");
+            }
+        }
+    </script>
+    @Scripts.Render("~/Scripts/site-js/site-disableInputs.js");
+}

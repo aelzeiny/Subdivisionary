@@ -11,7 +11,8 @@ namespace Subdivisionary.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// This string MUST be equal to the class type's name. I.E "typeof(RecordOfSurvey).Name"
+        /// This string is the key identifier of the fee information. Corresponds to
+        /// the EPaymentSchedule enum class.
         /// </summary>
         public string ApplicationTypeName { get; set; }
         /// <summary>
@@ -59,6 +60,8 @@ namespace Subdivisionary.Models
         /// </summary>
         public bool AdditionalFeesMayApplyDisclaimer { get; set; }
 
+        public FeeScheuleItem() { }
+
         public FeeScheuleItem(string name)
         {
             this.ApplicationTypeName = name;
@@ -101,13 +104,15 @@ public sealed class EFeeSchedule
 
     public static readonly EFeeSchedule Conversions = new EFeeSchedule("CC");
     public static readonly EFeeSchedule NewConstruction = new EFeeSchedule("NC");
-    public static readonly EFeeSchedule LotSubdivisionOrMerger = new EFeeSchedule("LS/LM");
+    public static readonly EFeeSchedule ParcelFinalMap = new EFeeSchedule("LS/LM");
     public static readonly EFeeSchedule LotlineAdjustment = new EFeeSchedule("LLA");
     public static readonly EFeeSchedule AmendedMap = new EFeeSchedule("AM");
     public static readonly EFeeSchedule CertificateOfCompliance = new EFeeSchedule("CoC");
     public static readonly EFeeSchedule SidewalkLegislation = new EFeeSchedule("Sidewalk Legislation");
     public static readonly EFeeSchedule RecordOfSurvey = new EFeeSchedule("ROS");
     public static readonly EFeeSchedule CornerRecord = new EFeeSchedule("CR");
+
+    public static readonly float INCOMPLETE_FEE = 250;
 
     public EFeeSchedule(string feeName)
     {

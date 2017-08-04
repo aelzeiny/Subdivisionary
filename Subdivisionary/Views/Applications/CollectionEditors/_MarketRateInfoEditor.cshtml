@@ -1,0 +1,20 @@
+﻿@model Subdivisionary.Models.Collections.MarketRateInfo
+    
+
+<div class="form-group col-sm-6 col-xs-12">
+    @Html.LabelFor(m => m.ApartmentNo, new { @class = "control-label" })
+    <div class="input-group">
+        <span class="input-group-addon">#</span>
+        @Html.TextBoxFor(m => m.ApartmentNo, new { @class = "form-control", placeholder = "[Apt No.]" })
+    </div>
+    @Html.ValidationMessageFor(m => m.ApartmentNo)
+</div>
+<div class="form-group col-sm-6 col-xs-12">
+    @Html.LabelFor(m => m.ProposedSalesPrice, new { @class = "control-label" })
+    <div class="input-group">
+        <span class="input-group-addon">$</span>
+        @Html.TextBoxFor(m => m.ProposedSalesPrice, new { @class = "form-control", placeholder = "[Sales Price]" })
+    </div>
+    @Html.ValidationMessageFor(m => m.ProposedSalesPrice)
+</div>
+

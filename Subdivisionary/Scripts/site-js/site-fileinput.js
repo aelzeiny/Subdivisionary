@@ -20,8 +20,7 @@
 
 $("#formSubmitButton").click(function(e) {
     e.preventDefault();
-    console.log($(".fileinput-upload-button").length);
-    if ($(".fileinput-upload-button").length === 0)
+    if ($(".kv-file-upload.btn.btn-xs.btn-default").length === 0)
         $("#formPartialViewEditor").submit();
     else
         toastr.error("Please upload or delete all pending files prior to saving this form");

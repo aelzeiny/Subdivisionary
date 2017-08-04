@@ -32,8 +32,6 @@ namespace Subdivisionary.Models.ProjectInfos
             var obj = validationContext.ObjectInstance as CcEcpInfo;
             if (obj != null && obj.CommercialUnits + obj.ResidentialUnits != obj.NumberOfUnits)
                 return new ValidationResult("Residential and Commercial units do not add up to total units");
-            if (obj.NumberOfUnits > 6)
-                return new ValidationResult("Residential and Commercial units should not add up to be more than a maximum of 6 units");
             return ValidationResult.Success;
         }
     }

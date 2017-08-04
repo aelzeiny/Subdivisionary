@@ -1,7 +1,11 @@
 ﻿@using System.Web.Mvc.Html
+@using Glimpse.Mvc.AlternateType
+@using reCaptcha
 @using Subdivisionary.Models.Applications
 @using Subdivisionary.Models.Forms
+@using Subdivisionary.Models.ProjectInfos
 @using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
 @model Subdivisionary.Models.Applications.Application
 
 @{
@@ -9,38 +13,119 @@
     Layout = "~/Views/Shared/_BannerLayout.cshtml";
     ViewBag.Banner = "Review " + Model.DisplayName;
     bool everythingComplete = Model.AllFormsSubmitted();
+    var forms = Model.GetOrderedForms();
 }
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="150">
+    <div class="partialbar col-sm-0 col-md-3">
+        <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix" id="myScrollspy" style="top: 90px;">
+            <h2 style="color: #3097D1;">Directory</h2>
+            <ul class="nav bs-docs-sidenav">
+                @for (int i = 0; i < forms.Count; i++)
+                {
+                    <li><a href="#myForm_@i">@forms[i].DisplayName</a></li>
+                }
+                <li><a href="#statusHistory">Status History</a></li>
+                @if (Model.CanEdit)
+                {
+                    <li><a href="#submitAll">Submit Application</a></li>
+                }
+            </ul>
+        </nav>
+    </div>
+    <div class="sidebar col-sm-12 col-md-9">
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
 
-<h2>Application ID: <span style="font-weight: 100; font-size: 24px;">#@Model.Id</span></h2>
-<h2>Address(es): <span style="font-weight: 100; font-size: 24px;">@Model.ProjectInfo.ToString()</span></h2>
+        <div id="reviewDiv">
+            @for (int i = 0; i < forms.Count; i++)
+            {
+                var form = forms[i];
+                var icon = form.IsAssigned ? "fa fa-check-square" : (form.IsRequired) ? "fa fa-times" : "fa fa-circle-o";
+                <div id="myForm_@i" class="form-group" style="border-bottom: 1px solid; border-bottom-color: darkblue">
+                    <h2>@form.DisplayName <i class="@icon" style="float: right;"></i></h2>
+                    @if (form is BasicProjectInfo)
+                    {
+                        <table class="table table-condensed">
+                            <tr>
+                                <th>Application ID</th>
+                                <td>#@Model.Id</td>
+                            </tr>
+                            <tr>
+                                <th>Address(es)</th>
+                                <td>@form.ToString()</td>
+                            </tr>
+                        </table>
+                    }
+                    @Html.Partial(EditFormViewModel.GetPartialViewEditor(form), form)
+                </div>
+            }
 
-<div id="reviewDiv">
-    @foreach (IForm form in Model.GetOrderedForms())
-    {
-        var icon = form.IsAssigned ? "fa fa-check-square" : "fa fa-times";
-        <div class="form-group" style="border-bottom: 1px solid; border-bottom-color: darkblue">
-            <h2>@form.DisplayName <i class="@icon"></i></h2>
+            <div class="form-group" id="statusHistory">
+                <h2>Status History</h2>
+                @Html.Partial("Tables/_StatusHistoryTableEditor", Model.StatusHistory)
+            </div>
 
-            @Html.Partial(EditFormViewModel.GetPartialViewEditor(form), form)
         </div>
-    }
-</div>
 
-@if (everythingComplete)
-{
-    <a class="btn btn-lg btn-success center-block" href="@Url.Action("Index", "Applications")" style="max-width: 300px;">Submit Application <i class="fa fa-envelope"></i></a>
-}
+        @if (Model.CanEdit)
+        {
+            <div class="form-group">
+                <h2 id="submitAll">Submit Application</h2>
+                Wait! Before clicking submit, take the time to review you application for completeness. Incomplete applications can and will
+                be fined. Also, please our website to review the most current subdivision tracking fee schedule!
+                An invoice will be generated and mailed to your account. Please note that your application will not be reviewed until
+                the application processing fee is paid in full.
+                @if (everythingComplete)
+                {
+                    using (Html.BeginForm("Submit", "Applications", new { id = Model.Id }, FormMethod.Post))
+                    {
+                        if (ViewBag.RecaptchaLastErrors != null)
+                        {
+                            <div class="field-validation-error">ViewBag.RecaptchaLastErrors</div>
+                        }
+
+                        // Security Goes here. Captcha + anti-CCRF validation token
+                        @ReCaptcha.GetHtml(ViewBag.publicKey)
+                        @ReCaptcha.GetExplictScript()
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-lg btn-success center-block" type="submit" style="max-width: 300px;">
+                            Submit Application <i class="fa fa-envelope"></i>
+                        </button>
+                    }
+                }
+                else
+                {
+                    <p class="bold">
+                        Looks like there mandatory forms that are still not submitted, or mistakes that need to be corrected.
+                        <a href="@Url.Action("Details", "Applications", new {id=Model.Id})">Go back to project details.</a>
+                    </p>
+                    <button class="btn btn-lg btn-success center-block disabled" style="max-width: 300px;" disabled="disabled">
+                        Submit Application <i class="fa fa-envelope"></i>
+                    </button>
+                    <a href="@Url.Action("Details", "Applications", new {id = Model.Id})" class="btn btn-default center-block" role="button" style="max-width: 200px;">
+                        <i class="fa fa-edit"></i>
+                        Back to Project Edit
+                    </a>
+                }
+            </div>
+        }
+
+        <div style="height: 300px;"></div>
+    </div>
+</body>
 
 @section scripts
 {
-    <script>
-        $(document)
-            .ready(function () {
-                $('.file-loading').remove();
-                $('.add-entry').remove();
-                $("#reviewDiv :input").prop("disabled", true);
-            });
-    </script>
-}
+    @Scripts.Render("~/Scripts/site-js/site-disableInputs.js");
+    <script type="text/javascript">
+        var offset = 80;
 
+        $('.bs-docs-sidebar li a').click(function (event) {
+            event.preventDefault();
+            $($(this).attr('href'))[0].scrollIntoView();
+            scrollBy(0, -offset);
+        });
+    </script>
+@Scripts.Render("~/Scripts/site-js/site-fileinput.js")
+@Styles.Render("~/Content/bs-sidebar.css")
+}
 

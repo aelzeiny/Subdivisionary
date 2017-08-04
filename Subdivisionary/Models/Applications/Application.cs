@@ -20,7 +20,15 @@ namespace Subdivisionary.Models.Applications
          * This stores the id of this class
          */
         public int Id { get; set; }
+
+        /// <summary>
+        /// Nothing is being done with this field currently.
+        /// </summary>
+        public int Pid { get; set; }
         
+        /**
+         * All the forms (but not the project info form)
+         */
         public virtual ICollection<Form> Forms { get; set; }
 
         /**
@@ -29,6 +37,7 @@ namespace Subdivisionary.Models.Applications
          * automatically linked together.
          */
         public int ProjectInfoId { get; set; }
+
         public virtual BasicProjectInfo ProjectInfo { get; set; }
         
         /**
@@ -40,10 +49,26 @@ namespace Subdivisionary.Models.Applications
         public virtual ICollection<Applicant> Applicants { get; set; }
 
         /**
-         * Represents whether or not an application has been submitted yet
+         * List of Status History denoting the current status, and the shift
          */
-        public bool IsSubmitted { get; set; }
+        public virtual ICollection<ApplicationStatusLogItem> StatusHistory { get; set; }
 
+        /**
+         * Determines whether applicant can edit the application, or the application is placed on hold
+         */
+        public bool CanEdit { get; set; }
+
+        /// <summary>
+        /// Current Status is the last item in status History
+        /// </summary>
+        public ApplicationStatusLogItem CurrentStatusLog => StatusHistory?.LastOrDefault();
+
+        /// <summary>
+        /// List of emails that are invited to edit the project.
+        /// Okay, there's are reason why this is a SerializableList element, and not ID-based. It has to do with
+        /// EF6 not being very kind to circular dependancies. Think of the relationship between notifications and applicants,
+        /// applications and notifications, and applications to applicants.
+        /// </summary>
         public EmailList SharedRequests { get; set; }
         public NamesList OwnersAndTenants { get; set; }
 
@@ -70,8 +95,12 @@ namespace Subdivisionary.Models.Applications
         {
             SharedRequests = new EmailList();
             OwnersAndTenants = new NamesList();
+            CanEdit = true;
         }
 
+        /**
+         * All the forms, in order, including the project info form
+         */
         public virtual IList<IForm> GetOrderedForms()
         {
             List<IForm> answer = new List<IForm>();
@@ -169,6 +198,15 @@ namespace Subdivisionary.Models.Applications
                     ((IObserverForm)form).ObserveFormUpdate(null, application.ProjectInfo, application.ProjectInfo);
                 application.Forms.Add(form);
             }
+            // Create Status History, add first entry denoting creation
+            application.StatusHistory = new List<ApplicationStatusLogItem>()
+            {
+                new ApplicationStatusLogItem()
+                {
+                    Status = EApplicationStatus.Fresh,
+                    DateTime = DateTime.Now
+                }
+            };
             return application;
         }
         
@@ -188,14 +226,61 @@ namespace Subdivisionary.Models.Applications
             return true;
         }
 
-        public virtual IList<ValidationResult> Review()
+        /// <summary>
+        /// An application has the ability to review itself. This is sort of an inbetween between
+        /// the things we can't validation with just property validation,
+        /// and the things that we should make sure are correct.
+        /// </summary>
+        /// <returns>List of spotted errors within an application</returns>
+        public virtual IList<ValidationException> Review()
         {
-            return new ValidationResult[0];
+            return new ValidationException[0];
         }
 
         public override string ToString()
         {
             return $"{this.Id}_{this.DisplayName} {ProjectInfo.ToString()}";
+        }
+
+        /// <summary>
+        /// Returns false if application cannot be finalized due to all forms not being
+        /// submitted
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool SubmitAndFinalize()
+        {
+            // There can be no unassigned forms
+            foreach (var form in GetOrderedForms())
+            {
+                if (form.IsRequired && !form.IsAssigned)
+                    return false;
+            }
+            bool isIncomplete = HasStatus(EApplicationStatus.DeemedIncomplete);
+            // There can be no warnings within the review. Also the application cannot be any step past submitted or resubmitted
+            if (Review().Count > 0 ||
+                (!isIncomplete ? CurrentStatusLog.Status > EApplicationStatus.Submitted : CurrentStatusLog.Status >= EApplicationStatus.Resubmitted))
+                return false;
+            foreach (var form in GetOrderedForms())
+                if (form is SignatureForm)
+                    ((SignatureForm)form).Signatures.ForEach(x => x.IsSignatureFinalized = true);
+            StatusHistory.Add(ApplicationStatusLogItem.FactoryCreate(isIncomplete ? EApplicationStatus.Resubmitted : EApplicationStatus.Submitted));
+            CanEdit = false;
+            return true;
+        }
+
+        /// <summary>
+        /// Returns whether a certain status has been logged
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public bool HasStatus(EApplicationStatus status)
+        {
+            return StatusHistory.Any(x => x.Status == status);
+        }
+
+        public virtual IEnumerable<string> NextSteps()
+        {
+            return null;
         }
     }
 }

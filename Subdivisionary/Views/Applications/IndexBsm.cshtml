@@ -1,0 +1,128 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@using Subdivisionary.ViewModels
+@model Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexSearchViewModel
+@{
+    ViewBag.Title = "IndexBsm";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Applications";
+}
+<div class="col-xs-12 col-sm-3">
+
+    <h2>Refined Search</h2>
+    @using (Html.BeginForm("IndexSearch", "Applications", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchQuery.ApplicationId, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.SearchQuery.ApplicationId, new { @class = "form-control", placeholder = "[App-ID]" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchQuery.BlockQuery, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.SearchQuery.BlockQuery, new { @class = "form-control", placeholder = "[Block]" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchQuery.LotQuery, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.SearchQuery.LotQuery, new { @class = "form-control", placeholder = "[Lot]" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchQuery.AddressQuery, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.SearchQuery.AddressQuery, new { @class = "form-control", placeholder = "[Address]" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchQuery.UserQuery, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.SearchQuery.UserQuery, new { @class = "form-control", placeholder = "[Address]" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchQuery.Status, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.SearchQuery.Status, EnumHelper.GetSelectList(typeof(EApplicationStatus)),
+                "{Enter Project Status Value}", new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-default" style="width: 100%;"><i class="fa fa-search"></i> Search</button>
+        <a class="btn btn-default" href="@Url.Action("Index")" style="width: 100%;"><i class="fa fa-undo"></i> All Pending Projects</a>
+    }
+</div>
+<div class="col-xs-12 col-sm-9">
+    <div class="table-responsive">
+        <table class="table table-striped" id="projectsTable">
+            <thead>
+                <tr>
+                    <th>App-Id</th>
+                    <th>Project Type</th>
+                    <th>APN(s)</th>
+                    <th>Street(s)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var app in Model.Results)
+                {
+                    var statusName = EnumHelper<EApplicationStatus>.GetDisplayValue(app.ApplicationStatus);
+                    var aHref = Url.Action("Submitted", "Applications", new { id = app.ApplicationId });
+                    var address = app.Addresses;
+                    <tr>
+                        <td><a href="@aHref">@app.ApplicationId</a></td>
+                        <td><a href="@aHref">@app.DisplayName</a></td>
+                        <td><a href="@aHref">@app.BlockLots</a></td>
+                        <td><a href="@aHref">@address</a></td>
+                        <td style="text-align: center">@statusName</td>
+                        <td>
+                            <button class="btn btn-primary btn-circle js-plus" data-id="@app.ApplicationId"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-danger btn-circle js-delete" data-url="@Url.Action("Delete", new {id = app.ApplicationId})" data-title="@app.DisplayName" data-address="@address"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(document)
+            .ready(function() {
+                $('#projectsTable').DataTable();
+            });
+
+        $("#projectsTable").on("click", ".js-delete", function() {
+            var me = $(this);
+            bootbox.confirm({
+                title: "Are you SURE that you want to delete this " + me.data("title"),
+                message: "Address: " + me.data("address"),
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        me.html("<i class='fa fa-spinner fa-spin'></i>");
+                        $.ajax({
+                            url: me.data("url"),
+                            type: 'POST',
+                            success: function (data) {
+                                me.parent("tr").remove();
+                            },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+                    }
+                }
+            });
+        });
+
+        $("#projectsTable").on("click", ".js-plus", function () {
+            console.log("clk");
+            var me = $(this);
+            var id = me.data("id");
+            var url = '@Url.Action("SwapForms", "Applications", new { id = "__id__" })';
+            window.location.href = url.replace('__id__', id);
+        });
+    </script>
+}

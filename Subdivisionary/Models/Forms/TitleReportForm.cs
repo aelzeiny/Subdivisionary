@@ -16,7 +16,7 @@ namespace Subdivisionary.Models.Forms
     public class TitleReportForm : UploadableFileForm, ICollectionForm
     {
         [Required]
-        [TitleContactOfficerValidation]
+        //[TitleContactOfficerValidation]
         public TitleCompany TitleCompany { get; set; }
         
         public override string DisplayName => "Preliminary Title Report";

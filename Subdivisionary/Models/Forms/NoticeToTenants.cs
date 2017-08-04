@@ -11,7 +11,7 @@ namespace Subdivisionary.Models.Forms
     {
         public override string DisplayName => "Notice To All Tenants";
 
-        public static readonly string SAMPLE_NOTICE_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/Tenant%20Notice%20of%20Conversion%20Example.pdf";
+        public static readonly string SAMPLE_NOTICE_URL = "~/Samples/Tenant Notice of Conversion Example.pdf";
 
         [RequiredTrue]
         [Display(Name = "By checking this box the owners of this property affirm, by penalty of perjury, that the tenants have been notified of the pending conversion.")]

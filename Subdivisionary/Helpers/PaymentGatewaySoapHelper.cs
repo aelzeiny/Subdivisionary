@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,8 +13,12 @@ namespace Subdivisionary.Controllers
 {
     public class PaymentGatewaySoapHelper
     {
-        private static readonly string SERVICE_URL = "http://devwebtest/ajax/application.asmx";
-        //private static readonly string SERVICE_URL = "http://bsmnt/ajax/application.asmx";
+        /// <summary>
+        /// Payment Gateway SOAP endpoint server
+        /// DEV SERVER: "http://devwebtest/ajax/application.asmx";
+        /// FINAL SERVER: "http://bsmnt/ajax/application.asmx";
+        /// </summary>
+        private static readonly string SERVICE_URL = ConfigurationManager.AppSettings["PaymentGateway"];
 
         public static string CallWebService(ISoapEnvelope actionEnvelope)
         {
@@ -31,15 +37,15 @@ namespace Subdivisionary.Controllers
             asyncResult.AsyncWaitHandle.WaitOne();
 
             // get the response from the completed web request.
-            string serverResponce;
+            string serverResponse;
             using (WebResponse webResponse = webRequest.EndGetResponse(asyncResult))
             {
                 using (StreamReader rd = new StreamReader(webResponse.GetResponseStream()))
                 {
-                    serverResponce = rd.ReadToEnd();
+                    serverResponse = rd.ReadToEnd();
                 }
             }
-            return serverResponce;
+            return serverResponse;
         }
 
         public static XmlDocument CallWebServiceXml(ISoapEnvelope actionEnvelope)

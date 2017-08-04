@@ -20,5 +20,10 @@ namespace Subdivisionary.Models.Forms
         {
             new FileUploadProperty(this.Id, CLOSURE_CALCS_KEY, CLOSURE_CALCS_DIRECTORY, "Closure Calculations")
         };
+
+        public ClosureCalcsForm()
+        {
+            IsRequired = false;
+        }
     }
 }

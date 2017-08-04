@@ -1,0 +1,2164 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Subdivisionary</name>
+    </assembly>
+    <members>
+        <member name="T:Subdivisionary.MappingProfile">
+            <summary>
+            Dto stands for Data Transfer Objects. 
+            They are responcible for Transfering Data into our model in our API.
+            They mirror our model classes, but without certain info for added security.
+            Another advantage of DTOs is that they provide a contract with the end-user
+            such that the api versions itself at a slower pace than our api, allowing for
+            better consistancy over time.
+            We use Auto-Mapper to map the properties between these classes
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.MappingProfile.#ctor">
+            <summary>
+            Configure Mapping Profile with System.reflection
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+            The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForMediaType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Sets the sample directly for all actions with the specified media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.GetModelDescriptionGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the model description generator.
+            </summary>
+            <param name="config">The configuration.</param>
+            <returns>The <see cref="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator"/></returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+            <summary>
+            Gets or sets the <see cref="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+            <summary>
+            Gets or sets the documentation for the request.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+            <summary>
+            Gets or sets the <see cref="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+            <summary>
+            Gets the request body parameter descriptions.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+            <summary>
+            Gets or sets the <see cref="T:Subdivisionary.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+            <summary>
+            Gets the resource property descriptions.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.#ctor(System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider" /> class.
+            </summary>
+            <param name="documentPaths">The physical paths to XML documents.</param>
+            <exception cref="T:System.ArgumentNullException">documentPaths</exception>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetDocumentation(System.Web.Http.Controllers.HttpControllerDescriptor)">
+            <summary>
+            Gets the documentation based on <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" />.
+            </summary>
+            <param name="controllerDescriptor">The controller descriptor.</param>
+            <returns>The documentation for the controller.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetDocumentation(System.Web.Http.Controllers.HttpActionDescriptor)">
+            <summary>
+            Gets the documentation based on <see cref="T:System.Web.Http.Controllers.HttpActionDescriptor" />.
+            </summary>
+            <param name="actionDescriptor">The action descriptor.</param>
+            <returns>The documentation for the action.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetDocumentation(System.Web.Http.Controllers.HttpParameterDescriptor)">
+            <summary>
+            Gets the documentation based on <see cref="T:System.Web.Http.Controllers.HttpParameterDescriptor" />.
+            </summary>
+            <param name="parameterDescriptor">The parameter descriptor.</param>
+            <returns>The documentation for the parameter.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetDocumentation(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the documentation based on <see cref="T:MemberInfo"/>.
+            </summary>
+            <param name="member">The member.</param>
+            <returns>The documentation for the member.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetDocumentation(System.Type)">
+            <summary>
+            Gets the documentation for the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The documentation for the type.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetResponseDocumentation(System.Web.Http.Controllers.HttpActionDescriptor)">
+            <summary>
+            Gets the response documentation.
+            </summary>
+            <param name="actionDescriptor">The action descriptor.</param>
+            <returns>A html-formatted string for the action response.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetMethodNode(System.Web.Http.Controllers.HttpActionDescriptor)">
+            <summary>
+            Gets the method node.
+            </summary>
+            <param name="actionDescriptor">The action descriptor.</param>
+            <returns>A xpath navigator.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetTypeNode(System.Type)">
+            <summary>
+            Gets the type node.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>A xpath navigator.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetMemberName(System.Reflection.MethodInfo)">
+            <summary>
+            Gets the member name.
+            </summary>
+            <param name="method">The method.</param>
+            <returns>The member name.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetTypeName(System.Type)">
+            <summary>
+            Gets the type name.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The type name.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetTagValueForController(System.Xml.XPath.XPathNavigator,System.String)">
+            <summary>
+            Gets the tag value for a controller.
+            </summary>
+            <param name="parentNode">The parent node.</param>
+            <param name="tagName">The tag name.</param>
+            <returns>A html-formatted representation of the tag value.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetTagValueForAction(System.Xml.XPath.XPathNavigator,System.String)">
+            <summary>
+            Gets the tag value for a controller.
+            </summary>
+            <param name="parentNode">The parent node.</param>
+            <param name="tagName">The tag name.</param>
+            <returns>A html-formatted representation of the tag value.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.GetTagValue(System.Xml.XPath.XPathNavigator,System.String)">
+            <summary>
+            Gets the tag value.
+            </summary>
+            <param name="parentNode">The parent node.</param>
+            <param name="tagName">The tag name.</param>
+            <returns>A html-formatted representation of the tag value.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.MultipleXmlDocumentationProvider.ConvertDocTagsToHtml(System.String)">
+            <summary>
+            Converts the document tags to HTML.
+            </summary>
+            <param name="i">The input xml.</param>
+            <returns>A HTML-formatted string.</returns>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:Subdivisionary.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,Subdivisionary.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,Subdivisionary.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create
+            one using <see cref="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.DefaultSampleObjectFactory(Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator,System.Type)"/> (which wraps an <see cref="T:Subdivisionary.Areas.HelpPage.ObjectGenerator"/>) and other
+            factories in <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.ResolveHttpRequestMessageType(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Resolves the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The type.</returns>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},Subdivisionary.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Creates a new <see cref="T:Subdivisionary.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:Subdivisionary.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.#ctor(Subdivisionary.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:Subdivisionary.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,Subdivisionary.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:Subdivisionary.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:Subdivisionary.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.ImageSample">
+            <summary>
+            This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Subdivisionary.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.InvalidSample">
+            <summary>
+            This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Subdivisionary.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.AccountController.GetExternalLogin(System.String,System.String)">
+            <summary>
+            Log In through API with a string provider. NOTE: You can also use the /Token 
+            endpoint in to get the authorization cookie.
+            </summary>
+            <returns>Authorization Bearing Cookie</returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.AccountController.Logout">
+            <summary>
+            
+            POST api/Account/Logout
+            try calling this method before logging out, but you don't have to.
+            NOTE: you must 'forget' your cookie in order to properly log out. 
+            API calls will still be authorized if you don't remove the variable
+            on your end as well.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Controllers.Api.FormsController">
+            <summary>
+            API that has everything to do with Form Data
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.Controllers.Api.FormsController._context">
+            <summary>
+            Application Context is the portal between the SQL database and the model.
+            It is the single greatest thing about Entity Framework.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.FormsController.#ctor">
+            <summary>
+            Init ApplicationDB Context for serialization
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.FormsController.Dispose(System.Boolean)">
+            <summary>
+            Disposed of the ApplicationDbContext instance to free-up server resources.
+            </summary>
+            <param name="disposing">isDisposing bool</param>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.FormsController.ListIds(System.Int32)">
+            <summary>
+            List All Ids of all forms within an application,
+            as designated by Application Id
+            </summary>
+            <param name="id">Application Id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Controllers.Api.InvoiceController">
+            <summary>
+            API that has everything to do with Invoices
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.Controllers.Api.InvoiceController._context">
+            <summary>
+            Application Context is the portal between the SQL database and the model.
+            It is the single greatest thing about Entity Framework.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.InvoiceController.#ctor">
+            <summary>
+            Init ApplicationDB Context for serialization
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Controllers.Api.ProjectInfoController">
+            <summary>
+            API Controller specifically for the management of Project Information Forms.
+            Not Intended for the management of standard forms. Not Intended for the management of Projects.
+            Note that there are several types of Project Information sub-classes, which come into play depending
+            on the type of application is being used. See the ApplicationTypeToProjectInfo().
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.Controllers.Api.ProjectInfoController._context">
+            <summary>
+            Application Context is the portal between the SQL database and the model.
+            It is the single greatest thing about Entity Framework.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.#ctor">
+            <summary>
+            Init ApplicationDB Context for serialization
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.ProjectInfos">
+            <summary>
+            Returns all applications
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.ProjectInfo(System.Int32)">
+            <summary>
+            Returns the project information for  with a given project info form id
+            </summary>
+            <param name="id">Project Info Form Id to be queried in DB</param>
+            <returns>Project Info for given project info id</returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.ProjectInfoByApplicationId(System.Int32)">
+            <summary>
+            Returns the project information for  with a given application id
+            </summary>
+            <param name="appId">Application id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.ProjectInfo(System.Int32,Subdivisionary.Dtos.BasicProjectInfoDto)">
+            <summary>
+            Updates the project info given by a specified project info ID.
+            Note that certain project types have certain Project Information form
+            requirements.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.ApplicationTypeToProjectInfo(Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel)">
+            <summary>
+            Returns Project Information object based on the Application Type 
+            </summary>
+            <param name="appType">Supported Application Type</param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.ProjectInfoController.Dispose(System.Boolean)">
+            <summary>
+            Disposed of the ApplicationDbContext instance to free-up server resources.
+            </summary>
+            <param name="disposing">isDisposing bool</param>
+        </member>
+        <member name="T:Subdivisionary.Controllers.Api.StatusController">
+            <summary>
+            Status Controller is used to retrieve and/or modify the status of the project.
+            For security/debugging purposes, there is no such thing as modifying the 
+            status of a project directly.
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.Controllers.Api.StatusController._context">
+            <summary>
+            Application Context is the portal between the SQL database and the model.
+            It is the single greatest thing about Entity Framework.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.#ctor">
+            <summary>
+            Init ApplicationDB Context for serialization
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.Dispose(System.Boolean)">
+            <summary>
+            Disposed of the ApplicationDbContext instance to free-up server resources.
+            </summary>
+            <param name="disposing">isDisposing bool</param>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.Status(System.Int32)">
+            <summary>
+            Gets the current status by Application ID. Note: Not Status ID
+            </summary>
+            <param name="id">Application ID</param>
+            <returns>Application Status Log Item, which includes the current status, date, and string for additional data</returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.AddStatus(System.Int32,Subdivisionary.Dtos.ApplicationStatusLogItemDtoSet)">
+            <summary>
+            This manual override sets the parameter for application status, but does 
+            not trigger the subsequent effects. 
+            (i.e: generating invoices, marking an application as editable, etc.)
+            </summary>
+            <param name="id">Application ID</param>
+            <param name="status">status to be set as the current application status.</param>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.History(System.Int32)">
+            <summary>
+            Gets History for Application, as given by application ID
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.Status(System.Int32,Subdivisionary.Dtos.ApplicationStatusLogItemDtoSet)">
+            <summary>
+            Modify status by designated Status ID. Note: Not Application Id.
+            </summary>
+            <param name="id">STATUS ID</param>
+            <param name="status">Status to be set</param>
+        </member>
+        <member name="M:Subdivisionary.Controllers.Api.StatusController.HasStatus(System.Int32,Subdivisionary.Models.EApplicationStatus)">
+            <summary>
+            Check to see if an application has a given status, as designated by App-ID
+            </summary>
+            <param name="id">Application Id</param>
+            <param name="status">Value of status that is being checked for</param>
+            <returns>bool that designates whether an application has a given status</returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.ApplicationsController.Details(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Generates Editing page for a given application ID and form #
+            </summary>
+            <param name="id">Application Id</param>
+            <param name="formId">if 0 or unassigned then default to Project Info</param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Controllers.ApplicationsController.Details(System.Int32,System.Int32,Subdivisionary.Models.Forms.IForm)">
+            <summary>
+            Validates and saves an edited application form.
+            </summary>
+            <param name="editApp">IForm that is model-binded with the submitted form. Uses the 'CustomModelBinder' class to save form info to IForm.</param>
+            <param name="id">Id of the given Application</param>
+            <param name="formId">Id of the given form</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Subdivisionary.Controllers.ApplicationsController.Invoices(System.Int32)" -->
+        <member name="M:Subdivisionary.Controllers.ApplicationsController.Share(System.Int32)">
+            <summary>
+            Add email addresses to an application
+            </summary>
+            <param name="id">application id</param>
+        </member>
+        <member name="M:Subdivisionary.Controllers.ApplicationsController.SeedApplication">
+            <summary>
+            SUPER TEMPORARY SEED APPLICATION METHOD. REMOVE BEFORE DEPLOYMENT.
+            Helps seed an application for developers by visiting a url.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Controllers.FileController">
+            <summary>
+            File Controller responsible for the maintainance of files
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Controllers.FileController.UploadFiles(System.Int32)">
+            <summary>
+            Upload File from designated Form into the appropriate
+            storage system, and send a json-encoded response back 
+            to the Kartic-FileInput controll that is awaiting this
+            asynchronous upload.
+            </summary>
+            <param name="id">Form Id</param>
+            <returns>A json response intended for the use of the Kartic-FileInput control</returns>
+        </member>
+        <member name="F:Subdivisionary.Controllers.PaymentGatewaySoapHelper.SERVICE_URL">
+            <summary>
+            Payment Gateway SOAP endpoint server
+            DEV SERVER: "http://devwebtest/ajax/application.asmx";
+            FINAL SERVER: "http://bsmnt/ajax/application.asmx";
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.ApplicationStatusLogItemDtoSet">
+            <summary>
+            Data-Transfer Object, that is much like Application Status Log Item
+            but without the ID parameter.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoSet.Status">
+            <summary>
+            Item Status
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoSet.DateTime">
+            <summary>
+            Date of Item Creation
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoSet.Comment">
+            <summary>
+            Additional Info
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.ApplicationStatusLogItemDtoGet">
+            <summary>
+            Data-Transfer Object, that is much like Application Status Log Item
+            but without the ID parameter.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoGet.Id">
+            <summary>
+            Id of Log Item (because it has its own table)
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoGet.Status">
+            <summary>
+            Status of the designated application
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoGet.DateTime">
+            <summary>
+            Date of Item Creation
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ApplicationStatusLogItemDtoGet.Comment">
+            <summary>
+            Additional Information
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.ContactInfoDto">
+            <summary>
+            Data Transfer Object for ContactInfo.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.Name">
+            <summary>
+            Specified Contact Name
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.Email">
+            <summary>
+            Specified Email Address
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.Phone">
+            <summary>
+            Optional 10-digit Phone #
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.AddressLine1">
+            <summary>
+            Line 1 of Contact Address
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.AddressLine2">
+            <summary>
+            Optional Line 2 of Contact Address
+            (i.e: Floor, Unit, Apt, etc.)
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.City">
+            <summary>
+            Contact Residing City
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.State">
+            <summary>
+            Contact State
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ContactInfoDto.Zip">
+            <summary>
+            Contact Zip Code
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Subdivisionary.Dtos.BasicProjectInfoDto" -->
+        <member name="P:Subdivisionary.Dtos.BasicProjectInfoDto.AddressList">
+            <summary>
+            List of Block/Lot/APN addresses
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.BasicProjectInfoDto.PrimaryContactInfo">
+            <summary>
+            Contact Information of Primary Applicant. Might be an attorney, or a firm.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.BasicProjectInfoDto.OwnerContactInfo">
+            <summary>
+            Optional Contact Information of Owner Applicant. 
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.BasicProjectInfoDto.OwnerAndPrimaryContactAreSame">
+            <summary>
+            If Primary Contact and Owner Contact are the same, then assign this to true
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.ExtendedProjectInfoDto">
+            <summary>
+            Extended Project Information is like BasicProjectInfo, but with an additional
+            Contact Field for a Land Firm
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.ExtendedProjectInfoDto.LandFirmContactInfo">
+            <summary>
+            Land Firm Contact Info
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.CcBypassInfoDto">
+            <summary>
+            CcBypass Project Information
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.CcBypassInfoDto.NumberOfUnits">
+            <summary>
+            Number of Units in Condo
+            PreReq: must be between 2 - 6
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.CcEcpInfoDto">
+            <summary>
+            For, you guessed it, Condo-Conversion ECP Projects
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.CcEcpInfoDto.ResidentialUnits">
+            <summary>
+            Number of Units that are residential
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.CcEcpInfoDto.CommercialUnits">
+            <summary>
+            Number of Units that are commercial
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Dtos.NewConstructionInfoDto">
+            <summary>
+            Projects for New Construction Condominiums
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.NewConstructionInfoDto.CreatesVerticalSubdivision">
+            <summary>
+            Does thi project creates a vertical subdivision?
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.NewConstructionInfoDto.HasExistingBuilding">
+            <summary>
+            Does this subdivision includes an existing building/dwelling? (Will be shown on map)
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.NewConstructionInfoDto.NumberOfUnits">
+            <summary>
+            Number of New Construction Units within this project.
+            PreReq: Must be greater than or equal to 1.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Subdivisionary.Dtos.CocAndLlaProjectInfoDto" -->
+        <member name="P:Subdivisionary.Dtos.CocAndLlaProjectInfoDto.DeveloperContactInfo">
+            <summary>
+            Developer Contact Information
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Dtos.CocAndLlaProjectInfoDto.NumOfExisitingLots">
+            <summary>
+            Number of lots existing/prior to the subdivision
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Subdivisionary.Dtos.CocAndLlaProjectInfoDto.OwnerAndLandDevContactAreSame" -->
+        <!-- Badly formed XML comment ignored for member "T:Subdivisionary.Dtos.LotMergerAndSubdivisionInfoDto" -->
+        <member name="P:Subdivisionary.Dtos.LotMergerAndSubdivisionInfoDto.NumOfProposedLots">
+            <summary>
+            Number of Lots the subdivision will result in
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ExternalApis.ExternalApi">
+            <summary>
+            Class that facilitates external Web API calls. Takes care of all the back-end 
+            technicals with calling a web-api using C#. Also is the base-class for all 
+            SAS triggers to external APIs
+            See Microsoft's Web-Api Documentation Here:
+            https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/calling-a-web-api-from-a-net-client
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ExternalApis.ExternalApiManager">
+            <summary>
+            Creates a new thread that runs concurrently to (possibly) trigger a POST/PUT
+            request from an external API. Note that these operation runs parrallel to our
+            main thread, and the result doesn't inform the SAS. So we set a thread lose into 
+            the world, knowing that we don't care it ever returns. 
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ExternalApis.ExternalApiManager._apis">
+            <summary>
+            A list of external apis to trigger
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ExternalApis.ExternalApiManager._client">
+            <summary>
+            The HttpClient handling all post/put requests
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ExternalApis.ExternalApiManager.TIMEOUT_SECONDS">
+            <summary>
+            Timeout for each API call until a timeout exception is thrown
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Subdivisionary.ExternalApis.ExternalApiManager.#ctor" -->
+        <member name="M:Subdivisionary.ExternalApis.ExternalApiManager.InvoiceGeneratedAsync(Subdivisionary.Models.Applications.Application,Subdivisionary.Models.InvoiceInfo)">
+            <summary>
+            Trigger External API when an invoice is generated
+            </summary>
+            <param name="application">Application that Invoice was generated for</param>
+            <param name="invoice">Invoice that was generated</param>
+        </member>
+        <member name="M:Subdivisionary.ExternalApis.ExternalApiManager.StatusChangedAsync(Subdivisionary.Models.Applications.Application)">
+            <summary>
+            Trigger External API when a status change has occured (these could include payments)
+            </summary>
+            <param name="application"></param>
+        </member>
+        <member name="M:Subdivisionary.ExternalApis.ExternalApiManager.TimeoutAfter(System.Threading.Tasks.Task,System.TimeSpan)">
+            <summary>
+            Task that returns either when a specified task completes or when a timeout occurs. If the 
+            returning task is the source task, then the value is returned. Otherwise an exception occurs
+            when the timer runs out
+            </summary>
+            <param name="task">Task being performed</param>
+            <param name="timeout">Timeout timespan before an error is thrown</param>
+            <param name="applicationId">Application ID for the purposes of logging the error.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.ExternalApis.ExternalApiManager.InvoiceGeneratedTriggerInBackground(Subdivisionary.Models.Applications.Application,Subdivisionary.Models.InvoiceInfo)">
+            <summary>
+            Concurrent thread that calls InvoiceGenerated() function on all external APIs.
+            </summary>
+            <param name="application">Application where event occured</param>
+            <param name="invoice">Invoice where event occured</param>
+        </member>
+        <member name="M:Subdivisionary.ExternalApis.ExternalApiManager.StatusChangedTriggerInBackground(Subdivisionary.Models.Applications.Application)">
+            <summary>
+            Concurrent thread that calls StatusChanged() function on all external APIs.
+            </summary>
+            <param name="application"></param>
+        </member>
+        <member name="M:Subdivisionary.ExternalApis.ExternalApiManager.Dispose">
+            <summary>
+            Disposes of the HttpClient resource
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Subdivisionary.FileUploaders.AzureUploader.InitializeRootFolder(System.String)" -->
+        <member name="M:Subdivisionary.FileUploaders.GoogleDriveUploader.InitializeCredentials(System.String)">
+            <summary>
+            Initializes Drive Service with Json File
+            </summary>
+            <param name="keyFilePath"></param>
+        </member>
+        <member name="T:Subdivisionary.Helpers.EnumHelper`1">
+            <summary>
+            This beautiful Enum Helper is provided by:
+            http://stackoverflow.com/questions/13099834/how-to-get-the-display-name-attribute-of-an-enum-member-via-mvc-razor-code
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Subdivisionary.Helpers.CloudHelper.GetContainerName(Subdivisionary.Models.Applications.Application)" -->
+        <member name="M:Subdivisionary.DAL.CustomIFormModelBinder.FilterPropertyCollection(System.Collections.Specialized.NameValueCollection,System.String)">
+            <summary>
+            Get All property strings related to the object
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.DAL.CustomIFormModelBinder.ParseObject(System.Web.Mvc.ModelBindingContext,System.String,System.Collections.Specialized.NameValueCollection,System.Type)">
+            <summary>
+            Parses an object that has a series of properties that are '.' delimited.
+            This parser assumes that all subtypes are declared in a default constructor.
+            This parser also uses system.reflection, which always sacrifices performance for functionality
+            </summary>
+            <param name="attributeList">List of properties defined in (NAME, VALUE) format</param>
+            <param name="infoType">Type of object that is ready to parse</param>
+            <returns>Parsed Object</returns>
+        </member>
+        <member name="M:Subdivisionary.DAL.CustomIFormModelBinder.ParsePrimitive(System.String,System.Type)">
+            <summary>
+            Parse a primitive object dynamically using the System.Converter class
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.DAL.CustomIFormModelBinder.SyncCollectionForm(System.Web.Mvc.ControllerContext,System.Web.Mvc.ModelBindingContext,Subdivisionary.Models.Forms.ICollectionForm)">
+            <summary>
+            Sync Collection to Form
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.DAL.CustomIFormModelBinder.BindObjectIntoModelState(System.String,System.Object,System.Web.Mvc.ModelStateDictionary)">
+            <summary>
+            Binds object into ModelStateDictionary
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.Id">
+            This stores the id of this class
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.Pid">
+            <summary>
+            Nothing is being done with this field currently.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.Forms">
+            All the forms (but not the project info form)
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Subdivisionary.Models.Applications.Application.ProjectInfoId" -->
+        <!-- Badly formed XML comment ignored for member "P:Subdivisionary.Models.Applications.Application.Applicants" -->
+        <member name="P:Subdivisionary.Models.Applications.Application.StatusHistory">
+            List of Status History denoting the current status, and the shift
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.CanEdit">
+            Determines whether applicant can edit the application, or the application is placed on hold
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.CurrentStatusLog">
+            <summary>
+            Current Status is the last item in status History
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.SharedRequests">
+            <summary>
+            List of emails that are invited to edit the project.
+            Okay, there's are reason why this is a SerializableList element, and not ID-based. It has to do with
+            EF6 not being very kind to circular dependancies. Think of the relationship between notifications and applicants,
+            applications and notifications, and applications to applicants.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.DisplayName">
+            Display name of application
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.PaymentSchedule">
+            Payment Schedule Type from Database
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.DirectoryName">
+            Initial Fee of application
+        </member>
+        <member name="M:Subdivisionary.Models.Applications.Application.GetOrderedForms">
+            All the forms, in order, including the project info form
+        </member>
+        <member name="P:Subdivisionary.Models.Applications.Application.Item(System.Type)">
+            <summary>
+            Gets IForm using form type. If you define an application as a collection of forms,
+            where no one form is repeated twice, this operator makes a lot of sense.
+            </summary>
+            <param name="key">Type of form needed</param>
+            <returns>Returns null if no form found of given type</returns>
+        </member>
+        <member name="M:Subdivisionary.Models.Applications.Application.FormUpdated(Subdivisionary.Models.ApplicationDbContext,Subdivisionary.Models.Forms.IForm,Subdivisionary.Models.Forms.IForm)">
+            <summary>
+            This uses a modified version of the Observer Design pattern to notify
+            all forms of the IObservable form interface when one form within the application 
+            has changed. 
+            </summary>
+            <param name="modified"></param>
+        </member>
+        <member name="M:Subdivisionary.Models.Applications.Application.FactoryCreate``1">
+            <summary>
+            Factory Design Pattern used to create a new Application. The constructor is reserved
+            for Entity Framework by practice. Here we can create forms using their constructor and modify
+            their variables (such as requirement).
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Models.Applications.Application.Review">
+            <summary>
+            An application has the ability to review itself. This is sort of an inbetween between
+            the things we can't validation with just property validation,
+            and the things that we should make sure are correct.
+            </summary>
+            <returns>List of spotted errors within an application</returns>
+        </member>
+        <member name="M:Subdivisionary.Models.Applications.Application.SubmitAndFinalize">
+            <summary>
+            Returns false if application cannot be finalized due to all forms not being
+            submitted
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Models.Applications.Application.HasStatus(Subdivisionary.Models.EApplicationStatus)">
+            <summary>
+            Returns whether a certain status has been logged
+            </summary>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Models.Collections.SerializableList`1">
+            <summary>
+            Entity Framework does not allow lists of any kind in databases, but sometimes
+            we need an array alternative. Csv List uses strings to serialize 
+            an array of objects as a Comma-seperated-value list.
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.Models.Collections.SerializableList`1.data">
+            <summary>
+            Stores list of objects once loaded from database
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Models.Collections.SerializableList`1.#ctor">
+            <summary>
+            Constructor init list as empty
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Collections.SerializableList`1.Data">
+            <summary>
+            Populates data field from database
+            GET: Converts an object value into a serializable string
+            SET: Converts a serializable string into objects
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.Collections.SignatureList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.EApplicationStatus">
+            <summary>
+            Application Status Enum. Values are spaced out by factors of 10 such that new statuses can be added without disrupting the flow of the enum
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.EUserRoles">
+            <summary>
+            Like an Enum w/ String but since that's not native to C# we gotta improvise.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.ApplicationTypeName">
+            <summary>
+            This string is the key identifier of the fee information. Corresponds to
+            the EPaymentSchedule enum class.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.BaseProcessingFee">
+            <summary>
+            The Processing fee is the first fee applied to every application as
+            a prerequisit for submittal. This is the base fee.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.BaseMapReviewFee">
+            <summary>
+            THe Map Review Fee is only charged once an application is deemed submittable.
+            Comes after the processing fee, if at all.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.BaseMapPerUnitFee">
+            <summary>
+            Linear increase of price based on the number of units a project requires
+             (for parcel Maps)
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.FinalMapReviewFee">
+            <summary>
+            Map Review fee for Final Maps. This is the same as the BaseMapReviewFee, but
+            only for final maps. If project is the same price regardless of parcel/final map
+            status, then please set this variable to be equal to the BaseMapFee
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.FinalMapPerUnitFee">
+            <summary>
+            Linear increase of price based on the number of units a project requires
+            (for final maps). 
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.BaseProcessingPerUnitFee">
+            <summary>
+            Linear increase of price based on the number of units a project requires
+            for the initial processing fee
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.FeeScheuleItem.AdditionalFeesMayApplyDisclaimer">
+            <summary>
+            On the fee schedule of 2016/17, there is a line item that denotes 
+            "Minimum fee; Additional fees may be assessed on time and materials basis."
+            True means that this disclaimer is present, and false for this disclaimer is 
+            not present
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Models.FeeScheuleItem.CalculateProcessingFee(System.Int32)">
+            <summary>
+            Calculate the initial processing fee of an application. 
+            </summary>
+            <param name="numberOfUnits">Number of Units could contribute to a linear increase in price</param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.Models.FeeScheuleItem.CalculateMapReviewFee(System.Int32)">
+            <summary>
+            This fee is due once an application is deemed submittable. Note that some applications do not have a
+            secondary fee, so this may return '0'.
+            </summary>
+            <param name="numberOfUnits">Number of Units could contribute to a linear increase in price,
+             based on if the project is a parcel/final map</param>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Models.Forms.CoverLetterSidewalkLegislationForm">
+            <summary>
+            Structurally, this is no different than a standard Cover Letter.
+            But it will have a different view.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.Models.Forms.Form.CanCopyProperty(System.Reflection.PropertyInfo)">
+            <summary>
+            This method should return false for items that are not directly manipulated by forms within the view. <br></br>
+            Basically ask yourself the question, is thisproperty modified directly by a form save? If the answer is no, then this method should return false,
+            and you have to override the method to make sure that the property isn't copied (either by type or by name).
+            If the answer is yes, then no need to override the method since the default assumption is that every variable
+            is directly modifed by a form and should be copied over.
+            </summary>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.Models.ApplicationUser">
+            <summary>
+            You can add profile data for the user by adding more properties to your
+             ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+            </summary> 
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Subdivisionary.Models.ApplicationDbContext.OnModelCreating(System.Data.Entity.DbModelBuilder)" -->
+        <member name="T:Subdivisionary.Models.ISoapEnvelope">
+            <summary>
+            http://devwebtest/ajax/application.asmx
+            Based on the specifications provided by Geoffery
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.CreateInvoiceEnvelope">
+            <summary>
+            &lt;username&gt;string&lt;/username&gt;
+            &lt;invoiceid&gt;int&lt;/invoiceid&gt;
+            &lt;companyid&gt;int&lt;/companyid&gt;
+            &lt;amount&gt;double&lt;/amount&gt;
+            &lt;reference&gt;string&lt;/reference&gt;
+            &lt;memo&gt;string&lt;/memo&gt;
+            &lt;accntcode&gt;string&lt;/accntcode&gt;
+            &lt;accountdesc&gt;string&lt;/accountdesc&gt;
+            &lt;invoice_type&gt;int&lt;/invoice_type&gt;
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.ListInvoiceEnvelope">
+            <summary>
+            No parameters. Returns list of all invoice types
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.ProjectInfos.BasicProjectInfo">
+            <summary>
+            Base class for all Project Info Types. Specifically for Record of Surveys, which
+            have the least basic requirements in comparison to all apps.
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Models.ProjectInfos.CcBypassInfo">
+            <summary>
+            For Condo-Conversion Bypass Applications
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Subdivisionary.Models.ProjectInfos.CocAndLlaProjectInfo" -->
+        <member name="T:Subdivisionary.Models.ProjectInfos.CcEcpInfo">
+            <summary>
+            For, you guessed it, Condo-Conversion ECP Projects
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Subdivisionary.Models.ProjectInfos.UnitsAddUpToTotalValidation" -->
+        <member name="P:Subdivisionary.Models.Notification.Id">
+            <summary>
+            This is an ID #
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Notification.Applicant">
+            <summary>
+            Applicant only assigned once a product is registered
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.Notification.ApplicantId">
+            <summary>
+            Foreign Key for Applicant
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.Models.ShareApplicationNotification.ApplicationId">
+            <summary>
+            This could either be an application ID or a refferral ID
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.Providers.ApplicationOAuthProvider">
+            <summary>
+            A way for the application API to mix with Application OAuth Provider
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexSearchViewModel">
+            <summary>
+            For Application searches on Index Page
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexSearchViewModel.SearchQuery">
+            <summary>
+            Queries filter for searches
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexSearchViewModel.Results">
+            <summary>
+            List of results that the query yeilded
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexViewModel">
+            <summary>
+            Application Index View Mode
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexViewModel.ApplicationId">
+            <summary>
+            Application ID
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexViewModel.DisplayName">
+            <summary>
+            What to call the application
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexViewModel.BlockLots" -->
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexViewModel.Addresses">
+            <summary>
+            List of Addresses from the block/lot
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationIndexViewModel.ApplicationStatus">
+            <summary>
+            Current status of the application
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel">
+            <summary>
+            Submitted Application View Model
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.ApplicationId">
+            <summary>
+            App ID
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.NextSteps">
+            <summary>
+            Some applications have specific instructions on what to do next
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.Fee">
+            <summary>
+            Designated Fee for application
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.Invoices">
+            <summary>
+            All the invoices for the application
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.Statuses">
+            <summary>
+            All the statuses for the application
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.ApplicationCanEdit">
+            <summary>
+            A determination whether the application can be edited
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.CurrentStatus">
+            <summary>
+            Current Status of the Application
+            </summary>
+            <returns>Last Item in status history</returns>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel.HasStatus(Subdivisionary.Models.EApplicationStatus)">
+            <summary>
+            Determines whether an application has a status
+            </summary>
+            <param name="status">status of the application</param>
+            <returns>boolean perdicting whether the application has a status</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel">
+            <summary>
+            Viewable Applications by type. You can add another application
+            from the pull-down menu by adding a new enum-type here.
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.RecordOfSurvey">
+            <summary>
+            ROS
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.CcBypass">
+            <summary>
+            2CC-Bypass
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.CcEcp">
+            <summary>
+            CC-ECP
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.NewConstruction">
+            <summary>
+            NC
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.CertificateOfCompliance">
+            <summary>
+            CoC
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.LotLineAdjustment">
+            <summary>
+            LLA
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.ParcelFinalMap">
+            <summary>
+            LM/LS/VS
+            </summary>
+        </member>
+        <member name="F:Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel.SidewalkLegislation">
+            <summary>
+            SIL
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.EditApplicationViewModel">
+            <summary>
+            Edit Application View Model
+            to pass into the Application/Details View
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditApplicationViewModel.Form">
+            <summary>
+            Form that is being edited
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditApplicationViewModel.FormId">
+            <summary>
+            Edited Form ID
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditApplicationViewModel.Forms">
+            <summary>
+            Remaining Forms
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditApplicationViewModel.Application">
+            <summary>
+            Application being Edited
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.EditFormViewModel">
+            <summary>
+            View Model for the _FormEditor Partial View. Also maps Form Models
+            to their subsequent Partial Views
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditFormViewModel.Form">
+            <summary>
+            Form being edited
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditFormViewModel.FormId">
+            <summary>
+            ID of form being edited
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EditFormViewModel.ApplicationId">
+            <summary>
+            Application ID
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.EditFormViewModel.GetPartialViewEditor">
+            <summary>
+            Gets the partial view name of the form being edited. 
+            By convention, this returns $"Forms/_{FormTypeName}Editor".
+            Project Infos are the exception, but this could be changed by
+            changing it here. Also, this is where you add other exceptions.
+            </summary>
+            <returns>String of the partialview that is reponsible for rendering the form model</returns>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.EditFormViewModel.GetPartialViewEditor(Subdivisionary.Models.Forms.IForm)">
+            <summary>
+            Static method that
+            gets the partial view name of the form being edited. 
+            By convention, this returns $"Forms/_{FormTypeName}Editor".
+            Project Infos are the exception, but this could be changed by
+            changing it here. Also, this is where you add other exceptions.
+            </summary>
+            <param name="form">Model Form type that has a complimentary view component</param>
+            <returns>String of the partialview that is reponsible for rendering the form model</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.EmailInviteViewModel">
+            <summary>
+            Invitational Email ViewModel that holds all the properties of an invitational email.
+            Used mostly by the controller to render a view
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EmailInviteViewModel.ToName">
+            <summary>
+            Who is this application addressed to
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EmailInviteViewModel.ApplicationDisplayName">
+            <summary>
+            Who is this application from
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EmailInviteViewModel.ApplicationUrl">
+            <summary>
+            Share link of the application
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EmailInviteViewModel.RegisterUrl">
+            <summary>
+            Register link for the website
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.EmailInviteViewModel.Address">
+            <summary>
+            Address of the Application in the invite
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel">
+            <summary>
+            This view model corresponds with Kartic's Bootstrap FileUploader API.
+            Variables are given names and significance based on the ability to serialize
+            to the FileUploader Library. 
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.append">
+            <summary>
+            Whether an upload should append or overwrite the other uploads
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.initialPreviewConfig">
+            <summary>
+            Initial Preview Configuration Settings
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.initialPreview">
+            <summary>
+            Initial Preview Settings
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.initialPreviewFileType">
+            <summary>
+            Initial Preview Component Type
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.Create">
+            <summary>
+            This is the Factory Constructor for the struct, since 
+            in C# structure constructors are all or nothing type deals.
+            </summary>
+            <returns>Fresh VM with default initialization</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreivewConfigViewModel">
+            <summary>
+            Initial Preview Configuration
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreivewConfigViewModel.caption">
+            <summary>
+            Caption HTML
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreivewConfigViewModel.type">
+            <summary>
+            File Preview Type 
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreivewConfigViewModel.size">
+            <summary>
+            File content Length/Size
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreivewConfigViewModel.previewAsData">
+            <summary>
+            Should almost always be set to true
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreivewConfigViewModel.url">
+            <summary>
+            Deletion Url
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreviewThumbTags">
+            <summary>
+            You can directly set the initial preview thumb tags here
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.InitialPreviewThumbTags.sampleTag">
+            <summary>
+            HTML of a sample thumb tag
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.AddFile(System.Web.Mvc.UrlHelper,System.Int32,System.Int32,System.String,System.String,System.Int64,System.String)">
+            <summary>
+            Add File to the ViewModel and set the inital configurations of that file
+            </summary>
+            <param name="url">Used to map Controller Actions, i.e: Url.Action(...)</param>
+            <param name="mfileId">File ID</param>
+            <param name="mformId">Form ID</param>
+            <param name="absoluteUri">Visitation Path for preview container</param>
+            <param name="contentType">File Content Type (default HTML content type)</param>
+            <param name="contentSize">Content Size/Length</param>
+            <param name="mcaption">Desired File Caption in preview</param>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadJsonViewModel.ConvertType(System.String)">
+            <summary>
+            There is a difference between Kartic's Bootstrapper File type and the
+            HTML file Type. This takes common HTML file types and converts them to
+            something the API can understand
+            </summary>
+            <param name="uploadType">HTML Upload type (i.e: Application/pdf)</param>
+            <returns>Kartic Bootstrap's upload type (i.e: pdf)</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModel">
+            <summary>
+            View Model For Kartic's File Uplaod Collection.
+            This allows old uploads to be displayed in the same upload
+            property along with new uploads.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModel.LabelMessage">
+            <summary>
+            Label of the File Upload Library View
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModel.UploadProperty">
+            <summary>
+            Upload Property of the File Upload Library View
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModel.UploadList">
+            <summary>
+            Current list of all the file uploads that should be displayed in this view.
+            This may require some sective filtering if the form contains more than
+            one file upload.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModel.InitialPreviews(System.Web.Mvc.UrlHelper)">
+            <summary>
+            Create Intial Previews for the Bootstrap Dialog View
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModel.ConvertTypes">
+            <summary>
+            Convert Types from HTML to Bootstrap Dialog Viewbox
+            </summary>
+            <returns>A list of converted types</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModelCollection">
+            <summary>
+            This call is a helper for the FileUploadViewModel. It does all the filtering 
+            from all the Form File Uploads to generate FileUploadViewModels. This is intended for
+            use with forms that may have more than one file upload property.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModelCollection.#ctor(Subdivisionary.Models.Forms.UploadableFileForm)">
+            <summary>
+            Constructor takes the form and generates all the fileuploadviewmodels for that form
+            </summary>
+            <param name="form"></param>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.FileUploadViewModelCollection.GetViewModel(System.String,System.String)">
+            <summary>
+            Generate A FileUploadViewModel with this helper class.
+            </summary>
+            <param name="key">File Property Key</param>
+            <param name="label">Label for the file upload View</param>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel">
+            <summary>
+            ViewModel for ICollection List Editor. Made as an abstract class
+            for model binding reasons. See ICustomModelBinder to find out why.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel.AddRemoveButton">
+            <summary>
+            should the item have a remove (trash) icon?
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel.EmptyDataDefault">
+            <summary>
+            What is the data default for when the new button is clicked and a new
+            item is initialized?
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel.Key">
+            <summary>
+            Key that identifies the Collection
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel.Count">
+            <summary>
+            Count for the number of list items
+            </summary>
+            <returns>List.Count</returns>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel.GetList">
+            <summary>
+            Gets the Item Collection Data
+            </summary>
+            <returns>IEnumerable of existing Item Collection</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel`1">
+            <summary>
+            Direct and Only Implementation of teh ListEditorViewModel Class
+            </summary>
+            <typeparam name="T">Collection Item Type</typeparam>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel`1.#ctor(System.String,Subdivisionary.Models.Collections.SerializableList{`0},`0,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="key">Identifing Key</param>
+            <param name="mList">Collection List</param>
+            <param name="empty">Empty data Default for when a new item is initialized</param>
+            <param name="addRemoveButton">Should the remove (trash) icon be added to the item?</param>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel`1.List">
+            <summary>
+            collection item list
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel`1.GetList">
+            <summary>
+            Gets the Collection List
+            </summary>
+            <returns>Collection List</returns>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ListEditorViewModel`1.Count">
+            <summary>
+            Gets the Count of the List
+            </summary>
+            <returns>List.Count</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel">
+            <summary>
+            New Application View Model for creating new applications
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel.ProjectInfo">
+            <summary>
+            Project Information that will be used to create application
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel.ApplicationType">
+            <summary>
+            Application Type from Enum.
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel.#ctor">
+            <summary>
+            ASP.NET Model Binding uses system.reflection to create an object.
+            Thus it needs a constructor without any parameters
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel.#ctor(System.Int32,Subdivisionary.Models.ProjectInfos.BasicProjectInfo)">
+            <summary>
+            View Model Constructor
+            </summary>
+            <param name="appTypeId">Application Type Enum (as an int type)</param>
+            <param name="projInfo">Project Information</param>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel.#ctor(Subdivisionary.ViewModels.ApplicationViewModels.EApplicationTypeViewModel,Subdivisionary.Models.ProjectInfos.BasicProjectInfo)">
+            <summary>
+            View Model Constructory
+            </summary>
+            <param name="appTypeId">Application Type Enum</param>
+            <param name="projInfo">Project Information</param>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel">
+            <summary>
+            View Model used for search queries
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.ApplicationId">
+            <summary>
+            Option Application ID filter
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.ProjectType">
+            <summary>
+            Optional Project type filter
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.BlockQuery">
+            <summary>
+            Optional Block string Filter
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.LotQuery">
+            <summary>
+            Optional Lot string Filter
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.AddressQuery">
+            <summary>
+            Optional Address string filter
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.UserQuery">
+            <summary>
+            User Query string filter
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SearchViewModel.Status">
+            <summary>
+            Optional Application Status Filter
+            </summary>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel">
+            <summary>
+            Share Application View Model. Since this form has a 
+            collection, we give it the ICollectionForm interface for convience
+            in implementation.
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.UserEmail">
+            <summary>
+            User Email
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.ApplicantEmails">
+            <summary>
+            Registered User Emails
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.ShareRequests">
+            <summary>
+            Share Request emails
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.DisplayName">
+            <summary>
+            Display name
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.ProjectInfoDisplay">
+            <summary>
+            Project Info Display
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.ApplicationId">
+            <summary>
+            Application ID
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.Keys">
+            <summary>
+            ICollection Key
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.#ctor(Subdivisionary.Models.Applications.Application,Subdivisionary.Models.Applicant)" -->
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.GetListCollection(System.String)">
+            <summary>
+            Gets Applicant Email List
+            </summary>
+            <param name="key">Will always be "emailListId"</param>
+            <returns>ApplicantEmails</returns>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.GetEmptyItem(System.String)">
+            <summary>
+            Return Empty Item
+            </summary>
+            <param name="key">Always the smae "emailListId"</param>
+            <returns>string key</returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.AddableCollectionEmailList">
+            <summary>
+            AddableCollection Email List
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.AddableCollectionEmailList.#ctor(System.Collections.Generic.IEnumerable{Subdivisionary.Models.Collections.EmailInfo})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="info">List of Email Info</param>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.AddableCollectionEmailList.AddObject(System.Object)">
+            <summary>
+            Add new Email
+            </summary>
+            <param name="o">EmailInfo o</param>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.ShareApplicationViewModel.AddableCollectionEmailList.AddObjectUntilIndex(System.Int32,System.Object,System.Object)">
+            <summary>
+            Add Object Until Specified index
+            </summary>
+            <param name="index">add empty objects at 0 till index. object goes at index</param>
+            <param name="value">object to be added, must be email Info</param>
+            <param name="blankItem">new EmailInfo()</param>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.SignatureCollectionViewModel">
+            <summary>
+            Helper Collection Class that generates SignatureViewModels for given form
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureCollectionViewModel.FormId">
+            <summary>
+            ID of form that has signature blocks
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureCollectionViewModel.Properties">
+            <summary>
+            List of Signatures
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureCollectionViewModel.Infos">
+            <summary>
+            List of Signature Upload Information
+            </summary>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.SignatureCollectionViewModel.#ctor(System.Int32,Subdivisionary.Models.Collections.SignatureList,System.Collections.Generic.ICollection{Subdivisionary.Models.SignatureUploadInfo})">
+            <summary>
+            New Signature collection View Model
+            </summary>
+            <param name="formId">Form ID</param>
+            <param name="props">Properties w/i form</param>
+            <param name="infos">Completed signature uploads + information</param>
+        </member>
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.SignatureCollectionViewModel.GenerateSignatureViewModels">
+            <summary>
+            Generates a list of all SignatureViewModels
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel">
+            <summary>
+            Represents just 1 signature block
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel.SignerName">
+            <summary>
+            Name of Signer
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel.DateStamp">
+            <summary>
+            Datestamp if signature is signed
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel.UserStamp">
+            <summary>
+            User Loggin Stamp if signatre is signed
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel.SerializationType">
+            <summary>
+            This has to do with JSiganture API. We serialize at
+            Base32 for its digital footprint and modifiability
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel.SignatureData">
+            <summary>
+            represents the completed signature raw data that can be
+            used to generate the signature image
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.SignatureViewModel.IsSignatureFinalized">
+            <summary>
+            Represents if a singature is completed
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Subdivisionary.ViewModels.ApplicationViewModels.SwapFormsViewModel" -->
+        <member name="M:Subdivisionary.ViewModels.ApplicationViewModels.SwapFormsViewModel.GetSelects">
+            <summary>
+            Use System.Reflection to get all 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Subdivisionary.ViewModels.ApplicationViewModels.VoidViewModel">
+            <summary>
+            ViewModel for a voided invoice action
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.VoidViewModel.InvoiceId">
+            <summary>
+            ID of voided invoice
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.VoidViewModel.UserName">
+            <summary>
+            username of person voiding the invoice
+            </summary>
+        </member>
+        <member name="P:Subdivisionary.ViewModels.ApplicationViewModels.VoidViewModel.Reason">
+            <summary>
+            Stated Reason for invoice being voided.
+            </summary>
+        </member>
+        <member name="T:EFeeSchedule">
+            <summary>
+            The intent of this pseduo-enum class is to encapsulate all possible FeeSchedule items within the database.
+            When a Fee Schedule Item is added/removed into the dbo.FeeScheduleItem table, it should be reflected here.
+            This practice will reduce the number of "magic strings" throughout our application
+            </summary>
+        </member>
+    </members>
+</doc>

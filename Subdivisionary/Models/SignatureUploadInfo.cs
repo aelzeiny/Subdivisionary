@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Subdivisionary.Models.Forms;
@@ -20,5 +21,8 @@ namespace Subdivisionary.Models
 
         public string DataFormat { get; set; }
         public string Data { get; set; }
+
+        [Required]
+        public bool IsSignatureFinalized { get; set; }
     }
 }

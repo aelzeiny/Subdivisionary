@@ -20,5 +20,17 @@ namespace Subdivisionary.Helpers
         {
             return (JsonConvert.SerializeObject(obj, Formatting.None)); //.Replace("\"", "\'"));
         }
+
+        public static IEnumerable<Type> GetAllSubtypes(Type t)
+        {
+            Stack<Type> answer = new Stack<Type>();
+            var finalO = typeof(object);
+            while (t != finalO)
+            {
+                answer.Push(t);
+                t = t.BaseType;
+            }
+            return answer;
+        }
     }
 }

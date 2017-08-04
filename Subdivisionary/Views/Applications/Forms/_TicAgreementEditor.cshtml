@@ -1,8 +1,8 @@
 ﻿@using Subdivisionary.Models.Forms
 @using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
 @model TicAgreement
     
-
 <h4>TIC Agreement Information</h4>
 <h6>[SEC. 1396.4 (9)]</h6>
 <a href="@TicAgreement.SAMPLE_TIC_URL" target="_blank"><h4>View Sample Tenancy-In-Common Agreement <i class="fa fa-file-pdf-o"></i></h4></a>
@@ -37,5 +37,5 @@
 {
     LabelMessage = "Please upload the Tenancy-In-Common Agreement with sig",
     UploadList = @Model.FileUploads,
-    UploadProperty = @Model.GetFileUploadInfo(TentativeMapForm.TENTATIVE_MAP_KEY)
+    UploadProperty = @Model.GetFileUploadInfo(TicAgreement.TIC_AGREEMENT_KEY)
 })

@@ -10,6 +10,8 @@ namespace Subdivisionary.Models.ProjectInfos
     {
         [Required]
         [Display(Name = "Number of Proposed Lots")]
-        public int NumOfProposedLots { get; set; }
+        public virtual int NumOfProposedLots { get; set; }
+
+        public override int UnitCount { get { return NumOfProposedLots; } }
     }
 }

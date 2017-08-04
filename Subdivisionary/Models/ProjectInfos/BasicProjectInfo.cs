@@ -69,6 +69,16 @@ namespace Subdivisionary.Models.ProjectInfos
             return new ParcelInfo();
         }
 
+
+        public string Addresses()
+        {
+            return string.Join(",",
+                AddressList.Select(x => x.AddressRangeStart + " - " + x.AddressRangeEnd + " " + x.AddressStreet));
+        }
+        public string Apns()
+        {
+            return string.Join(",", this.AddressList.Select(x => x.Block + "/" + x.Lot));
+        }
         public override string ToString()
         {
             return string.Join(", ",

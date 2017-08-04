@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace Subdivisionary.Models
@@ -8,24 +9,19 @@ namespace Subdivisionary.Models
     /// <summary>
     /// Like an Enum w/ String but since that's not native to C# we gotta improvise.
     /// </summary>
-    public sealed class EUserRoles
+    public static class EUserRoles
     {
-        public static readonly EUserRoles Applicant = new EUserRoles("ApplicantRole");
-        public static readonly EUserRoles Agency = new EUserRoles("AgencyRole");
-        public static readonly EUserRoles Bsm = new EUserRoles("BsmRole");
-        public static readonly EUserRoles Admin = new EUserRoles("AdminRole");
+        public const string Applicant = "ApplicantRole";
+        public const string Agency = "AgencyRole";
+        public const string Bsm = "BsmRole";
+        public const string Admin = "AdminRole";
 
-        private readonly string _name;
-
-        private EUserRoles(string name)
+        public static IList<string> ToList()
         {
-            this._name = name;
-        }
+            FieldInfo[] fieldInfos = typeof(EUserRoles).GetFields(BindingFlags.Public |
+                 BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
-        public override string ToString()
-        {
-            return _name;
+            return fieldInfos.Where(fi => fi.IsLiteral && !fi.IsInitOnly).Select(x=>(string)x.GetRawConstantValue()).ToList();
         }
-
     }
 }

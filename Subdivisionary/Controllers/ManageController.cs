@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Subdivisionary.Models;
@@ -16,13 +20,16 @@ namespace Subdivisionary.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context;
 
         public ManageController()
         {
+            _context = new ApplicationDbContext();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
+            _context = new ApplicationDbContext();
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -78,7 +85,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/RemoveLogin
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
@@ -109,7 +116,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/AddPhoneNumber
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
@@ -133,7 +140,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/EnableTwoFactorAuthentication
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
@@ -148,7 +155,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/DisableTwoFactorAuthentication
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
@@ -172,7 +179,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/VerifyPhoneNumber
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
@@ -197,7 +204,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemovePhoneNumber()
         {
@@ -223,7 +230,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/ChangePassword
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -254,7 +261,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/SetPassword
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
@@ -302,7 +309,7 @@ namespace Subdivisionary.Controllers
 
         //
         // POST: /Manage/LinkLogin
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
@@ -323,6 +330,60 @@ namespace Subdivisionary.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Authorize(Roles = EUserRoles.Admin)]
+        public ActionResult ManageRole()
+        {
+            ViewBag.SelectList = EUserRoles.ToList().Select(x => new SelectListItem() { Text = x, Value = x });
+            return View("ManageRole", new ManageRolesViewModel());
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Authorize(Roles = EUserRoles.Admin)]
+        public ActionResult ManageRole(ManageRolesViewModel manageRoleVm)
+        {
+            var eroles = EUserRoles.ToList();
+            if(!eroles.Contains(manageRoleVm.Role))
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            ViewBag.SelectList = eroles.Select(x => new SelectListItem() { Text = x, Value = x });
+            ApplicationUser user = _context.Users
+                .FirstOrDefault(u => u.Email.Equals(manageRoleVm.EmailAddress, StringComparison.CurrentCultureIgnoreCase));
+            if (user.Email == "subdivision.mapping@sfdpw.org")
+            {
+                manageRoleVm.SuccessMessage = "Cannot change the subdivision.mapping User Role";
+                return View("ManageRole", manageRoleVm);
+            }
+
+            var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+            if (roleManager.Roles.FirstOrDefault(x=>x.Name == manageRoleVm.Role) == null)
+                roleManager.Create(new IdentityRole(manageRoleVm.Role));
+            user.Roles.Clear();
+            UserManager.AddToRole(user.Id, manageRoleVm.Role);
+            manageRoleVm.SuccessMessage = $"{manageRoleVm.EmailAddress} now operates as within {manageRoleVm.Role}";
+            _context.SaveChanges();
+            return View("ManageRole", manageRoleVm);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Authorize(Roles = EUserRoles.Admin)]
+        public ActionResult SearchRole(ManageRolesViewModel manageRoleVm)
+        {
+            ApplicationUser user = _context.Users
+                .FirstOrDefault(u => u.Email.Equals(manageRoleVm.EmailAddress, StringComparison.CurrentCultureIgnoreCase));
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Email Address was not found");
+                return View("ManageRole", manageRoleVm);
+            }
+            
+            // This controller is setup in a way where roles don't overlap.
+            var firstRole = user.Roles.FirstOrDefault();
+            manageRoleVm.Role = firstRole == null ? EUserRoles.Applicant : _context.Roles.First(x => x.Id == firstRole.RoleId).Name;
+            ViewBag.SelectList = EUserRoles.ToList().Select(x => new SelectListItem() { Text = x, Value = x });
+            return View("ManageRole", manageRoleVm);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -330,7 +391,7 @@ namespace Subdivisionary.Controllers
                 _userManager.Dispose();
                 _userManager = null;
             }
-
+            _context.Dispose();
             base.Dispose(disposing);
         }
 

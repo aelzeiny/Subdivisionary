@@ -12,7 +12,7 @@ namespace Subdivisionary.Models.Forms
         public static readonly string COVER_LETTER_KEY = "coverLetterId";
         public static readonly string COVER_LETTER_DIRECTORY = "Cover Letter";
 
-        public static readonly string SAMPLE_COVER_LETTER_URL = "https://subdivisionaryblob.blob.core.windows.net:443/templates/Cover%20Letter%20Example.pdf";
+        public static readonly string SAMPLE_COVER_LETTER_URL = "~/Samples/Cover Letter Example.pdf";
 
         public override FileUploadProperty[] FileUploadProperties => new[]
         {

@@ -74,6 +74,11 @@ namespace Subdivisionary.Models.Collections
             data[index] = item;
         }
 
+        public static Type GetInternalType()
+        {
+            return typeof(T);
+        }
+
         #region Useful Iterface Implementation
         public void AddObject(object item)
         {

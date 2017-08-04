@@ -1,0 +1,39 @@
+﻿@using Microsoft.Ajax.Utilities
+@model Subdivisionary.ViewModels.ManageRolesViewModel
+@{
+    ViewBag.Title = "Manage User Roles";
+}
+
+
+@Html.Partial("_ValidationSummary", ViewData.ModelState)
+<div class="jumbotron center-block" style="max-width: 500px; text-align: center;">
+
+    <h2>@ViewBag.Title</h2>
+    @using (Html.BeginForm("SearchRole", "Manage", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.EmailAddress, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", placeholder = "{Search Username}" })
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+    }
+
+    @if (!Model.EmailAddress.IsNullOrWhiteSpace() && !Model.Role.IsNullOrWhiteSpace())
+    {
+        using (Html.BeginForm("ManageRole", "Manage", FormMethod.Post))
+        {
+            @Html.HiddenFor(x => x.EmailAddress);
+            <br/>
+            <p><strong>Current User Role:</strong> @Model.Role</p>
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.Role, (IEnumerable<SelectListItem>)ViewBag.SelectList, new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-info"><i class="fa fa-user"></i> Change Role</button>
+        }
+    }
+
+    @if (!Model.SuccessMessage.IsNullOrWhiteSpace())
+    {
+        <h4>@Model.SuccessMessage</h4>
+    }
+</div>

@@ -18,7 +18,7 @@ namespace Subdivisionary.Models.Validation
 
         public override string FormatErrorMessage(string name)
         {
-            return "The " + name + " field must be checked in order to continue.";
+            return "The '" + name + "' field must be checked in order to continue.";
         }
 
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)

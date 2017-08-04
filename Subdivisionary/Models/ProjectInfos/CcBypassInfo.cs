@@ -10,17 +10,20 @@ namespace Subdivisionary.Models.ProjectInfos
     /// <summary>
     /// For Condo-Conversion Bypass Applications
     /// </summary>
-    public class CcBypassInfo : ExtendedProjectInfo
+    public class CcBypassInfo : ExtendedProjectInfo, IUnitCount
     {
         [DisplayName("Total Number of Units")]
-        public int NumberOfUnits { get; set; }
+        [Range(2, 6, ErrorMessage = "Condo Conversions can only be between 2 to 6 Units.")]
+        public virtual int NumberOfUnits { get; set; }
+
+        public int UnitCount => NumberOfUnits;
+
+        public override string DisplayName => "Project Information";
 
         public CcBypassInfo()
         {
             NumberOfUnits = 2;
         }
-
-
 
         public bool IsFinalMap()
         {

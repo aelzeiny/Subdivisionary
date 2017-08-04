@@ -18,7 +18,6 @@ namespace Subdivisionary.Models.Applications
         {
             return new Form[]
             {
-                new ApplicationCheckForm(), 
                 new RequestForLlaAndOwnershipAffidavit(),
                 new ExhibitsABForm(), 
                 new TitleReportForm(),
@@ -29,6 +28,8 @@ namespace Subdivisionary.Models.Applications
                 new DbiInspectionRequirementsForm() {IsRequired = false},  
             };
         }
+
+        public override EFeeSchedule PaymentSchedule => EFeeSchedule.LotlineAdjustment;
 
         public override string DisplayName => "Lot-Line Adjustment";
     }

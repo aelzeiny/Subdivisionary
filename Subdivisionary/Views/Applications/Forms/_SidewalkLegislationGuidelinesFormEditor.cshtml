@@ -1,0 +1,14 @@
+﻿@using Subdivisionary.Models.Forms
+@model SidewalkLegislationGuidelinesForm
+
+
+@Html.Partial("_ParcelFinalMapGuidelines")
+<div class="row form-group">
+    @Html.LabelFor(m => m.ReadAndAffirmSidewalkApp, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.ReadAndAffirmSidewalkApp, new
+    {
+        @class = "big-checkbox center-div",
+        style = "text-align: center; vertical-align: middle; float:right;"
+    })
+    @Html.ValidationMessageFor(m => m.ReadAndAffirmSidewalkApp)
+</div>

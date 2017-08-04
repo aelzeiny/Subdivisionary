@@ -13,7 +13,7 @@ namespace Subdivisionary.Models.Forms
         public static readonly string HO_EXEMPTION_KEY = "hoExemptionId";
 
         public static readonly string OWNER_OCCUPANCY_DIRECTORY = "Proof Of Occupancy";
-        public static readonly string AFFIDAVIT_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/Affidavit%20Ownership%20and%20Occupancy%20Template.pdf";
+        public static readonly string AFFIDAVIT_URL = "~/Samples/Affidavit Ownership with Tacking.pdf";
 
         public override FileUploadProperty[] FileUploadProperties => new[]
         {

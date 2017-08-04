@@ -1,0 +1,17 @@
+﻿@model Subdivisionary.Models.Collections.NameSectionDateInfo
+    
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.NameOfReviewer, new { @class = "col-form-label" })
+    @Html.TextBoxFor(m => m.NameOfReviewer, new { @class = "form-control", placeholder = "John Doe" })
+    @Html.ValidationMessageFor(m => m.NameOfReviewer)
+</div>
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.Section, new { @class = "col-form-label" })
+    @Html.TextBoxFor(m => m.Section, new { @class = "form-control", placeholder = "[Section]" })
+    @Html.ValidationMessageFor(m => m.Section)
+</div>
+<div class="form-group col-xs-12 col-md-4">
+    @Html.LabelFor(m => m.DateReviewed, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.DateReviewed, new { @class = "form-control"})
+    @Html.ValidationMessageFor(m => m.DateReviewed)
+</div>

@@ -15,8 +15,8 @@ namespace Subdivisionary.Models.Forms
         public static readonly string AFFIDAVIT_PROTECTED_EV_KEY = "affidavitProtectedEvId";
         public static readonly string AFFIDAVIT_EV_DIRECTORY = "Owners Affidavit of Tenant Evictions";
 
-        public static readonly string SAMPLE_TENANT_EV_URL = "https://subdivisionaryblob.blob.core.windows.net:443/templates/Affidavit%20Tenant%20Evictions%20Template.pdf";
-        public static readonly string SAMPLE_PROTECTED_EV_URL = "https://subdivisionaryblob.blob.core.windows.net:443/templates/Affidavit%20Protected%20Tenants%20Evictions%20Template.pdf";
+        public static readonly string SAMPLE_TENANT_EV_URL = "~/Samples/Affidavit Protected Tenants Evictions Template.pdf";
+        public static readonly string SAMPLE_PROTECTED_EV_URL = "~/Samples/Affidavit Tenant Evictions Template.pdf";
         
         public override FileUploadProperty[] FileUploadProperties => new[]
         {

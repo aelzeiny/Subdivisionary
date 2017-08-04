@@ -5,6 +5,7 @@
 @using Subdivisionary.Models.Collections
 @using Subdivisionary.Models.ProjectInfos
 @using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
 
 @if (Model is ExtendedProjectInfo)
 {
@@ -101,10 +102,10 @@
     <h3>Owner Contact Information</h3>
     <h6>
         (Is the same as Primary Contact)
-        @Html.CheckBoxFor(m => m.OwnerAndPrimaryContactAreSame, new { @class = "center-div" })
+        @Html.CheckBoxFor(m => m.OwnerAndPrimaryContactAreSame, new { @class = "center-div disable-boxes disable-reverse", @for= "primaryContactDiv" })
     </h6>
 
-    <div>
+    <div id="primaryContactDiv">
         @Html.PartialFor(m => m.OwnerContactInfo, "_ContactEditor")
     </div>
     <div class="clearfix"></div>
@@ -123,9 +124,9 @@
         <h3>Land Developer Contact Information</h3>
         <h6>
             (Is the same as Primary Contact)
-            @Html.CheckBoxFor(m => ((CocAndLlaProjectInfo)m).OwnerAndLandDevContactAreSame, new { @class = "center-div" })
+            @Html.CheckBoxFor(m => ((CocAndLlaProjectInfo)m).OwnerAndLandDevContactAreSame, new { @class = "center-div disable-boxes disable-reverse", @for = "landDevContactDiv" })
         </h6>
-        <div class="form-group">
+        <div class="form-group" id="landDevContactDiv">
             @Html.PartialFor(m => (m as CocAndLlaProjectInfo).DeveloperContactInfo, "_ContactEditor")
         </div>
         <div class="clearfix"></div>

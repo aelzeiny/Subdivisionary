@@ -16,16 +16,14 @@ namespace Subdivisionary.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        /*public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Public Works, Street-Use and Mapping.";
 
             return View();
-        }
+        }*/
     }
 }

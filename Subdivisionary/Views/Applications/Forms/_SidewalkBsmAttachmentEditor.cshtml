@@ -1,0 +1,22 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.Models.Forms.SidewalkBsmAttachment
+
+
+<h4>Department of Public Works, Bureau of Street-Use and Mapping, Permits Attachment</h4>
+<p><strong>Note: </strong>    In order to construct the newly legislated sidewalk, a Street Improvement Permit from the BSM Permits Section will be required.</p>
+<div class="row form-group">
+    @Html.LabelFor(m => m.HasSubmittedStreetInprovementPermit, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.HasSubmittedStreetInprovementPermit, new
+    {
+        @class = "big-checkbox center-div",
+        @for = "dcpReviewProjectDiv",
+        style = "text-align: center; vertical-align: middle; float:right;"
+    })
+    @Html.ValidationMessageFor(m => m.HasSubmittedStreetInprovementPermit)
+</div>
+@Html.Partial("CollectionEditors/_CollectionEditor",
+    new ListEditorViewModel<PermitNameInfo>(
+        SidewalkBsmAttachment.BSM_PERMITS_COLL_KEY, Model.BsmPermitNameList, new PermitNameInfo()));

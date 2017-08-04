@@ -15,7 +15,7 @@ namespace Subdivisionary.Models.Forms
         [Display(Name = "This box will be automatically checked if this application is a final map")]
         public bool IsFinalMap { get; set; }
 
-        [Display(Name = "Check this box if this is a Vesting Tentative Map")]
+        [Display(Name = "Check this box if this is a Vesting Tentative Map (New Construction Condominium apps only)")]
         public bool IsVestingMap { get; set; }
 
         public static readonly string TENTATIVE_MAP_KEY = "tentativeMapId";
@@ -28,9 +28,9 @@ namespace Subdivisionary.Models.Forms
 
         public void ObserveFormUpdate(ApplicationDbContext context, IForm before, IForm after)
         {
-            if (!(before is CcBypassInfo))
+            if (!(before is IUnitCount))
                 return;
-            IsFinalMap = ((CcBypassInfo)after).IsFinalMap();
+            IsFinalMap = ((IUnitCount)after).IsFinalMap();
         }
 
         public override FileUploadProperty[] FileUploadProperties => new[]

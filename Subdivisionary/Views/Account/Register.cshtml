@@ -1,4 +1,5 @@
-﻿@model Subdivisionary.ViewModels.RegisterViewModel
+﻿@using reCaptcha
+@model Subdivisionary.ViewModels.RegisterViewModel
 @{
     ViewBag.Title = "Register";
 }
@@ -40,6 +41,9 @@
             <input type="submit" class="btn btn-default" value="Register" />
         </div>
     </div>
+
+    @ReCaptcha.GetHtml(ViewBag.publicKey)
+    @ReCaptcha.GetExplictScript()
 }
 
 @section Scripts {

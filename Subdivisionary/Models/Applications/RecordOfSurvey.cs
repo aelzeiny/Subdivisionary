@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mime;
 using System.Web;
@@ -19,12 +20,14 @@ namespace Subdivisionary.Models.Applications
         {
             return new Form[]
             {
-                new ApplicationCheckForm(), 
                 new TitleReportForm() {IsRequired = false}, 
-                new ClosureCalcsForm()
+                new TentativeMapForm(),
+                new GrantDeedForm(),  
+                new ClosureCalcsForm(),
+                new RecordedMapsOnBlock()
             };
         }
-
+        
         public override EFeeSchedule PaymentSchedule => EFeeSchedule.RecordOfSurvey;
 
         public override string DisplayName => "Record of Survey";

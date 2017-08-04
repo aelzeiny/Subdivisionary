@@ -10,7 +10,7 @@ namespace Subdivisionary.Models.Forms
     {
         public override string DisplayName => "3R Report";
 
-        public static readonly string SAMPLE_REPORT3R_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/DBI%203R%20Report%20Example.pdf";
+        public static readonly string SAMPLE_REPORT3R_URL = "~/Samples/DBI 3R Report Example.pdf";
 
         public static readonly string REPORT3R_KEY = "ThreeRReportId";
         public static readonly string REPORT3R_DIRECTORY_KEY = "3R Report";

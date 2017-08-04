@@ -15,9 +15,9 @@ namespace Subdivisionary.Models.Forms
 
         public static readonly string DBI_DIRECTORY = "Physical DBI Inspection";
 
-        public static readonly string SAMPLE_RECEIPT_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/DBI%20Receipt%20for%20Inspection%20Example.pdf";
-        public static readonly string SAMPLE_INSPECTION_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/DBI%20Inspection%20Report%20Example.pdf";
-        public static readonly string SAMPLE_CFC_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/DBI%20CFC%20Example.pdf";
+        public static readonly string SAMPLE_RECEIPT_URL = "~/Samples/DBI Receipt for Inspection Example.pdf";
+        public static readonly string SAMPLE_INSPECTION_URL = "~/Samples/DBI Inspection Report Example.pdf";
+        public static readonly string SAMPLE_CFC_URL = "~/Samples/DBI CFC Example.pdf";
 
         public override FileUploadProperty[] FileUploadProperties => new[]
         {

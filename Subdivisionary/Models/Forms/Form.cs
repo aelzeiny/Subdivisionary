@@ -7,7 +7,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using AutoMapper.Internal;
 using Subdivisionary.Models.Applications;
 using Subdivisionary.Models.Collections;
 
@@ -64,7 +63,7 @@ namespace Subdivisionary.Models.Forms
         /// <returns></returns>
         public virtual bool CanCopyProperty(PropertyInfo prop)
         {
-            var mType = prop.GetMemberType();
+            var mType = prop.PropertyType;
             return prop.Name != nameof(Id) && prop.Name != nameof(ApplicationId) &&
                    prop.Name != nameof(Application) && mType != typeof(ICollection<FileUploadInfo>)
                    && mType != typeof(ICollection<SignatureUploadInfo>) && mType != typeof(SignatureList);

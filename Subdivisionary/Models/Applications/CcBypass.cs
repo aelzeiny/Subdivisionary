@@ -20,7 +20,6 @@ namespace Subdivisionary.Models.Applications
             {
                 new OwnerForm(),
                 new CoverLetterForm(),
-                new ApplicationCheckForm(),
                 new TentativeMapForm(),
                 new TitleReportForm(),
                 new GrantDeedForm(),
@@ -33,6 +32,16 @@ namespace Subdivisionary.Models.Applications
                 new ProofOfOwnerOccupancy(), 
                 new OwnersReleaseOfInterestInCommonAreas(), 
                 new OwnersAffidavitOfTentantEvictions(),
+            };
+        }
+
+        public override IEnumerable<string> NextSteps()
+        {
+            return new[]
+            {
+                "The original copy of the 'Affidavit for Ownership/Occupancy' (Form 11)",
+                "Some other example of a notary goes here",
+                "I don't know. Lorem Ipsum. To be added & discussed later"
             };
         }
 

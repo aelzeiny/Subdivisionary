@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "decent-fulcrum-162219",
+  "private_key_id": "890134e9518068eac1746bf8c2b413ff50ebbd66",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1GtlVwQZfoTaW\nB2wQsSCuVeyOIslZ1zPau3xoGn9gwhGisZvVtwvSU/iwrGO1t51f8TUf8nqtYRHF\ngYDXe1R4iyj+DLBPrFMQtGHWX+Zn1+v2NE0OdDV9QUv7Xvb9Dr25F/yW6oV289+u\noIoVPQkBbEiOJOgt/nE2yKmMP61Z0Kfe4IBlAOmSY3N5Xhg3PYuuZR+mEVpbgbOq\nnfqnMhdH/mLfObylHUdYMHpGPix7NMn0R/GN+nlMaKlg/h8UeJWJhhRtOT6scjxL\napqg0NMA+b/3TIcdgvnZHXuZHTWSZtAR3ApeAc102nmjPwm1TqgGEUzITZFp645l\ndkeX+SMTAgMBAAECggEAboWrGq1IsXWV9WskJO+jzSC802UhUgWGLLd8TZ/WGnt0\n/b+8JWmm+j2qqE8cLpqWnSV70TpOaZ6ylMDamyY1v7bVVmzx8D1vF+OtTYGK/9aC\ntubmG6sJtZ3yu74Rpw+m8t1TldobhyN/X3ezrRBpfYfSo4SceO0ttEwzRFbb+NHZ\nvid2H1xdiLWzpY+oFqNmyPDbzL4OFIFutegurQzWyNZOo6hXN12SPBLvlajxcSy0\nPB13fNTAj8U35jP2hcPlUh4xwkeutwGASlec3LfJCG0dS6VJ2wzJ7hipeV8jqUAK\nrjF83hsyqj2QycbLGlwg1yMpnY0+p9ayDrubwDNoUQKBgQDZdwuZQHfPH6RLcS0Q\nHMq4QaM1anojOsnPHpjVhI+ibAhiHPzWvzSDRLrOu1YSLKLTUNzOaSM6qDe4FqfM\nd7FSaCAipFE9UDUaFEETWXi4wrVsw6EYrQ3qpnwvR2Jw15LAmXbE43KQiG1yeSoV\n9Skd4iGOWyLR4441ZhfLmwwZmQKBgQDVMmI3zoZe77H5j31dCkBaVRIFzBOuFui1\n1O0HjkLAtfV0slhGaumvDTljuMjB5FQpPOLQyhAoeNir1SVVLk3lZ0kGxR06Xin/\n8LCl5D/M3ncVy0m+3pxkdQjaXzs4Mp8JYbKAyOYD3S8hzwh78iEGmIiQhY+zQqk/\nvl7/7ClFiwKBgQCXmUTNrkKXcrB/I0PN4rRzpNZZK4Q/wQDk0air2MCk8vkZJKoi\nLqM2C5jK+4/yFYnhFJMJlgPIJXLKc4jAooRMNWiJndFAlASgzJPdIFdnPd1qGCra\n3/E+rpcOAo6eqbmVaKaCdSjtlx3tWog7THBAc97+tYvdk+wUT7qw5sKVqQKBgFnZ\nlhM28uJn2nX2xzrC60QmviW7UD/6X7DiP9MDXZaiGQRJdXKX9ExWIm2ontM4S0/l\n3SFpR04HQCmK9uTjUujvkpNL13mV3dWDtq7zdv/8ceu5dSb/4qFjwYtmvyp8CxKF\nHhmwkV/ng8mX21eBP/HrrwJZh6pg2buHm7n36ZzpAoGAdLLvYXWCL4VUXODF20z2\nn4pxsHUDDRaV8aEl1rMnm2U9YigLXKt/rEgGiErmsYS4OizLwqp0NphkZmOp/KJG\ne5wKXG+eDja+c+1g6J290jP5syIf7Ugoa99H7IBumxedvz6jfPMSFvv/2r7gZR6o\nsEX3TIVxzg4ZaS0dhjxewTE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "subdivisionapplicationsystem@decent-fulcrum-162219.iam.gserviceaccount.com",
+  "client_id": "106955334746582359880",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/subdivisionapplicationsystem%40decent-fulcrum-162219.iam.gserviceaccount.com"
+}

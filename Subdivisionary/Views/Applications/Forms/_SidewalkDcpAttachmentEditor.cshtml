@@ -1,0 +1,70 @@
+﻿@model Subdivisionary.Models.Forms.SidewalkDcpAttachment
+    
+<h4>Department of City Planning Attachment</h4>
+<div class="form-group row">
+    <div class="col-xs-12">
+        @Html.LabelFor(m => m.DcpReviewedProject, new { @class = "control-label" })
+        @Html.CheckBoxFor(m => m.DcpReviewedProject, new { @class = "big-checkbox disable-boxes center-div", @for = "dcpReviewProjectDiv", style = "text-align: center; vertical-align: middle; float:right;"})
+        @Html.ValidationMessageFor(m => m.DcpReviewedProject)
+    </div>
+    <div id="dcpReviewProjectDiv" class="form-group">
+
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(m => m.DcpDateOfReview, new { @class = "control-label" })
+            @Html.EditorFor(m => m.DcpDateOfReview, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpDateOfReview)
+        </div>
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(m => m.DcpCaseNoReview, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.DcpCaseNoReview, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpCaseNoReview)
+        </div>
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(m => m.DcpReviewerName, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.DcpReviewerName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpReviewerName)
+        </div>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-xs-12">
+        @Html.LabelFor(m => m.DcpHaveGeneralReferralApproval, new { @class = "control-label" })
+        @Html.CheckBoxFor(m => m.DcpHaveGeneralReferralApproval, new { @class = "big-checkbox disable-boxes center-div", @for = "dcpGenRefDiv", style = "text-align: center; vertical-align: middle; float:right;"})
+        @Html.ValidationMessageFor(m => m.DcpHaveGeneralReferralApproval)
+    </div>
+    <p style="margin-bottom: 0; margin-left: 15px;"><strong>No: </strong>You must submit a General Plan referral application as part of this package</p>
+    <p style="margin-bottom: 0; margin-left: 15px;"><strong>Yes: </strong>Submit a copy of the Gneeral Plan Referral Approval and provide the information below</p>
+    <div id="dcpGenRefDiv" class="form-group">
+        <div class="form-group col-xs-12 col-sm-6">
+            @Html.LabelFor(m => m.DcpDateOfReferralApproval, new { @class = "control-label" })
+            @Html.EditorFor(m => m.DcpDateOfReferralApproval, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpDateOfReferralApproval)
+        </div>
+        <div class="form-group col-xs-12 col-sm-6">
+            @Html.LabelFor(m => m.DcpCaseNoReferralApproval, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.DcpCaseNoReferralApproval, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpCaseNoReferralApproval)
+        </div>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-xs-12">
+        @Html.LabelFor(m => m.DcpCeqaClearance, new { @class = "control-label" })
+        @Html.CheckBoxFor(m => m.DcpCeqaClearance, new { @class = "big-checkbox disable-boxes center-div", @for = "dcpCeqaDiv", style = "text-align: center; vertical-align: middle; float:right;"})
+        @Html.ValidationMessageFor(m => m.DcpCeqaClearance)
+    </div>
+    <div id="dcpCeqaDiv" class="form-group">
+        <div class="form-group col-xs-12 col-sm-6">
+            @Html.LabelFor(m => m.DcpDateOfCeqaApproval, new { @class = "control-label" })
+            @Html.EditorFor(m => m.DcpDateOfCeqaApproval, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpDateOfCeqaApproval)
+        </div>
+        <div class="form-group col-xs-12 col-sm-6">
+            @Html.LabelFor(m => m.DcpCaseNoCeqaApproval, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.DcpCaseNoCeqaApproval, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DcpCaseNoCeqaApproval)
+        </div>
+    </div>
+</div>

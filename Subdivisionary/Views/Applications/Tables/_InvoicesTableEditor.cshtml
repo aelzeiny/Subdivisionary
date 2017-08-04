@@ -1,0 +1,40 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@model IList<InvoiceInfo>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Amount ($)</th>
+            <th>Purpose</th>
+            <th>Creation Date</th>
+            <th class="center">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model)
+        {
+            var trClassName = invoice.Paid ? "success" : "";
+            var einvoiceDisplay = EnumHelper<EInvoicePurpose>.GetDisplayValue(invoice.InvoicePurpose);
+            <tr class="@trClassName">
+                <td>@invoice.InvoiceNo</td>
+                <td>@invoice.Amount</td>
+                <td>@einvoiceDisplay</td>
+                <td>@invoice.Created.ToString("MM/dd/yyyy h:mm:ss tt")</td>
+                <td class="center">
+                    @if (invoice.Paid)
+                    {
+                        <i class="fa fa-check-circle"></i>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Invoices", new {id = invoice.InvoiceNo})">
+                            <i class="fa fa-times-circle"></i>
+                            pay now
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

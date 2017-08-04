@@ -1,4 +1,4 @@
-﻿@model NewApplicationViewModel
+﻿@model Subdivisionary.ViewModels.ApplicationViewModels.NewApplicationViewModel
 @using System.Data.Entity.Core.Objects
 @using Microsoft.Ajax.Utilities
 @using Subdivisionary.DAL
@@ -6,6 +6,7 @@
 @using Subdivisionary.Models.Forms
 @using Subdivisionary.Models.ProjectInfos
 @using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
 @{
     ViewBag.Title = "New";
     Layout = "~/Views/Shared/_BannerLayout.cshtml";
@@ -24,7 +25,7 @@
         <div class="form-group">
             <h3>Application Type</h3>
             @Html.DropDownList("ApplicationType",
-           EnumHelper.GetSelectList(typeof(ApplicationTypeViewModel), Model.ApplicationType), "Select Application Type", new { @class = "form-control", AutoPostBack = true, onchange = "itemSelected(this.value);", style = "max-width:250px;", id = "applicationSelect" })
+           EnumHelper.GetSelectList(typeof(EApplicationTypeViewModel), Model.ApplicationType), "Select Application Type", new { @class = "form-control", AutoPostBack = true, onchange = "itemSelected(this.value);", style = "max-width:250px;", id = "applicationSelect" })
 
 
         </div>
@@ -35,6 +36,7 @@
 
 @section scripts
 {
+    @Scripts.Render("~/Scipts/site-js/site-disableCheckboxes.js")
     <script type="text/javascript">
         function itemSelected(value) {
             if (!value)
@@ -46,9 +48,11 @@
     @{
         var mt = ObjectContext.GetObjectType(Model.ProjectInfo.GetType());
         // Get Javascript file from active form type
-        var src = "/Scripts/site-js/FormScripts/" + mt.Name + ".js";
+        var ooScripts = CustomHtmlHelper.GetAllSubtypes(mt);
     }
     @Scripts.Render("~/Scripts/site-js/site-icollection.js")
-    @Scripts.Render("~/Scripts/site-js/FormScripts/BasicProjectInfo.js")
-    <script type="text/javascript" src="@src"></script>
+    @foreach (var script in ooScripts)
+    {
+        @Scripts.Render($"~/Scripts/site-js/FormScripts/{script.Name}.js")
+    }
 }

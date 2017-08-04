@@ -18,7 +18,14 @@
                             string msg = modelError.ErrorMessage.IsNullOrWhiteSpace() ? modelError.Exception.Message : modelError.ErrorMessage;
                             <div class="alert alert-danger" role="alert" style="margin: 0px;">
                                 <i class="fa fa-exclamation"></i>
-                                <a href="#@modelKeyPair.Key.Replace(".", "_").Replace("[", "_").Replace("]", "_")" class="alert-link"> @msg</a>
+                                @if (!modelKeyPair.Key.IsNullOrWhiteSpace())
+                                {
+                                    <a href="#@modelKeyPair.Key.Replace(".", "_").Replace("[", "_").Replace("]", "_")" class="alert-link"> @msg</a>
+                                }
+                                else
+                                {
+                                    <span class="bold">@msg</span>
+                                }
                             </div>
                         }
                     }

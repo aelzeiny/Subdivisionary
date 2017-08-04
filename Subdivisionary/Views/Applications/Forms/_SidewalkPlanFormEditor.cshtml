@@ -1,0 +1,45 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model SidewalkPlanForm
+
+<h4>Items Required on Plans</h4>
+<ul>
+    <li>Existing conditions with the sidewalk and street widths labeled. Existing radii, deltas, and arc lengths <strong>do not</strong> have to be labeled.</li>
+
+    <li>Proposed changes.  All widths, radii, deltas, and arc lengths <strong>must</strong> be labeled.</li>
+
+    <li>Existing and proposed spot elevations at the top of the curb and the corresponding flow line at 25 foot intervals. </li>
+
+    <li>Existing and proposed catch basins. </li>
+
+    <li>Existing and proposed sewer laterals that connect the building(s) fronting the proposed change(s). </li>
+
+    <li>Fire hydrants (existing and/or proposed).  Indicate whether the hydrant is low pressure or high pressure. </li>
+
+    <li>Hydrant shut off valves. </li>
+
+    <li>Cistern access locations. </li>
+
+    <li>Any fixed structures existing or proposed within a five (5) foot radius of a fire hydrant. </li>
+
+    <li>Existing and proposed parking spaces and any parking controls. Note whether existing parking is removed or new spaces will be added. </li>
+
+    <li>Existing and proposed traffic lanes.  Include direction of traffic flow. </li>
+
+    <li>Refer to www.sfmta.com for the system map of MUNI routes. <a href="http://sfmta.com/maps/muni-system-map">For intersections with bus turns submit plan view demonstrating sufficient clearance for buses without encroaching onto on coming lanes. Contact Muni Transit Service Planning at 415-701-4500 to obtain bus dimensions.</a> </li>
+
+    <li>At intersections: provide plan view of the turning track of a fire aerial truck (D.O.T. WB-40 vehicle) and a fire engine (D.O.T. SU-30 vehicle) that demonstrates that there is enough clearance for fire department vehicles to turn onto streets without having to go onto oncoming traffic lanes. </li>
+
+    <li>The locations and widths of railroad right-of-way, sewer and other easements, alleys and other important features, both existing and proposed, within the area(s) of the sidewalk change(s). </li>
+
+    <li>Location and dimensions of existing sewers, water mains, culverts, within 10 feet of the proposed sidewalk change. Include the direction of flow of sewers. </li>
+
+    <li>Location of all existing utility facilities which are fronting or within 10 feet of the proposed sidewalk change limits. This can be based on record information. <strong>Include:</strong> water valves, fire hydrants, gas valves, electrical and telephone vaults, utility poles, muni poles, street lights, traffic lights, and any other surface utilities.</li>
+</ul>
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Please upload the Sidewalk Plan",
+    UploadList = @Model.FileUploads,
+    UploadProperty = @Model.GetFileUploadInfo(SidewalkPlanForm.SIDEWALK_KEY)
+})

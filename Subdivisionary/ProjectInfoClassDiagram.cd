@@ -1,144 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Subdivisionary.Models.ProjectInfos.BasicProjectInfo">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABCUAMAgBQAIAAUCQAAABAgAAAAAAAAgAQAAAAgAAA=</HashCode>
+      <FileName>Models\ProjectInfos\BasicProjectInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.CcBypassInfo">
+    <Position X="15" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAEA=</HashCode>
+      <FileName>Models\ProjectInfos\CcBypassInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.CcEcpInfo">
+    <Position X="15" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\CcEcpInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subdivisionary.Models.ProjectInfos.CocAndLlaProjectInfo" Collapsed="true">
+    <Position X="18.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\CocAndLlaProjectInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Subdivisionary.Models.ProjectInfos.ExtendedProjectInfo">
-    <Position X="2.5" Y="4.5" Width="1.5" />
+    <Position X="16.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ProjectInfos\ExtendedProjectInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Subdivisionary.Models.ProjectInfos.BasicProjectInfo">
-    <Position X="2.25" Y="0.5" Width="1.5" />
+  <Class Name="Subdivisionary.Models.ProjectInfos.LotMergerAndSubdivisionInfo">
+    <Position X="18.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACUAIAABQAIACUAQAAAAAgAAAAAAAAAAQAAAAgAAA=</HashCode>
-      <FileName>Models\ProjectInfos\BasicProjectInfo.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.ProjectInfos.BypassInfo">
-    <Position X="4" Y="7" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\ProjectInfos\BypassInfo.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Models\ProjectInfos\LotMergerAndSubdivisionInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Subdivisionary.Models.ProjectInfos.LlaAndCocProjectInfo">
-    <Position X="1" Y="7.25" Width="1.5" />
+  <Class Name="Subdivisionary.Models.ProjectInfos.NewConstructionInfo">
+    <Position X="15" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\ProjectInfos\LlaAndCocProjectInfo.cs</FileName>
+      <HashCode>gAAAAAAAAAAAAAAAAAAEAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectInfos\NewConstructionInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Subdivisionary.Models.ProjectInfos.EcpInfo">
-    <Position X="4" Y="8.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\ProjectInfos\EcpInfo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.AdditionalDocumentsForm" Collapsed="true">
-    <Position X="4.5" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
-      <FileName>Models\Forms\AdditionalDocumentsForm.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.ApplicationCheckForm" Collapsed="true">
-    <Position X="9" Y="3.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>CAAAkAAAAAQIAQCQAAAAAAAAAAAAAAIAAAAAAAAIEAA=</HashCode>
-      <FileName>Models\Forms\ApplicationCheckForm.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.ClosureCalcsForm" Collapsed="true">
-    <Position X="15.75" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAIAAAAAAAAAAAAAAAAAACAAAAIIAAAAAAAIAAA=</HashCode>
-      <FileName>Models\Forms\ClosureCalcsForm.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.Form" Collapsed="true">
-    <Position X="10.5" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ECACEAAAABAAIAAAAQAAAAAgAAAAAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>Models\Forms\Form.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.GrantDeedForm" Collapsed="true">
-    <Position X="11.25" Y="3.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAQAAAiQBAEAAAACAAAAAAIAAAAAAAIKEAA=</HashCode>
-      <FileName>Models\Forms\GrantDeedForm.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.PhotographForm" Collapsed="true">
-    <Position X="6.75" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAIAwAAEIAEAgAAAAAEAACIAAAAAAAAIEAA=</HashCode>
-      <FileName>Models\Forms\PhotographForm.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.Forms.TitleReportForm" Collapsed="true">
-    <Position X="13.5" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEQIAAAQAQACQAAAAACAAAQAAAAIAAAAgAACIEAA=</HashCode>
-      <FileName>Models\Forms\TitleReportForm.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Subdivisionary.Models.Applications.Application" Collapsed="true">
-    <Position X="12" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAiMICAAAAAAAAECAAAAAAAAAAEQmAACCACAAAAGAA=</HashCode>
-      <FileName>Models\Applications\Application.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Subdivisionary.Models.Applications.CertificateOfCompliance">
-    <Position X="13.75" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAA=</HashCode>
-      <FileName>Models\Applications\CertificateOfCompliance.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Subdivisionary.Models.Applications.RecordOfSurvey">
-    <Position X="9.25" Y="7.25" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAA=</HashCode>
-      <FileName>Models\Applications\RecordOfSurvey.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Interface Name="Subdivisionary.Models.Forms.ICollectionForm" Collapsed="true">
-    <Position X="13" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAQAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Forms\ICollectionForm.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Subdivisionary.Models.Forms.IUploadableFileForm">
-    <Position X="11.25" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAIEAA=</HashCode>
-      <FileName>Models\Forms\IUploadableFileForm.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Subdivisionary.Models.Forms.IForm" Collapsed="true">
-    <Position X="9.25" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACEAAAABAAIAAAAQAAAAAgAAAAAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>Models\Forms\Form.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Enum Name="Subdivisionary.Models.Forms.TitleCompany" Collapsed="true">
-    <Position X="9.25" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAQAABCAAAAAA=</HashCode>
-      <FileName>Models\Forms\TitleReportForm.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

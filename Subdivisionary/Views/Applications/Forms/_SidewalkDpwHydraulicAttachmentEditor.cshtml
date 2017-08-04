@@ -1,0 +1,37 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.Models.Forms.SidewalkDpwHydraulicAttachment
+
+<h4>Department of Public Works, Hydraulic Engineering Attachment</h4>
+<div class="row form-group">
+    @Html.LabelFor(m => m.SidewalkProposalReviewedByHydraulicEngrs, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.SidewalkProposalReviewedByHydraulicEngrs, new
+    {
+        @class = "big-checkbox disable-boxes center-div",
+        @for = "dcpHydraulicDiv",
+        style = "text-align: center; vertical-align: middle; float:right;"
+    })
+    @Html.ValidationMessageFor(m => m.SidewalkProposalReviewedByHydraulicEngrs)
+</div>
+<div id="dcpHydraulicDiv">
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<DateNameInfo>(SidewalkDpwHydraulicAttachment.HYDRAULIC_COLL_KEY, Model.HydraulicDateNameList, new DateNameInfo()))
+</div>
+<div class="row form-group">
+    @Html.LabelFor(m => m.SidewalkProposalMeetsHundredYrRequirements, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.SidewalkProposalMeetsHundredYrRequirements, new
+{
+    @class = "big-checkbox disable-boxes center-div",
+    @for = "dcpHydraulicUploadDiv",
+    style = "text-align: center; vertical-align: middle; float:right;"
+})
+    @Html.ValidationMessageFor(m => m.SidewalkProposalReviewedByHydraulicEngrs)
+</div>
+<div id="dcpHydraulicUploadDiv">
+    @Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+    {
+        LabelMessage = "If Yes, then please upload a copy of the approved hydraulic analysis.",
+        UploadList = Model.FileUploads,
+        UploadProperty = Model.GetFileUploadInfo(SidewalkDpwHydraulicAttachment.HYDRAULIC_UPLOAD_KEY)
+    })
+</div>

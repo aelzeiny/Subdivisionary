@@ -1,0 +1,16 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model CoverLetterSidewalkLegislationForm
+<h4>
+    <a href="@Href(CoverLetterSidewalkLegislationForm.SAMPLE_COVER_LETTER_URL)">
+        Click here to download a sample cover letter <i class="fa fa-file-pdf-o"></i>
+    </a>
+</h4>
+
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Please upload the project's cover letter",
+    UploadList = @Model.FileUploads,
+    UploadProperty = @Model.GetFileUploadInfo(CoverLetterSidewalkLegislationForm.COVER_LETTER_KEY)
+})

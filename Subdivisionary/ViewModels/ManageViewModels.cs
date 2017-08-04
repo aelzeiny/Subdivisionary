@@ -2,9 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Subdivisionary.Models;
 
 namespace Subdivisionary.ViewModels
 {
+#pragma warning disable 1591
+    public class ManageRolesViewModel
+    {
+        [Display(Name = "Search Email Address")]
+        public string EmailAddress { get; set; }
+        public string Role { get; set; }
+        public string SuccessMessage { get; set; }
+    }
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }
@@ -83,4 +92,5 @@ namespace Subdivisionary.ViewModels
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+#pragma warning restore 1591
 }

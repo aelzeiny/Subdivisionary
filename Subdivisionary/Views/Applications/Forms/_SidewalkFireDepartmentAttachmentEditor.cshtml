@@ -1,0 +1,44 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model SidewalkFireDepartmentAttachment
+
+<h4>Fire Department Attachment</h4>
+<div class="row form-group">
+    @Html.LabelFor(m => m.HasFdReviewedPlans, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.HasFdReviewedPlans, new
+{
+    @class = "big-checkbox disable-boxes center-div",
+    @for = "dcpFdReviewDiv",
+    style = "text-align: center; vertical-align: middle; float:right;"
+})
+    @Html.ValidationMessageFor(m => m.HasFdReviewedPlans)
+</div>
+<div id="dcpFdReviewDiv">
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<NameSectionDateInfo>(SidewalkFireDepartmentAttachment.COLL_REVIEWER_KEY, Model.FdSidewalkReviewers, new NameSectionDateInfo()))
+</div>
+
+<div class="row form-group">
+    @Html.LabelFor(m => m.HasFdFireHydrants, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.HasFdFireHydrants, new
+{
+    @class = "big-checkbox disable-boxes center-div",
+    @for = "dcpFdHydrantsDiv",
+    style = "text-align: center; vertical-align: middle; float:right;"
+})
+    @Html.ValidationMessageFor(m => m.HasFdFireHydrants)
+</div>
+<div id="dcpFdHydrantsDiv">
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<PressureLocationInfo>(SidewalkFireDepartmentAttachment.COLL_HYDRANTS_KEY, Model.FdPressureLocationList, new PressureLocationInfo()))
+</div>
+
+<label class="control-label">3. What will be the minimum clear street width within the areas of the proposed changes?</label>
+<p>
+    <strong>Do not</strong> include parking lane widths. the width of bicycle lanes <strong>shall</strong>
+    be included for this calculation. If your sidewalk change will take place at a corner, please provide the new clear width for each street.
+</p>
+@Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<LocationWidthInfo>(SidewalkFireDepartmentAttachment.COLL_CLEAR_WIDTH_KEY, Model.FdLocationWidthList, new LocationWidthInfo()))
+
+
+<label class="control-label">4. What will be the maximum height of the building(s) fronting the sidewalk change and immediately across the street?</label>
+@Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<LocationHeightInfo>(SidewalkFireDepartmentAttachment.COLL_BUILDING_HEIGHT_KEY, Model.FdLocationHeightList, new LocationHeightInfo()))

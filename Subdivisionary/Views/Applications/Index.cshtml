@@ -1,5 +1,8 @@
 ﻿@using System.Text
+@using Subdivisionary.Helpers
+@using Subdivisionary.Models
 @using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
 @model Subdivisionary.Models.Applicant
 
 @{
@@ -30,16 +33,21 @@ else
                     var aHref = Url.Action("Details", "Applications", new {id = app.Id});
                     <tr>
                         <td><a href="@aHref">@app.DisplayName</a></td>
-                        <td><a href="@aHref">@string.Join(", ", app.ProjectInfo.AddressList.Select(x => x.Block + "/" + x.Lot).ToArray())</a></td>
-                        <td><a href="@aHref">@string.Join(", ", app.ProjectInfo.AddressList.Select(x => x.AddressRangeStart + "-" + x.AddressRangeEnd + " " + x.AddressStreet).ToArray())</a></td>
+                        <td><a href="@aHref">@string.Join(", ", app.ProjectInfo.AddressList.Select(x => x.Block + "/" + x.Lot))</a></td>
+                        <td><a href="@aHref">@string.Join(", ", app.ProjectInfo.AddressList.Select(x => x.AddressRangeStart + "-" + x.AddressRangeEnd + " " + x.AddressStreet))</a></td>
                         <td style="text-align: center">
-                            @if (app.IsSubmitted)
+                            @{
+                                var appstatus = EnumHelper<EApplicationStatus>.GetDisplayValue(app.CurrentStatusLog.Status);
+                            }
+                            @if (!app.CanEdit)
                             {
                                 <i class="fa fa-check"></i>
+                                @appstatus
                             }
                             else
                             {
                                 <i class="fa fa-times"></i>
+                                @appstatus
                             }
                         </td>
 
@@ -53,7 +61,7 @@ else
 
 @{
     var rawInputOptions = new StringBuilder();
-    var inputSelects = EnumHelper.GetSelectList(typeof(ApplicationTypeViewModel));
+    var inputSelects = EnumHelper.GetSelectList(typeof(EApplicationTypeViewModel));
     for(int i=0;i<inputSelects.Count;i++)
     {
         var appType = inputSelects[i];

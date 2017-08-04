@@ -1,0 +1,68 @@
+﻿@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.ViewModels.ApplicationViewModels.SwapFormsViewModel
+@{
+    ViewBag.Title = "Swap Forms";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Swap Forms";
+}
+
+<div class="form-group" style="max-width: 500px; margin: auto;">
+
+    <h4>Current Forms</h4>
+
+    <ul class="list-group" id="formList">
+        @foreach (var v in Model.Forms)
+        {
+            <li class="list-group-item">
+                @v.DisplayName
+                <button class="btn btn-danger btn-circle js-delete" style="float: right;" data-title="@v.DisplayName" data-url="@Url.Action("DeleteForm", "Applications", new {id=v.ApplicationId, formId=v.Id})">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </li>
+        }
+    </ul>
+    @using (Html.BeginForm("AddForm", "Applications"))
+    {
+        var vm = new AddFormViewModel();
+        @Html.Hidden(nameof(vm.ApplicationId), Model.ApplicationId)
+        @Html.DropDownList(nameof(vm.FormTypeName), Model.GetSelects(), new { @class = "form-control" })
+        <button class="btn btn-info center-block" type="submit"><i class="fa fa-plus"></i> Add Form</button>
+    }
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $("#formList").on("click", ".js-delete", function () {
+            var me = $(this);
+            bootbox.confirm({
+                title: "Are you SURE that you want to delete this form ?",
+                message: "Delete " + me.data("title"),
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var url = me.data("url");
+                        me.html("<i class='fa fa-spinner fa-spin'></i>");
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (data) {
+                                me.parent("li").remove();
+                            },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+                    }
+                }
+            });
+        });
+    </script>
+}
+

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using reCaptcha;
 using Subdivisionary.DAL;
 using Subdivisionary.Models;
 using Subdivisionary.ViewModels;
@@ -31,6 +33,7 @@ namespace Subdivisionary.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _context = new ApplicationDbContext();
         }
 
         public ApplicationSignInManager SignInManager
@@ -144,6 +147,8 @@ namespace Subdivisionary.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.Recaptcha = ReCaptcha.GetHtml(ConfigurationManager.AppSettings["ReCaptcha:SiteKey"]);
+            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
             return View();
         }
 
@@ -154,6 +159,10 @@ namespace Subdivisionary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (!ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
+            {
+                ModelState.AddModelError("", "I may not be Alan Turning, but you could be robot. Please try again.");
+            }
             if (ModelState.IsValid)
             {
                 var applicant = new Applicant();
@@ -161,12 +170,12 @@ namespace Subdivisionary.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Temporary Code for Seeding Users
-                    /*string roleName = "BsmRole";
+                    // Seeding Users of type applicant until stated otherwise
+                    string roleName = EUserRoles.Applicant.ToString();
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var roleManager = new RoleManager<IdentityRole>(roleStore);
                     await roleManager.CreateAsync(new IdentityRole(roleName));
-                    await UserManager.AddToRoleAsync(user.Id, roleName);*/
+                    await UserManager.AddToRoleAsync(user.Id, roleName);
 
                     user.DataId = user.Data.Id;
                     user.Data = user.Data;
@@ -186,6 +195,8 @@ namespace Subdivisionary.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.Recaptcha = ReCaptcha.GetHtml(ConfigurationManager.AppSettings["ReCaptcha:SiteKey"]);
+            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
             return View(model);
         }
 

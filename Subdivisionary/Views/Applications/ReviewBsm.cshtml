@@ -1,0 +1,95 @@
+﻿@using System.Web.Mvc.Html
+@using Subdivisionary.Models.Applications
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.Models.ProjectInfos
+@using Subdivisionary.ViewModels
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.Models.Applications.Application
+
+@{
+    ViewBag.Title = "Review Application";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Admin Review of " + Model.DisplayName;
+    var forms = Model.GetOrderedForms();
+}
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="150">
+    <div class="partialbar col-sm-0 col-md-3">
+        <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix" id="myScrollspy" style="top: 90px;">
+            <h2 style="color: #3097D1;">Directory</h2>
+            <ul class="nav bs-docs-sidenav">
+                @for (int i = 0; i < forms.Count; i++)
+                {
+                    <li><a href="#myForm_@i">@forms[i].DisplayName</a></li>
+                }
+                <li><a href="#statusHistory">Status History</a></li>
+            </ul>
+            <a href="@Url.Action("Details", "Applications", new {id = Model.Id})" class="btn btn-default" role="button" style="width: 100%; margin-top: 50px;">
+                <i class="fa fa-edit"></i>
+                Back to Project Details
+            </a>
+        </nav>
+    </div>
+    <div class="sidebar col-sm-12 col-md-9">
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+        <div id="reviewDiv">
+            @for (int i = 0; i < forms.Count; i++)
+            {
+                var form = forms[i];
+                var icon = form.IsAssigned ? "fa fa-check-square" : (form.IsRequired) ? "fa fa-times" : "fa fa-circle-o";
+                <div id="myForm_@i" class="form-group" style="border-bottom: 1px solid; border-bottom-color: darkblue">
+                    <h2>@form.DisplayName <i class="@icon" style="float: right;"></i></h2>
+                    @if (form is BasicProjectInfo)
+                    {
+                        <h4>Basic Information</h4>
+                        <table class="table table-condensed">
+                            <tr>
+                                <th>Application ID</th>
+                                <td>#@Model.Id</td>
+                            </tr>
+                            <tr>
+                                <th>Address(es)</th>
+                                <td>@form.ToString()</td>
+                            </tr>
+                        </table>
+                    }
+                    @Html.Partial(EditFormViewModel.GetPartialViewEditor(form), form)
+                </div>
+            }
+            
+            <div class="form-group" id="allUser">
+                <h4>Users</h4>
+                <ul>
+                    @foreach (var user in Model.Applicants.Select(x=>x.User.Name + " - " + x.User.Email))
+                    {
+                        <li>@user</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="form-group" id="statusHistory">
+                <h2>Status History</h2>
+                @Html.Partial("Tables/_StatusHistoryTableEditor", Model.StatusHistory)
+            </div>
+
+        </div>
+        <div style="height: 300px;"></div>
+    </div>
+</body>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/site-js/site-disableInputs.js");
+    <script type="text/javascript">
+        var offset = 80;
+
+        $('.bs-docs-sidebar li a').click(function (event) {
+            event.preventDefault();
+            $($(this).attr('href'))[0].scrollIntoView();
+            scrollBy(0, -offset);
+        });
+    </script>
+    @Scripts.Render("~/Scripts/site-js/site-fileinput.js")
+}
+
+@Styles.Render("~/Content/bs-sidebar.css")

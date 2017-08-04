@@ -1,0 +1,35 @@
+﻿@using System.Data.Entity.Core.Objects
+@using System.Web.Mvc.Html
+@using Subdivisionary.DAL
+@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels
+@model Subdivisionary.Models.InvoiceInfo
+@{
+    ViewBag.Title = "Invoices";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Pay Invoice";
+    var form = Model.PaymentForm;
+    var invoiceTypeDisplay = EnumHelper<EInvoicePurpose>.GetDisplayValue(Model.InvoicePurpose);
+}
+
+@Html.Partial("_ValidationSummary", ViewData.ModelState)
+<h2>Pay Invoice</h2>
+@using (Html.BeginForm("Details", "Applications",
+    new {id = Model.PaymentForm.ApplicationId, formId = Model.PaymentFormId},
+    FormMethod.Post, new {method = "post", id = "formPartialViewEditor", runat = "server", enctype = "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden(FormModelBinder.TYPE_KEY, ObjectContext.GetObjectType(form.GetType()).FullName)
+    <h2>Invoice - @invoiceTypeDisplay</h2>
+    @Html.Partial("Forms/_PaymentFormEditor", form)
+    <button class="btn btn-lg btn-info center-block" id="formSubmitButton" type="submit" style="width: 75%;">Save <i class="fa fa-save"></i></button>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/site-js/site-fileinput.js")
+    @Scripts.Render("~/Scripts/site-js/site-jsignature.js")
+    @Scripts.Render("~/Scripts/site-js/site-icollection.js")
+    @Scripts.Render("~/Scripts/site-js/FormScripts/PaymentForm.js")
+}

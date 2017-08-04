@@ -1,0 +1,9 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.Models.Forms.NoticeOfSpecialRestrictions
+  
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel() {
+    LabelMessage = "Please Upload all Notices of Special Restrictions",
+    UploadList = Model.GetFileUploadList(NoticeOfSpecialRestrictions.UPLOAD_NSR_KEY),
+    UploadProperty = Model.GetFileUploadInfo(NoticeOfSpecialRestrictions.UPLOAD_NSR_KEY)
+})

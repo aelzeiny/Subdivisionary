@@ -8,7 +8,7 @@ namespace Subdivisionary.Migrations
         public override void Up()
         {
             AddColumn("dbo.BasicProjectInfo", "OwnerAndPrimaryContactAreSame", c => c.Boolean(nullable: false));
-            AddColumn("dbo.BasicProjectInfo", "OwnerAndLandDevContactAreSame", c => c.Boolean(nullable: false));
+            AddColumn("dbo.BasicProjectInfo", "OwnerAndLandDevContactAreSame", c => c.Boolean(nullable: true));
         }
         
         public override void Down()

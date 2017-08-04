@@ -14,6 +14,7 @@ namespace Subdivisionary.Models
         [Key]
         public int Id { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
 
         [Required]
         public virtual ApplicationUser User { get; set; }

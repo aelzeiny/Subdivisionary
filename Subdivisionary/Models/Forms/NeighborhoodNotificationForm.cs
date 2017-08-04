@@ -25,10 +25,10 @@ namespace Subdivisionary.Models.Forms
 
         public void ObserveFormUpdate(ApplicationDbContext context, IForm before, IForm after)
         {
-            if (before is CcBypassInfo)
+            if (before is IUnitCount)
             {
-                var a = (CcBypassInfo) after;
-                Is300FootNotice = a.IsFinalMap() || Application is NewConstruction || Application is LotLineAdjustment;
+                var a = (IUnitCount) after;
+                Is300FootNotice = a.IsFinalMap() || Application is NewConstruction || Application is ParcelFinalMap;
             }
         }
 

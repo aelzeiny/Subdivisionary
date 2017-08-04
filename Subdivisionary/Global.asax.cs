@@ -7,8 +7,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
-using Subdivisionary.App_Start;
 using Subdivisionary.DAL;
+using Subdivisionary.FileUploaders;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
 using Subdivisionary.ViewModels;
@@ -20,12 +20,15 @@ namespace Subdivisionary
         protected void Application_Start()
         {
             Mapper.Initialize(config => config.AddProfile<MappingProfile>());
-            GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
+
+            GoogleDriveUploader.InitializeCredentials(Server.MapPath("~/App_Data/SAS-GoogleDrive-Key.json"));
+
             ModelBinders.Binders.Add(typeof(IForm), new FormModelBinder());
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Subdivisionary.Models.Forms
         public override string DisplayName => "TIC Agreement";
 
         public static readonly string TIC_AGREEMENT_KEY = "ticAgreementId";
-        public static readonly string SAMPLE_TIC_URL = "https://subdivisionaryblob.blob.core.windows.net:443/templates/TIC%20Agreement%20Example.pdf";
+        public static readonly string SAMPLE_TIC_URL = "~/Samples/TIC Agreement Example.pdf";
 
         public static readonly string TIC_AGREEMENT_DIRECTORY = "TIC Agreement";
 

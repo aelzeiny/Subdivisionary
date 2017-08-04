@@ -13,8 +13,8 @@ namespace Subdivisionary.Models.Forms
         public static readonly string EXHIBIT_B_KEY = "exhibitsBId";
         public static readonly string EXHIBITS_DIRECTORY = "Exhibits";
 
-        public static readonly string SAMPLE_EXHIBITS_A_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/Exhibit%20A%20Example.pdf";
-        public static readonly string SAMPLE_EXHIBITS_B_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/Exhibit%20B%20Example.pdf";
+        public static readonly string SAMPLE_EXHIBITS_A_URL = "~/Samples/Exhibit A Example.pdf";
+        public static readonly string SAMPLE_EXHIBITS_B_URL = "~/Samples/Exhibit B Example.pdf";
 
         public override FileUploadProperty[] FileUploadProperties => new[]
         {

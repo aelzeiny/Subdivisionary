@@ -1,0 +1,36 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@model Subdivisionary.ViewModels.ApplicationViewModels.ApplicationSubmittedViewModel
+@{
+    ViewBag.Title = "Submitted";
+    Layout = "~/Views/Shared/_BannerLayout.cshtml";
+    ViewBag.Banner = "Submitted Application";
+}
+
+
+@if (Model.NextSteps != null)
+{
+    <h2>Next steps:</h2>
+    <ul>
+        @foreach (var step in Model.NextSteps)
+        {
+            <li>@step</li>
+        }
+    </ul>
+}
+
+<div class="form-group row">
+    <div class="col-xs-12 col-sm-6">
+        <h2>Project Status History</h2>
+        @Html.Partial("Tables/_StatusHistoryTableEditor", Model.Statuses)
+    </div>
+    <div class="col-xs-12 col-sm-6 partialbar">
+        <h2>Invoices</h2>
+        @Html.Partial("Tables/_InvoicesTableEditor", Model.Invoices)
+    </div>
+</div>
+
+<a href="@Url.Action("Review", "Applications", new {id = Model.ApplicationId})" role="button" class="btn btn-default">
+    <i class="fa fa-file-text-o"></i>
+    Application Review
+</a>

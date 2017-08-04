@@ -1,0 +1,12 @@
+﻿@model Subdivisionary.Models.Collections.PressureLocationInfo
+
+<div class="form-group col-xs-12 col-md-5">
+    @Html.LabelFor(m => m.PressureType, new { @class = "control-label" })
+    @Html.EnumDropDownListFor(m => m.PressureType, "[Select Pressure Type]", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.PressureType)
+</div>
+<div class="form-group col-xs-12 col-md-7">
+    @Html.LabelFor(m => m.Location, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.Location, new { @class = "form-control", placeholder = "(intersection corner or fronting address)" })
+    @Html.ValidationMessageFor(m => m.Location)
+</div>

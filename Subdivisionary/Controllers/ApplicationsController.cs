@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
@@ -10,75 +9,78 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.UI;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Newtonsoft.Json;
+using Microsoft.Ajax.Utilities;
+using reCaptcha;
 using Subdivisionary.DAL;
+using Subdivisionary.ExternalApis;
 using Subdivisionary.Helpers;
 using Subdivisionary.Models;
 using Subdivisionary.Models.Applications;
 using Subdivisionary.Models.Collections;
 using Subdivisionary.Models.Forms;
 using Subdivisionary.Models.ProjectInfos;
-using Subdivisionary.ViewModels;
+using Subdivisionary.ViewModels.ApplicationViewModels;
 
 namespace Subdivisionary.Controllers
 {
-
-    public class ApplicationsController : Controller
+    using HttpResponseException = System.Web.Http.HttpResponseException;
+    public class ApplicationsController : AContextController
     {
-        private ApplicationDbContext _context;
-
-        public ApplicationsController()
+        public ApplicationsController() :base()
         {
-            _context = new ApplicationDbContext();
             _context.Configuration.ValidateOnSaveEnabled = false;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
         }
 
         // GET: Applications
         public ViewResult Index()
         {
-            // Get Applications From Database
+            if (User.IsInRole(EUserRoles.Admin.ToString()) || User.IsInRole(EUserRoles.Bsm.ToString()))
+            {
+                var list = _context.Applications.Include(x => x.StatusHistory).Include(x => x.ProjectInfo).ToList();
+                var mlist = list.Where(x => x.HasStatus(EApplicationStatus.Submitted)
+                                    && !x.HasStatus(EApplicationStatus.Done))
+                                    .Select(x=>new ApplicationIndexViewModel()
+                        {
+                            ApplicationId = x.Id,
+                            DisplayName = x.DisplayName,
+                            ApplicationStatus = x.CurrentStatusLog.Status,
+                            BlockLots = x.ProjectInfo.Apns(),
+                            Addresses = x.ProjectInfo.Addresses()
+                        });
+                return View("IndexBsm", new ApplicationIndexSearchViewModel() {SearchQuery = new SearchViewModel(), Results = mlist});
+
+            }
             var user = GetCurrentUser();
+            // Get Applications From Database
             var applicant = _context.Applicants
                 .Include(app => app.Applications.Select(x => x.ProjectInfo))
                 .FirstOrDefault(app => app.Id == user.DataId);
-
-            // Pass into view
             return View(applicant);
+            // Pass into view
         }
 
         #region Create & New Applications
-
         public ViewResult New(int id)
         {
-            // Create Application given ApplicationTypeViewModel id
+            // Create Application given EApplicationTypeViewModel id
             NewApplicationViewModel viewModel = new NewApplicationViewModel()
             {
-                ApplicationType = (ApplicationTypeViewModel) id,
-                ProjectInfo = CreateApplication((ApplicationTypeViewModel) id).ProjectInfo
+                ApplicationType = (EApplicationTypeViewModel) id,
+                ProjectInfo = CreateApplication((EApplicationTypeViewModel) id).ProjectInfo
             };
             // Pass into view
             return View(viewModel);
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult Create(IForm projectInfo, int appTypeId)
         {
             if (!ModelState.IsValid)
                 return View("New", new NewApplicationViewModel(appTypeId, (BasicProjectInfo) projectInfo));
 
-            Application application = this.CreateApplication((ApplicationTypeViewModel) appTypeId);
+            Application application = this.CreateApplication((EApplicationTypeViewModel) appTypeId);
             application.ProjectInfo = (BasicProjectInfo) projectInfo;
+            application.FormUpdated(_context, projectInfo, projectInfo);
             var user = GetCurrentApplicant();
             user.Applications.Add(application);
             _context.SaveChanges();
@@ -87,30 +89,37 @@ namespace Subdivisionary.Controllers
             application.ProjectInfo.ApplicationId = application.Id;
             application.ProjectInfo.IsAssigned = true;
             _context.SaveChanges();
+            // Notify External Apis of New Application creation. Most Apis 
+            // would ignore this event until application submitted with a paid fee,
+            // but the option is there none-the-less
+            ExternalApiManager.StatusChangedTriggerInBackground(application);
+
             return RedirectToAction("Details", "Applications", new {id = application.Id});
         }
 
-        private Application CreateApplication(ApplicationTypeViewModel appType)
+        private Application CreateApplication(EApplicationTypeViewModel appType)
         {
             Application answer = null;
-            if (appType == ApplicationTypeViewModel.RecordOfSurvey)
+            if (appType == EApplicationTypeViewModel.RecordOfSurvey)
                 answer = Application.FactoryCreate<RecordOfSurvey>();
-
-            else if (appType == ApplicationTypeViewModel.CcBypass)
+            // Condos
+            else if (appType == EApplicationTypeViewModel.CcBypass)
                 answer = Application.FactoryCreate<CcBypass>();
-            else if (appType == ApplicationTypeViewModel.CcEcp)
+            else if (appType == EApplicationTypeViewModel.CcEcp)
                 answer = Application.FactoryCreate<CcEcp>();
-            else if (appType == ApplicationTypeViewModel.NewConstruction)
+            else if (appType == EApplicationTypeViewModel.NewConstruction)
                 answer = Application.FactoryCreate<NewConstruction>();
-
-            else if (appType == ApplicationTypeViewModel.LotLineAdjustment)
+            // CoC, LLA, LM, VS, & LS
+            else if (appType == EApplicationTypeViewModel.LotLineAdjustment)
                 answer = Application.FactoryCreate<LotLineAdjustment>();
-            else if (appType == ApplicationTypeViewModel.CertificateOfCompliance)
+            else if (appType == EApplicationTypeViewModel.CertificateOfCompliance)
                 answer = Application.FactoryCreate<CertificateOfCompliance>();
-            else if (appType == ApplicationTypeViewModel.LotMerger)
-                answer = Application.FactoryCreate<LotMerger>();
-            else if (appType == ApplicationTypeViewModel.LotSubdivision)
-                answer = Application.FactoryCreate<LotSubdivision>();
+            else if (appType == EApplicationTypeViewModel.ParcelFinalMap)
+                answer = Application.FactoryCreate<ParcelFinalMap>();
+            // Sidewalk
+            else if(appType == EApplicationTypeViewModel.SidewalkLegislation)
+                answer = Application.FactoryCreate<SidewalkLegislation>();
+            // Other
             else
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             return answer;
@@ -119,19 +128,27 @@ namespace Subdivisionary.Controllers
         #endregion
 
         #region Details & Edit Applications
-
-        public ActionResult Details(int id, int? editId)
+        /// <summary>
+        /// Generates Editing page for a given application ID and form #
+        /// </summary>
+        /// <param name="id">Application Id</param>
+        /// <param name="formId">if 0 or unassigned then default to Project Info</param>
+        /// <returns></returns>
+        public ActionResult Details(int id, int? formId)
         {
+            if(User.IsInRole(EUserRoles.Admin.ToString()) || User.IsInRole(EUserRoles.Bsm.ToString()))
+                return RedirectToAction("Submitted", new { id = id });
             var applicant = GetCurrentApplicant();
             var application = _context.Applications.Where(x => x.Id == id)
                 .Include(x => x.Forms).FirstOrDefault();
-
             if (application == null || applicant.Applications.All(x => x.Id != application.Id))
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
+            if (!application.CanEdit)
+                return RedirectToAction("Submitted", new {id = id});
 
             EditApplicationViewModel toEdit = new EditApplicationViewModel()
             {
-                EditId = editId.HasValue ? editId.Value : 0,
+                FormId = formId.HasValue ? formId.Value : 0,
                 Application = application,
                 Forms = application.GetOrderedForms()
             };
@@ -139,19 +156,28 @@ namespace Subdivisionary.Controllers
             return View(toEdit);
         }
 
-        [System.Web.Mvc.HttpPost]
+        /// <summary>
+        /// Validates and saves an edited application form.
+        /// </summary>
+        /// <param name="editApp">IForm that is model-binded with the submitted form. Uses the 'CustomModelBinder' class to save form info to IForm.</param>
+        /// <param name="id">Id of the given Application</param>
+        /// <param name="formId">Id of the given form</param>
+        /// <returns></returns>
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(IForm editApp, int applicationId, int editId)
+        public ActionResult Details(int id, int formId, IForm editApp)
         {
-            var applicant = GetCurrentApplicant();
-            var application = _context.Applications.Where(x => x.Id == applicationId)
-                .Include(x => x.Forms).FirstOrDefault();
-
-            if (application == null || applicant.Applications.All(x => x.Id != application.Id))
+            IForm form = (editApp is Form)
+                ? _context.Forms.Where(x => x.Id == formId).Include(x => x.Application).FirstOrDefault()
+                : (IForm) _context.ProjectInfos.Where(x => x.Id == formId).Include(x => x.Application).FirstOrDefault();
+            var applicant = this.GetCurrentApplicant();
+            if (form == null || applicant.Applications.All(x => x.Id != form.ApplicationId))
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            var application = form.Application;
+            if (!application.CanEdit && !(form is PaymentForm))
+                return RedirectToAction("Review", new { id = form.ApplicationId });
             // Get current form
-            var allforms = application.GetOrderedForms();
-            IForm form = allforms[editId];
 
             // Ensure all files have been updated
             if (form is UploadableFileForm)
@@ -169,10 +195,11 @@ namespace Subdivisionary.Controllers
                 editApp.CopyValues(form, true);
                 EditApplicationViewModel toEdit = new EditApplicationViewModel()
                 {
-                    EditId = editId,
                     Application = application,
                     Forms = application.GetOrderedForms(),
-                    Form = editApp // Specify a form so that the Application form at the designated EditId isn't edited
+                    FormId = form.Id,
+                    Form = editApp  // Optional Value, lets the UI display the form that 
+                                    //was marked incorrect (instead of displaying an empty form)
                 };
                 return View("Details", toEdit);
             }
@@ -187,48 +214,359 @@ namespace Subdivisionary.Controllers
             form.CopyValues(editApp);
 
             _context.SaveChanges();
-            return RedirectToAction("Details", "Applications", new {id = application.Id, editId = editId});
+            return RedirectToAction("Details", "Applications", new {id = application.Id, formId = form is BasicProjectInfo ? 0 : form.Id });
+        }
+        #endregion
+
+
+        #region Delete Application & Add/Delete Forms
+        [HttpPost]
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var toDelete = _context.Applications.Include(x => x.Forms).FirstOrDefault(x=>x.Id == id);
+            if (toDelete == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var toDeleteList = toDelete.Forms.ToList();
+            foreach (var me in toDeleteList)
+                await DeleteForm(me.Id, me.ApplicationId);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public ActionResult SwapForms(int id)
+        {
+            var toEdit = _context.Applications.Include(x => x.Forms).FirstOrDefault(x => x.Id == id);
+            if (toEdit == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var formT = typeof(Form);
+            var options = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(t => t.GetTypes())
+                .Where(t => t.IsClass && formT.IsAssignableFrom(t) && !t.IsAbstract && t != typeof(PaymentForm) &&
+                t.Namespace == "Subdivisionary.Models.Forms");
+            var swap = new SwapFormsViewModel() {ApplicationId = toEdit.Id, Forms = toEdit.Forms.ToList(), Options = options};
+            return View("SwapForms", swap);
         }
 
+        [HttpPost]
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public ActionResult AddForm(AddFormViewModel vm)
+        {
+            var toEdit = _context.Applications.Include(x => x.Forms).FirstOrDefault(x => x.Id == vm.ApplicationId);
+            if (toEdit == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            Form form = (Form) Activator.CreateInstance(Type.GetType(vm.FormTypeName));
+            toEdit.Forms.Add(form);
+            _context.SaveChanges();
+            return RedirectToAction("SwapForms", new {id = vm.ApplicationId});
+        }
+
+        [HttpPost]
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public async Task<ActionResult> DeleteForm(int id, int formId)
+        {
+            var form = _context.Forms.Find(formId);
+            var uform = form as UploadableFileForm;
+            if (uform != null)
+            {
+                var controller = DependencyResolver.Current.GetService<FileController>();
+                controller.ControllerContext = new ControllerContext(Request.RequestContext, controller);
+                using (controller)
+                {
+                    var uploads = uform.FileUploads.ToList().Select(x => x.Id);
+                    foreach (var uploadId in uploads)
+                        await controller.DeleteFile(uploadId, uform.Id);
+                }
+            }
+            _context.Forms.Remove(form);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
         #endregion
-        
+
         public ActionResult Review(int id)
         {
+            var application = _context.Applications.Where(x => x.Id == id)
+                .Include(x => x.StatusHistory)
+                .Include(x => x.Forms).FirstOrDefault();
+            if (User.IsInRole(EUserRoles.Admin.ToString()) || User.IsInRole(EUserRoles.Bsm.ToString()))
+                return View("ReviewBsm", application);
+
+            var user = GetCurrentApplicant();
+            var applicant = user.Applications.FirstOrDefault(x => x.Id == application.Id);
+            if (applicant == null)
+                return RedirectToAction("Index");
+            var review = application.Review();
+            foreach (var result in review)
+                ModelState.AddModelError("", result);
+
+            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+            return View("Review", application);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Submit(int id)
+        {
+            if (!ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]) || !ModelState.IsValid)
+            {
+                ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                return RedirectToAction("Review", new {id = id});
+            }
             var applicant = GetCurrentApplicant();
-            var application = (applicant.Applications.FirstOrDefault(x => x.Id == id));
-            if (application == null)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            return View(application);
-        }
-
-        public FileResult Download(string file)
-        {
-            if (!Server.FilePathExists(file))
-                throw new HttpResponseException(HttpStatusCode.Gone);
-            string appId = DirectoryHelper.GetApplicationIdFromFilePath(file);
-            // for security purposes we have to ensure that the download link is coming from the right applicant
-            if (GetCurrentApplicant().Applications.All(x => x.Id.ToString() != appId))
-                throw new HttpResponseException(HttpStatusCode.BadGateway);
-            // Read all fileBytes to memory & initiate download
-            return File(System.IO.File.ReadAllBytes(Server.MapPath(file)),
-                System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(file));
-        }
-
-        public Applicant GetCurrentApplicant()
-        {
-            var user = GetCurrentUser();
-            return _context.Applicants.Where(app => app.Id == user.DataId)
-                .Include(appl => appl.Applications)
+            var application =
+                _context.Applications.Where(x => x.Id == id)
+                .Include(x => x.StatusHistory)
+                .Include(x=>x.Forms)
                 .FirstOrDefault();
+
+            if(application == null)
+                return RedirectToAction("Index");
+            if (application.Applicants.All(x=>x.Id != applicant.Id))
+                return RedirectToAction("Index");
+
+            // Find Fee Schedule Item
+            if (!application.SubmitAndFinalize())
+                return RedirectToAction("Review", new { id = id });
+            if (application.CurrentStatusLog.Status == EApplicationStatus.Submitted)
+                GenerateInvoice(application, EInvoicePurpose.InitialPayment);
+            _context.SaveChanges();
+
+            // Notify External APIs of this event whether it is an initial or secondary submittal
+            ExternalApiManager.StatusChangedTriggerInBackground(application);
+
+            return RedirectToAction("Submitted", new {id = id});
         }
 
-        public ApplicationUser GetCurrentUser()
+        private void GenerateInvoice(Application application, EInvoicePurpose invoicePurpose)
         {
-            return System.Web.HttpContext.Current.GetOwinContext()
-                .GetUserManager<ApplicationUserManager>()
-                .FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            var feeName = application.PaymentSchedule.ToString();
+            var feeScheduleItem = _context.FeeSchedule.First(x => x.ApplicationTypeName == feeName);
+            int numberOfUnits = (application.ProjectInfo is IUnitCount)
+                ? ((IUnitCount) application.ProjectInfo).UnitCount
+                : 0;
+            float fee = feeScheduleItem.CalculateProcessingFee(numberOfUnits);
+            if (invoicePurpose == EInvoicePurpose.IncompleteFee)
+                fee = EFeeSchedule.INCOMPLETE_FEE;
+            else if(invoicePurpose == EInvoicePurpose.MapReviewFee)
+                fee = feeScheduleItem.CalculateMapReviewFee(numberOfUnits);
+
+            // We forgive fees less than a nickle I guess. CCSF can bill James Ryan the damages ^_^
+            if (Math.Abs(fee) < .05f)
+                return; // Don't generate an invoice. 
+
+            var invoiceEnvelope = ApplicationToInvoice(fee, application);
+            var invoice = new CreateInvoiceXml(PaymentGatewaySoapHelper.CallWebService(invoiceEnvelope));
+            var invoiceRead =
+                new ReadInvoiceXml(PaymentGatewaySoapHelper.CallWebService(new ReadInvoiceEnvelope(invoice.Id)));
+
+            InvoiceInfo finalInvoice = new InvoiceInfo()
+            {
+                InvoiceNo = invoice.Id,
+                PayUrl = invoice.Payurl,
+                PrintUrl = invoice.Printurl,
+                Created = invoiceRead.Created,
+                Paid = invoiceRead.IsPaid,
+                Void = invoiceRead.Voided,
+                Amount = fee.ToString("c2"),
+                InvoicePurpose = invoicePurpose
+            };
+
+            var paymentForm = new PaymentForm();
+            application.Forms.Add(paymentForm);
+            _context.SaveChanges();
+            finalInvoice.PaymentForm = paymentForm;
+            finalInvoice.PaymentFormId = paymentForm.Id;
+            _context.Invoices.Add(finalInvoice);
+            _context.SaveChanges();
+
+            paymentForm.InvoiceId = finalInvoice.Id;
+            paymentForm.Invoice = finalInvoice;
+
+            // Notify External APIs of this event
+            ExternalApiManager.InvoiceGeneratedTriggerInBackground(application, finalInvoice);
+        }
+        
+        public ActionResult Submitted(int id)
+        {
+            var applicant = GetCurrentApplicant();
+            var application =
+                _context.Applications.Where(x => x.Id == id)
+                .Include(x => x.StatusHistory)
+                .Include(x => x.Forms)
+                .FirstOrDefault();
+
+            if (application == null)
+                return RedirectToAction("Index");
+            if (!User.IsInRole(EUserRoles.Bsm) && !User.IsInRole(EUserRoles.Admin))
+            {
+                if (application.Applicants.All(x => x.Id != applicant.Id))
+                    return RedirectToAction("Index");
+            }
+
+            // Create Application Submitted View Model
+            ApplicationSubmittedViewModel vm = new ApplicationSubmittedViewModel()
+            {
+                ApplicationId = application.Id,
+                NextSteps = application.NextSteps(),
+                Invoices = application.Forms.OfType<PaymentForm>().Select(x=>_context.Invoices.Find(x.InvoiceId)).ToList(),
+                Statuses = application.StatusHistory.ToList(),
+                ApplicationCanEdit = application.CanEdit
+            };
+            return View((!User.IsInRole(EUserRoles.Bsm) && !User.IsInRole(EUserRoles.Admin)) ? "Submitted" : "SubmittedBsm", vm);
         }
 
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public ActionResult ApplicationDeemedIncomplete(int id, bool chargeFee)
+        {
+            var application = _context.Applications.FirstOrDefault(x => x.Id == id);
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            application.StatusHistory.Add(ApplicationStatusLogItem.FactoryCreate(EApplicationStatus.DeemedIncomplete));
+            if (chargeFee)
+                GenerateInvoice(application, EInvoicePurpose.IncompleteFee);
+            application.CanEdit = true;
+            _context.SaveChanges();
+            // Notify External APIs of this event asynchronously
+            ExternalApiManager.StatusChangedTriggerInBackground(application);
+            return RedirectToAction("Submitted", new {id = id});
+        }
+
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public ActionResult ApplicationDeemedSubmittable(int id)
+        {
+            var application = _context.Applications.FirstOrDefault(x => x.Id == id);
+            if (application == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            application.StatusHistory.Add(ApplicationStatusLogItem.FactoryCreate(EApplicationStatus.DeemedSubmittable));
+            GenerateInvoice(application, EInvoicePurpose.MapReviewFee);
+            _context.SaveChanges();
+            // Notify External APIs of this event asynchronously
+            ExternalApiManager.StatusChangedTriggerInBackground(application);
+            return RedirectToAction("Submitted", new { id = id });
+        }
+
+        /// <summary>
+        /// Clients can pay for invoices with this Action.
+        /// Either by Card or by check, the process is essentially the same
+        /// </summary>
+        /// <param name="id">Invoice No, NOT the Id</param>
+        /// <returns>View & Viewmodel for Invoice Payment</returns>
+        public ActionResult Invoices(int id)
+        {
+            var invoice = _context.Invoices.Where(x => x.InvoiceNo == id).Include(x=>x.PaymentForm).FirstOrDefault();
+            if(invoice == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            if (User.IsInRole(EUserRoles.Admin) || User.IsInRole(EUserRoles.Bsm))
+            {
+                return View("InvoicesBsm", invoice);
+            }
+            var aid = invoice.PaymentForm.ApplicationId;
+            var application = _context.Applications.Where(x => x.Id == aid).Include(x => x.Applicants).Include(x => x.ProjectInfo).FirstOrDefault();
+            var applicant = GetCurrentApplicant();
+            // Ensure that an applicant is looking at their invoice & not somebody else's
+            if (application == null || application.Applicants.All(x => x.Id != applicant.Id))
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            // Now we do the invoice payment
+            return View("Invoices", invoice);
+        }
+
+        [HttpPost]
+        public ActionResult CheckInvoice(int id)
+        {
+            var invoice = _context.Invoices.Where(x => x.Id == id).Include(x => x.PaymentForm).FirstOrDefault();
+
+            if (invoice == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            if (!invoice.Paid)
+            {
+                var aid = invoice.PaymentForm.ApplicationId;
+                var application = _context.Applications.Where(x => x.Id == aid)
+                    .Include(x=>x.StatusHistory)
+                    .Include(x => x.Applicants)
+                    .Include(x => x.ProjectInfo)
+                    .FirstOrDefault();
+                var applicant = GetCurrentApplicant();
+                if (application == null)
+                    throw new HttpResponseException(HttpStatusCode.BadRequest);
+                if (!User.IsInRole(EUserRoles.Admin) && !User.IsInRole(EUserRoles.Bsm))
+                {
+                    // Ensure that an applicant is looking at their invoice & not somebody else's
+                    if (application.Applicants.All(x => x.Id != applicant.Id))
+                        throw new HttpResponseException(HttpStatusCode.BadRequest);
+                }
+                // Verify Payment
+                var invoiceRead =
+                    new ReadInvoiceXml(PaymentGatewaySoapHelper.CallWebService(new ReadInvoiceEnvelope(invoice.InvoiceNo)));
+
+                invoice.Paid = invoiceRead.IsPaid && !invoiceRead.Voided;
+                invoice.Void = invoiceRead.Voided;
+
+                if (invoice.Paid)
+                {
+                    EApplicationStatus status;
+                    if(invoice.InvoicePurpose == EInvoicePurpose.InitialPayment)
+                        status = EApplicationStatus.InitialPaymentReceived;
+                    else if (invoice.InvoicePurpose == EInvoicePurpose.IncompleteFee)
+                        status = EApplicationStatus.IncompleteFeeReceived;
+                    else if(invoice.InvoicePurpose == EInvoicePurpose.MapReviewFee)
+                        status = EApplicationStatus.MapReviewFeeReceived;
+                    else
+                        throw new NotSupportedException(EnumHelper<EInvoicePurpose>.GetDisplayValue(invoice.InvoicePurpose));
+                    application.StatusHistory.Add(ApplicationStatusLogItem.FactoryCreate(status));
+
+                    // Notify External APIs of this event
+                    ExternalApiManager.StatusChangedTriggerInBackground(application);
+                }
+                _context.SaveChanges();
+            }
+            return Json(new { paid = invoice.Paid, voided = invoice.Void, success = invoice.Paid || invoice.Void });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public ActionResult VoidInvoice(VoidViewModel vm)
+        {
+            var invoice = _context.Invoices.Where(x => x.Id == vm.InvoiceId).Include(x => x.PaymentForm).FirstOrDefault();
+            if (invoice == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            // Verify Payment
+            var voidTry =
+                new VoidInvoiceXml(PaymentGatewaySoapHelper.CallWebService(new VoidInvoiceEnvelope(invoice.InvoiceNo, vm.UserName, vm.Reason)));
+
+            var invoiceRead =
+                new ReadInvoiceXml(PaymentGatewaySoapHelper.CallWebService(new ReadInvoiceEnvelope(invoice.InvoiceNo)));
+            invoice.Void = invoiceRead.Voided;
+            _context.SaveChanges();
+
+            return Json(new { result = voidTry.Result, success = invoice.Void });
+        }
+
+        private CreateInvoiceEnvelope ApplicationToInvoice(float amount, Application app)
+        {
+            var xml = new InvoiceTypeXml(PaymentGatewaySoapHelper.CallWebService(new ListInvoiceEnvelope()));
+            var eInvoiceType = InvoiceTypeXml.INVOICE_TYPE_GENERAL;
+            if (app is CcEcp)
+                eInvoiceType = InvoiceTypeXml.INVOICE_TYPE_ECP;
+            else if (app is CcBypass)
+                eInvoiceType = InvoiceTypeXml.INVOICE_TYPE_CONVERSION;
+            var invoiceType = xml.FindInvoiceByType(eInvoiceType);
+
+            int numberOfUnits = (app.ProjectInfo is IUnitCount)
+                ? ((IUnitCount)app.ProjectInfo).UnitCount
+                : 0;
+            var cie = 
+                new CreateInvoiceEnvelope(string.Join(", ", app.OwnersAndTenants.Where(x=> !x.IsTenant).Select(x=>x.Name)),
+                999, // <- Should be changed to 'amount' variable. This will cause a BUG. 
+                $"{app.ProjectInfo.Apns()} ({app.PaymentSchedule.ToString()})",
+                numberOfUnits == 0 ? app.DisplayName : (numberOfUnits + " - " + app.DisplayName),
+                EPaymentAccounts.MappingItem.AccountNum,
+                EPaymentAccounts.MappingItem.Description,
+                invoiceType.Id);
+            return cie;
+        }
 
         /// <summary>
         /// Add email addresses to an application
@@ -261,7 +599,7 @@ namespace Subdivisionary.Controllers
             [ModelBinder(typeof(ApplicantionApplicantModelBinder))] List<string> toRemove, int applicationId)
         {
             var applicant = GetCurrentApplicant();
-            var application = (applicant.Applications.FirstOrDefault(x => x.Id == applicationId));
+            var application = applicant.Applications.FirstOrDefault(x => x.Id == applicationId);
 
             if (application == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -289,6 +627,12 @@ namespace Subdivisionary.Controllers
             application.SharedRequests.RemoveAt(index);
             application.Applicants.Add(applicant);
             applicant.Applications.Add(application);
+
+            // Try to remove notification if it exists
+            var foundShareNotification =
+                applicant.Notifications.FirstOrDefault(x => x is ShareApplicationNotification && ((ShareApplicationNotification) x).ApplicationId == id);
+            if (foundShareNotification != null)
+                applicant.Notifications.Remove(foundShareNotification);
             _context.SaveChanges();
             return RedirectToAction("Details", "Applications", new {id = id});
         }
@@ -311,6 +655,7 @@ namespace Subdivisionary.Controllers
             }
 
             List<MailMessage> messages = new List<MailMessage>();
+            List<EmailInfo> newShares = new List<EmailInfo>();
             foreach (var toshare in emailList)
             {
                 if (!application.SharedRequests.Contains(toshare))
@@ -336,11 +681,22 @@ namespace Subdivisionary.Controllers
                     message.IsBodyHtml = true;
                     // Send invite via email
                     messages.Add(message);
+                    newShares.Add(toshare);
                 }
             }
             await Contact(messages);
-            application.SharedRequests.Clear();
-            application.SharedRequests.AddRange(emailList);
+            application.SharedRequests.AddRange(newShares);
+            foreach (var newShare in newShares)
+            {
+                var foundApplicant = _context.Users.Include(x=>x.Data).FirstOrDefault(x => x.Email == newShare.EmailAddress);
+                // Only Add notification if the applicant already exists.
+                foundApplicant?.Data.Notifications.Add(new ShareApplicationNotification()
+                {
+                    Applicant = foundApplicant.Data,
+                    ApplicantId = foundApplicant.DataId,
+                    ApplicationId = application.Id
+                });
+            }
             _context.SaveChanges();
             return RedirectToAction("Share", "Applications", new {id = applicationId});
         }
@@ -359,7 +715,7 @@ namespace Subdivisionary.Controllers
             }
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public async Task<ActionResult> Contact(List<MailMessage> messages)
         {
             if (messages.Count != 0)
@@ -379,112 +735,43 @@ namespace Subdivisionary.Controllers
             return Content("SENT");
         }
 
-        /// <summary>
-        /// Upload File from designated Form
-        /// </summary>
-        /// <param name="id">Form Id</param>
-        /// <returns></returns>
-        public async Task<ActionResult> UploadFiles(int id)
+        [HttpPost]
+        [Authorize(Roles = EUserRoles.Admin + "," + EUserRoles.Bsm)]
+        public ActionResult IndexSearch(ApplicationIndexSearchViewModel indexSearh)
         {
-            Form mForm = await _context.Forms.FindAsync(id);
-            UploadableFileForm form = mForm as UploadableFileForm;
-            try
+            var vm = indexSearh.SearchQuery;
+            if (indexSearh.SearchQuery.ApplicationId.HasValue)
+                return RedirectToAction("Details", new {id = indexSearh.SearchQuery.ApplicationId});
+            IEnumerable<Application> query = _context.Applications
+                .Include(x => x.Applicants)
+                .Include(x => x.StatusHistory)
+                .Include(x => x.ProjectInfo).AsEnumerable();
+            if (!vm.BlockQuery.IsNullOrWhiteSpace())
+                query = query.Where(x => x.ProjectInfo.AddressList.Any(y => y.Block.Contains(vm.BlockQuery)));
+            if (!vm.LotQuery.IsNullOrWhiteSpace())
+                query = query.Where(x => x.ProjectInfo.AddressList.Any(y => y.Block.Contains(vm.LotQuery)));
+            if (!vm.AddressQuery.IsNullOrWhiteSpace())
+                query = query.Where(x => x.ProjectInfo.AddressList.Any(y => y.Block.Contains(vm.AddressQuery)));
+            if (!vm.UserQuery.IsNullOrWhiteSpace())
+                query = query.Where(x => x.Applicants.Any(y=>y.User.UserName == vm.UserQuery));
+            if (vm.Status != null)
+                query = query.Where(x => x.CurrentStatusLog.Status == vm.Status);
+            var result = new ApplicationIndexSearchViewModel()
             {
-                if (form == null)
-                    throw new HttpResponseException(HttpStatusCode.BadRequest);
-                int appId = mForm.ApplicationId;
-                // ensure that application belongs to user
-                Application application = this.GetCurrentApplicant().Applications.FirstOrDefault(x => x.Id == appId);
-                if (application == null)
-                    throw new HttpResponseException(HttpStatusCode.BadRequest);
-
-                // Access Blob Storage
-                string containerName = CloudHelper.GetContainerName(application);
-                CloudStorageAccount cloudStorageAccount = CloudHelper.GetConnectionString();
-                CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-                CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(containerName);
-                if (await cloudBlobContainer.CreateIfNotExistsAsync())
+                Results = query.Select(x => new ApplicationIndexViewModel()
                 {
-                    await
-                        cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions
-                        {
-                            PublicAccess = BlobContainerPublicAccessType.Blob
-                        });
-                }
-                var requestFiles = HttpContext.Request.Files;
-
-                FileUploadJsonViewModel vm = FileUploadJsonViewModel.Create();
-                for (int i = 0; i < requestFiles.Count; i++)
-                {
-                    var file = requestFiles[i];
-                    if (file == null || file.ContentLength <= 0)
-                        continue;
-                    var now = DateTime.Now;
-
-                    var fileProps = form.GetFileUploadInfo(requestFiles.AllKeys[i]);
-
-                    if (form.MaximumFileUploadsExceeded(fileProps))
-                        throw new Exception("Maximum File Limit Exceeded");
-
-                    var upload = new FileUploadInfo
-                    {
-                        FileKey = fileProps.UniqueKey,
-                        Form = form,
-                        FormId = form.Id
-                    };
-                    form.FileUploads.Add(upload);
-                    await _context.SaveChangesAsync();
-
-                    // Use FileProps & Upload ID to create unique name for naming convention
-                    string fileName =
-                        $"{fileProps.FolderPath}\\{appId}_{fileProps.StandardName}_{now:yyyyMMdd}_{upload.Id}{Path.GetExtension(file.FileName)}";
-                    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
-
-                    // Upload File to Azure Blob
-                    cloudBlockBlob.Properties.ContentType = file.ContentType;
-                    await cloudBlockBlob.UploadFromStreamAsync(file.InputStream);
-
-                    // Set the remaining upload properties with generated information. Save one last time.
-                    upload.Size = cloudBlockBlob.Properties.Length;
-                    upload.Type = cloudBlockBlob.Properties.ContentType;
-                    upload.Url = cloudBlockBlob.Uri.AbsoluteUri;
-                    await _context.SaveChangesAsync();
-
-                    vm.AddFile(Url, upload.Id, form.Id, cloudBlockBlob.Uri.AbsoluteUri, upload.Type, upload.Size,
-                        fileProps.StandardName);
-                }
-                var jsn = JsonConvert.SerializeObject(vm);
-                return Content(jsn, "application/json");
-            }
-            catch (Exception ex)
-            {
-                string json = JsonConvert.SerializeObject(new
-                {
-                    error = ex.Message
-                });
-                return Content(json, "application/json");
-            }
+                    Addresses = x.ProjectInfo.Addresses(),
+                    ApplicationId = x.Id,
+                    ApplicationStatus = x.CurrentStatusLog.Status,
+                    BlockLots = x.ProjectInfo.Apns(),
+                    DisplayName = x.DisplayName
+                }),
+                SearchQuery = vm
+            };
+            return View("IndexBsm", result);
         }
 
-        [System.Web.Mvc.HttpPost]
-        public async Task<ActionResult> DeleteFile(int id, int formId)
-        {
-            Form mForm = await _context.Forms.FindAsync(formId);
-            UploadableFileForm form = mForm as UploadableFileForm;
-            if(form == null)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            var file = form.FileUploads.FirstOrDefault(x => x.Id == id);
-            if (file == null)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            _context.FileUploads.Remove(file);
-            if (form.IsAssigned && form.FindEmptyFileProperty().HasValue)
-                form.IsAssigned = false;
-            await _context.SaveChangesAsync();
-            string json = JsonConvert.SerializeObject("");
-            return Content(json, "application/json");
-        }
-
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult Sign(int id, SignatureViewModel signature)
         {
             var mform = _context.Forms.Find(id);
@@ -510,15 +797,16 @@ namespace Subdivisionary.Controllers
             signature.UserStamp = sig.UserStamp;
             signature.SignatureData = sig.Data;
             signature.SerializationType = sig.DataFormat;
-            return Content(CustomHtmlHelper.EncodeJson(signature), "application/json");
+            return Json(signature);
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult Unsign(int id, SignatureViewModel signature)
         {
             var mform = _context.Forms.Find(id);
             var applicant = GetCurrentApplicant();
-            if (applicant.Applications.FirstOrDefault(x => x.Id == mform.ApplicationId) == null)
+            var app = applicant.Applications.FirstOrDefault(x => x.Id == mform.ApplicationId);
+            if (app == null || !app.CanEdit)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             var form = mform as ISignatureForm;
             if (form == null)
@@ -527,7 +815,52 @@ namespace Subdivisionary.Controllers
             _context.SignatureInfo.Remove(toremove);
             mform.IsAssigned = false;
             _context.SaveChanges();
-            return Content("success");
+            return Json("success");
+        }
+
+        /// <summary>
+        /// SUPER TEMPORARY SEED APPLICATION METHOD. REMOVE BEFORE DEPLOYMENT.
+        /// Helps seed an application for developers by visiting a url.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SeedApplication()
+        {
+            var application = Application.FactoryCreate<NewConstruction>();
+            var pinfo = (NewConstructionInfo)application.ProjectInfo;
+            pinfo.PrimaryContactInfo = new ContactInfo()
+            {
+                AddressLine1 = "test",
+                AddressLine2 = "test",
+                City = "test",
+                Email = "test@test.com",
+                Name = "John Doe",
+                State = "CA",
+                Zip = "00000"
+            };
+            pinfo.OwnerContactInfo = new ContactInfo()
+            {
+                AddressLine1 = "test",
+                AddressLine2 = "test",
+                City = "test",
+                Email = "test@test.com",
+                Name = "John Doe",
+                State = "CA",
+                Zip = "00000"
+            };
+            pinfo.LandFirmContactInfo = new ContactInfo()
+            {
+                AddressLine1 = "test",
+                AddressLine2 = "test",
+                City = "test",
+                Email = "test@test.com",
+                Name = "John Doe",
+                State = "CA",
+                Zip = "00000"
+            };
+            GetCurrentApplicant().Applications.Add(application);
+            _context.Applications.Add(application);
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Applications", new { id = application.Id });
         }
     }
 }

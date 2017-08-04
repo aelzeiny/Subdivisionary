@@ -1,14 +1,10 @@
 ﻿@using System.Data.Entity.Core.Objects
-@using System.Reflection
-@using AutoMapper.Internal
-@using Subdivisionary.DAL
 @using Subdivisionary.Helpers
-@using Subdivisionary.Models
-@using Subdivisionary.Models.Applications
 @using Subdivisionary.Models.Forms
 @using Subdivisionary.Models.ProjectInfos
 @using Subdivisionary.ViewModels
-@model Subdivisionary.ViewModels.EditApplicationViewModel
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.ViewModels.ApplicationViewModels.EditApplicationViewModel
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_BannerLayout.cshtml";
@@ -30,7 +26,7 @@
             {
                 var form = Model.Forms[i];
                 string liClass = null;
-                if (i == Model.EditId)
+                if ((Model.FormId <= 0 && form is BasicProjectInfo) || (Model.FormId == form.Id && !(form is BasicProjectInfo)))
                 {
                     liClass = "active";
                     if (activeForm == null)
@@ -40,7 +36,7 @@
                 }
                 var icon = form.IsAssigned ? iconSubmitted : (form.IsRequired ? iconPending : iconOptional);
                 <li role="presentation" class="@liClass">
-                    <a href="@Url.Action( "Details", "Applications", new {id = Model.Application.Id, editId = i}, null)" class="list-group-item">
+                    <a href="@Url.Action( "Details", "Applications", new {formId = form is BasicProjectInfo ? 0 : form.Id}, null)" class="list-group-item">
                         @form.DisplayName
                         <div class="badge">
                             <i class="@icon" aria-hidden="true"></i>
@@ -92,13 +88,13 @@
         </table>
     </div>
     <div class="partialbar col-xs-12 col-md-9">
-        <h2>@Model.Forms[Model.EditId].DisplayName</h2>
+        <h2>@activeForm.DisplayName</h2>
         @{
             var formEditor = new EditFormViewModel()
             {
                 Form = activeForm,
+                FormId = Model.FormId,
                 ApplicationId = Model.Application.Id,
-                EditId = Model.EditId
             };
         }
         @Html.Partial("_FormEditor", formEditor)
@@ -107,6 +103,7 @@
 
 
 @section Scripts {
+    @Scripts.Render("~/Scripts/site-js/site-disableCheckboxes.js")
     @if (activeForm is UploadableFileForm)
     {
         @Scripts.Render("~/Scripts/site-js/site-fileinput.js")
@@ -119,15 +116,14 @@
     {
         @Scripts.Render("~/Scripts/site-js/site-icollection.js")
     }
-    @if (activeForm is BasicProjectInfo)
-    {
-        @Scripts.Render("~/Scripts/site-js/FormScripts/BasicProjectInfo.js")
-    }
 
     @{
+        // Get Javascript file from active form type
         var mt = ObjectContext.GetObjectType(activeForm.GetType());
-        var src = "~/Scripts/site-js/FormScripts/" + mt.Name + ".js";
-
+        var ooScripts = CustomHtmlHelper.GetAllSubtypes(mt);
     }
-    @Scripts.Render(src)
+    @foreach (var script in ooScripts)
+    {
+        @Scripts.Render($"~/Scripts/site-js/FormScripts/{script.Name}.js")
+    }
 }

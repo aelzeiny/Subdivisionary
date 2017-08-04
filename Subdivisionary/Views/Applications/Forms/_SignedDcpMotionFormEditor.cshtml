@@ -1,0 +1,23 @@
+﻿@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model SignedDcpMotionForm
+    
+<div class="row">
+    <div class="form-group col-sm-6 col-xs-12">
+        @Html.LabelFor(m => m.MotionNo, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.MotionNo, new { @class = "form-control", placeholder = "joe@something.com" })
+        @Html.ValidationMessageFor(m => m.MotionNo)
+    </div>
+    <div class="form-group col-sm-6 col-xs-12">
+        @Html.LabelFor(m => m.FileNo, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.FileNo, new { @class = "form-control", placeholder = "joe@something.com" })
+        @Html.ValidationMessageFor(m => m.FileNo)
+    </div>
+</div>
+    
+@Html.Partial("_FileUploadPropsEditor", new FileUploadViewModel()
+{
+    LabelMessage = "Please upload a Signed Motion from City Planning",
+    UploadList = Model.FileUploads,
+    UploadProperty = Model.GetFileUploadInfo(SignedDcpMotionForm.DCP_MOTION_KEY)
+})

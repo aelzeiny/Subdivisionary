@@ -1,0 +1,78 @@
+﻿@using Subdivisionary.Models.Collections
+@using Subdivisionary.Models.Forms
+@using Subdivisionary.ViewModels.ApplicationViewModels
+@model Subdivisionary.Models.Forms.SidewalkMunicipalTransportionAttachment
+
+
+<h4>Fire Department Attachment</h4>
+<div class="row form-group">
+    @Html.LabelFor(m => m.HasMtaReviewedPlans, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.HasMtaReviewedPlans, new
+    {
+        @class = "big-checkbox disable-boxes center-div",
+        @for = "mtaReviewDiv",
+        style = "text-align: center; vertical-align: middle; float:right;"
+    })
+    @Html.ValidationMessageFor(m => m.HasMtaReviewedPlans)
+</div>
+<div id="mtaReviewDiv">
+    @Html.Partial("CollectionEditors/_CollectionEditor", new ListEditorViewModel<NameSectionDateInfo>(SidewalkMunicipalTransportionAttachment.MTA_TASC_COLL, Model.MtaNameSectionDateList, new NameSectionDateInfo()))
+</div>
+
+
+<div class="row form-group">
+    @Html.LabelFor(m => m.HasTascReviewedPlans, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.HasTascReviewedPlans, new
+{
+    @class = "big-checkbox disable-boxes center-div",
+    @for = "tascReviewDiv",
+    style = "text-align: center; vertical-align: middle; float:right;"
+})
+    @Html.ValidationMessageFor(m => m.HasTascReviewedPlans)
+</div>
+<div id="tascReviewDiv" class="row form-group">
+    <div class="col-xs-12 col-sm-6">
+        @Html.LabelFor(m => m.MtaDateOfTascHearing, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.MtaDateOfTascHearing, new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.MtaDateOfTascHearing)
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        @Html.LabelFor(m => m.MtaDateOfTascApproval, new { @class = "control-label" })
+        @Html.EditorFor(m => m.MtaDateOfTascApproval, new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.MtaDateOfTascApproval)
+    </div>
+</div>
+
+
+<div class="row form-group">
+    @Html.LabelFor(m => m.WillChangeStreetParking, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.WillChangeStreetParking, new
+    {
+        @class = "big-checkbox disable-boxes center-div",
+        @for = "parkingReviewDiv",
+        style = "text-align: center; vertical-align: middle; float:right;"
+    })
+    @Html.ValidationMessageFor(m => m.WillChangeStreetParking)
+</div>
+<div id="parkingReviewDiv" class="row form-group">
+    <div class="col-xs-12 col-sm-6">
+        @Html.LabelFor(m => m.ParkingSpotsRemoved, new { @class = "control-label" })
+        @Html.EditorFor(m => m.ParkingSpotsRemoved, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ParkingSpotsRemoved)
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        @Html.LabelFor(m => m.ProposedCurbColor, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.ProposedCurbColor, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ProposedCurbColor)
+    </div>
+</div>
+
+<p><strong>Note: </strong></p>
+<ul>
+    <li>Changes to on-street parking may require public hearing and MTA board legislation which will extend review time.</li>
+    <li>
+        Requests for new color curb require MTA Board legislation. Refer to
+        <a href="www.sfmta.com" target="_blank">the MTA website</a> for further
+        info on submitting an application under the color curb program
+    </li>
+</ul>

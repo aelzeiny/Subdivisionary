@@ -1,28 +1,41 @@
 ﻿@{
+    Layout = "~/Views/Shared/_WideLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
-<div class="jumbotron">
+<div class="" style="margin-top: 15px;">
     <h1>Subdivision Application System</h1>
-    <p class="lead" style="text-align: center;">A refreshing step in the right direction. To be completed by 2/30/17. ae.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <div>
+        <iframe style="display: block; width: 100%; margin: auto;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.4614163141964!2d-122.41559288468224!3d37.779224979758744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809b506da53b%3A0x95dd31f8f3d1ed11!2s1155+Market+St%2C+San+Francisco%2C+CA+94103!5e0!3m2!1sen!2sus!4v1490354423353" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
 </div>
-<div class="row">
+<div class="row myHeader">
     <div class="col-md-4">
-        <h2>Lorem Ipsum</h2>
+        <i class="fa fa-pencil fa-3x myHeader"></i>
+        <h2 class="myHeader">Apply</h2>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tempor magna ut felis commodo, vitae pulvinar nisi luctus.
-            Cras vitae dui commodo, viverra mi porta, pellentesque nisl.
+            We're doing our best to simply what is
+            a very comprehensive process into a series of intuitive steps. However, some things are just too complex to be simple,
+            which is why some applications recommend retaining the use of an attorney or licensed professional.
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p>
+            <a class="btn btn-default myHeader" href="@Url.Action("About")">Learn more &raquo;</a>
+        </p>
     </div>
     <div class="col-md-4">
-        <h2>Mauris Bibendum</h2>
-        <p>Mauris bibendum nunc augue, id eleifend felis luctus a. Quisque convallis aliquam ante ac volutpat. Proin gravida mi eget lectus consectetur, nec pellentesque lacus aliquam.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <i class="fa fa-share-alt fa-3x myHeader"></i>
+        <h2 class="myHeader">Share</h2>
+        <p>
+            Apply for Subdivision and Mapping applications online through this website. You can invite others to edit your application.
+            Save your application and return to it at any time. Upload file attachments, and sign documents all in this one place.
+        </p>
+        <p>
+            <a class="btn btn-default myHeader" href="@Url.Action("About")">Learn more &raquo;</a>
+        </p>
     </div>
     <div class="col-md-4">
-        <h2>Vivamus Ultricies</h2>
-        <p>Vivamus ultricies velit ac erat interdum, non fermentum ex tristique. Nam eget lacinia turpis. Cras facilisis justo risus, at pulvinar sem eleifend eu. Aenean eu tempus tortor, vehicula congue tellus.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <i class="fa fa-eye fa-3x myHeader"></i>
+        <h2 class="myHeader">Track</h2>
+        <p>Track the status of any submitted project through our Subdivision Tracking System. Applications only appear after an electronic application is submitted here, the applicant has paid the invoice in full, and has been reviewed by our staff</p>
+        <p><a class="btn btn-default myHeader" href="https://bsm.sfdpw.org/subdivision/tracking/">Learn more &raquo;</a> </p>
     </div>
 </div>

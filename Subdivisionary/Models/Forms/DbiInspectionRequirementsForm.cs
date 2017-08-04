@@ -28,7 +28,7 @@ namespace Subdivisionary.Models.Forms
         public static readonly string DBI_INSPECTION_FLOORPLANS_KEY = "dbiFloorplansId";
         public static readonly string DBI_INSPECTION_PHOTOS_KEY = "dbiPhotosId";
         public static readonly string DBI_INSPECTION_DIRECTORY = "DBI Directory";
-        public static readonly string DBI_INSPECTION_FEE = "$375.00";
+        public static readonly string DBI_INSPECTION_FEE = "$374.00";
 
         public override FileUploadProperty[] FileUploadProperties => new []
         {

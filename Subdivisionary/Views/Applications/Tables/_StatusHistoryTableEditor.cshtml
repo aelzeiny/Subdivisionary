@@ -1,0 +1,36 @@
+﻿@using Subdivisionary.Helpers
+@using Subdivisionary.Models
+@model IEnumerable<Subdivisionary.Models.ApplicationStatusLogItem>
+
+<table class="table table-condensed table-hover">
+
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Additional Info</th>
+        </tr>
+    </thead>
+    @{
+        int k = 0;
+        int lastK = Model.Count() - 1;
+    }
+    <tbody>
+        @foreach (var log in Model)
+        {
+            var trClass = "";
+            var statusDisplay = EnumHelper<EApplicationStatus>.GetDisplayValue(log.Status);
+            if (k == lastK)
+            {
+                trClass = "info";
+            }
+            <tr class="@trClass">
+                <td>@statusDisplay</td>
+                <td>@log.DateTime.ToString("MM/dd/yyyy h:mm:ss tt")</td>
+                <td>@log.Comment</td>
+            </tr>
+            k++;
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,12 @@
+﻿@model Subdivisionary.Models.Forms.ParcelOrFinalMapGuidelines
+
+<div class="row form-group">
+    @Html.LabelFor(m => m.ReadAndAffirmPmAndFmApp, new { @class = "control-label" })
+    @Html.CheckBoxFor(m => m.ReadAndAffirmPmAndFmApp, new
+{
+    @class = "big-checkbox center-div",
+    style = "text-align: center; vertical-align: middle; float:right;"
+})
+    @Html.ValidationMessageFor(m => m.ReadAndAffirmPmAndFmApp)
+</div>
+

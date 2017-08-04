@@ -1,0 +1,15 @@
+﻿@model Subdivisionary.Models.Collections.LocationWidthInfo
+<div class="form-group col-xs-12 col-md-7">
+        @Html.LabelFor(m => m.Location, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Location, new { @class = "form-control", placeholder = "(intersection corner or fronting address)" })
+    @Html.ValidationMessageFor(m => m.Location)
+</div>
+<div class="form-group col-xs-12 col-md-5">
+    @Html.LabelFor(m => m.WidthInFeet, new { @class = "control-label" })
+
+    <div class="input-group">
+        @Html.TextBoxFor(m => m.WidthInFeet, new { @class = "form-control", placeholder = "[Width]" })
+        <span class="input-group-addon">ft</span>
+    </div>
+    @Html.ValidationMessageFor(m => m.WidthInFeet)
+</div>

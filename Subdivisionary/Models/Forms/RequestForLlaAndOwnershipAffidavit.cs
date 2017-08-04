@@ -12,7 +12,7 @@ namespace Subdivisionary.Models.Forms
         public static readonly string REQUEST_LLA_KEY = "requestLlaId";
         public static readonly string REQUEST_LLA_DIRECTORY = "Request for LLA";
 
-        public static readonly string SAMPLE_REQUEST_LLA_URL = "https://subdivisionaryblob.blob.core.windows.net/templates/Request%20for%20LLA%20and%20Affidavit%20of%20Ownership%20Example.pdf";
+        public static readonly string SAMPLE_REQUEST_LLA_URL = "~/Samples/Request for LLA and Affidavit of Ownership Example.pdf";
 
         public override FileUploadProperty[] FileUploadProperties => new[]
         {
