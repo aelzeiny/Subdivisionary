@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -10,7 +9,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using reCaptcha;
 using Subdivisionary.DAL;
 using Subdivisionary.Models;
 using Subdivisionary.ViewModels;
@@ -29,11 +27,10 @@ namespace Subdivisionary.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
-            _context = new ApplicationDbContext();
         }
 
         public ApplicationSignInManager SignInManager
@@ -42,9 +39,9 @@ namespace Subdivisionary.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -128,7 +125,7 @@ namespace Subdivisionary.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -147,8 +144,6 @@ namespace Subdivisionary.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.Recaptcha = ReCaptcha.GetHtml(ConfigurationManager.AppSettings["ReCaptcha:SiteKey"]);
-            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
             return View();
         }
 
@@ -159,30 +154,26 @@ namespace Subdivisionary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (!ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
-            {
-                ModelState.AddModelError("", "I may not be Alan Turning, but you could be robot. Please try again.");
-            }
             if (ModelState.IsValid)
             {
                 var applicant = new Applicant();
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Data = applicant, Name = model.Name};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Data = applicant };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Seeding Users of type applicant until stated otherwise
-                    string roleName = EUserRoles.Applicant.ToString();
+                    // Temporary Code
+                    /*string roleName = "BsmRole";
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var roleManager = new RoleManager<IdentityRole>(roleStore);
                     await roleManager.CreateAsync(new IdentityRole(roleName));
-                    await UserManager.AddToRoleAsync(user.Id, roleName);
+                    await UserManager.AddToRoleAsync(user.Id, roleName);*/
 
                     user.DataId = user.Data.Id;
                     user.Data = user.Data;
                     await _context.SaveChangesAsync();
                     UserManager.Update(user);
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -195,8 +186,6 @@ namespace Subdivisionary.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ViewBag.Recaptcha = ReCaptcha.GetHtml(ConfigurationManager.AppSettings["ReCaptcha:SiteKey"]);
-            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
             return View(model);
         }
 

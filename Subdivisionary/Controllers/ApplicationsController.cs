@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Microsoft.Ajax.Utilities;
 using reCaptcha;
 using Subdivisionary.DAL;
-using Subdivisionary.ExternalApis;
 using Subdivisionary.Helpers;
 using Subdivisionary.Models;
 using Subdivisionary.Models.Applications;
@@ -89,10 +88,6 @@ namespace Subdivisionary.Controllers
             application.ProjectInfo.ApplicationId = application.Id;
             application.ProjectInfo.IsAssigned = true;
             _context.SaveChanges();
-            // Notify External Apis of New Application creation. Most Apis 
-            // would ignore this event until application submitted with a paid fee,
-            // but the option is there none-the-less
-            ExternalApiManager.StatusChangedTriggerInBackground(application);
 
             return RedirectToAction("Details", "Applications", new {id = application.Id});
         }
@@ -333,9 +328,6 @@ namespace Subdivisionary.Controllers
                 GenerateInvoice(application, EInvoicePurpose.InitialPayment);
             _context.SaveChanges();
 
-            // Notify External APIs of this event whether it is an initial or secondary submittal
-            ExternalApiManager.StatusChangedTriggerInBackground(application);
-
             return RedirectToAction("Submitted", new {id = id});
         }
 
@@ -383,9 +375,6 @@ namespace Subdivisionary.Controllers
 
             paymentForm.InvoiceId = finalInvoice.Id;
             paymentForm.Invoice = finalInvoice;
-
-            // Notify External APIs of this event
-            ExternalApiManager.InvoiceGeneratedTriggerInBackground(application, finalInvoice);
         }
         
         public ActionResult Submitted(int id)
@@ -428,8 +417,7 @@ namespace Subdivisionary.Controllers
                 GenerateInvoice(application, EInvoicePurpose.IncompleteFee);
             application.CanEdit = true;
             _context.SaveChanges();
-            // Notify External APIs of this event asynchronously
-            ExternalApiManager.StatusChangedTriggerInBackground(application);
+
             return RedirectToAction("Submitted", new {id = id});
         }
 
@@ -442,8 +430,7 @@ namespace Subdivisionary.Controllers
             application.StatusHistory.Add(ApplicationStatusLogItem.FactoryCreate(EApplicationStatus.DeemedSubmittable));
             GenerateInvoice(application, EInvoicePurpose.MapReviewFee);
             _context.SaveChanges();
-            // Notify External APIs of this event asynchronously
-            ExternalApiManager.StatusChangedTriggerInBackground(application);
+
             return RedirectToAction("Submitted", new { id = id });
         }
 
@@ -516,9 +503,7 @@ namespace Subdivisionary.Controllers
                     else
                         throw new NotSupportedException(EnumHelper<EInvoicePurpose>.GetDisplayValue(invoice.InvoicePurpose));
                     application.StatusHistory.Add(ApplicationStatusLogItem.FactoryCreate(status));
-
-                    // Notify External APIs of this event
-                    ExternalApiManager.StatusChangedTriggerInBackground(application);
+                    
                 }
                 _context.SaveChanges();
             }
