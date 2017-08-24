@@ -20,10 +20,12 @@ function checkTheseBoxes(checkbx) {
     var divJ = $("#" + div);
     if ((checkbx.prop("checked") && !shouldReverse) || (!checkbx.prop("checked") && shouldReverse)) {
         inputs.prop("disabled", false);
+        inputs.val("");
         divJ.css("opacity", "1");
     }
     else {
         inputs.attr("disabled", true);
-        divJ.css("opacity", ".6");
+        inputs.val("--");
+        divJ.css("opacity", ".3");
     }
 }

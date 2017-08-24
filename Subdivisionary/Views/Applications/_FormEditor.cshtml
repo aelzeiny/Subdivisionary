@@ -6,6 +6,15 @@
 
 
 @Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+@if (ViewBag.SavedForm != null)
+{
+
+    <div class="alert alert-success" role="alert" style="margin: 0px;">
+        <i class="fa fa-exclamation"></i>
+        @ViewBag.SavedForm has been saved!
+    </div>
+}
 @using (Html.BeginForm("Details", "Applications",
     new {id=Model.ApplicationId, formId = Model.Form.Id},
     FormMethod.Post, new { method = "post", id="formPartialViewEditor", runat = "server", enctype = "multipart/form-data" }))

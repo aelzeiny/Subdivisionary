@@ -131,7 +131,10 @@ namespace Subdivisionary.Controllers
         /// <returns></returns>
         public ActionResult Details(int id, int? formId)
         {
-            if(User.IsInRole(EUserRoles.Admin.ToString()) || User.IsInRole(EUserRoles.Bsm.ToString()))
+            if(TempData["SavedForm"] != null)
+                ViewBag.SavedForm = TempData["SavedForm"];
+
+            if (User.IsInRole(EUserRoles.Admin.ToString()) || User.IsInRole(EUserRoles.Bsm.ToString()))
                 return RedirectToAction("Submitted", new { id = id });
             var applicant = GetCurrentApplicant();
             var application = _context.Applications.Where(x => x.Id == id)
@@ -209,6 +212,8 @@ namespace Subdivisionary.Controllers
             form.CopyValues(editApp);
 
             _context.SaveChanges();
+
+            TempData["SavedForm"] = form.DisplayName;
             return RedirectToAction("Details", "Applications", new {id = application.Id, formId = form is BasicProjectInfo ? 0 : form.Id });
         }
         #endregion
